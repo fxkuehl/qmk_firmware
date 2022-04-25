@@ -71,9 +71,9 @@ enum custom_keycodes {
 #define LA_COMM LALT_T(KC_COMM)
 #define RG_DOT  RGUI_T(KC_DOT)
 #define RC_SLSH RCTL_T(KC_SLSH)
-#define LS_UNDS LSFT_T(KC_UNDS) // 16-bit
-#define SY_QUOT LT(L_NUM_SYM, KC_QUOT)
-#define CT_QUOT LT(L_CTL_MAC, KC_QUOT)
+#define LS_QUOT LSFT_T(KC_QUOT)
+#define SY_UNDS LT(L_NUM_SYM, KC_UNDS) // 16-bit
+#define CT_UNDS LT(L_CTL_MAC, KC_UNDS) // 16-bit
 #define FN_TAB  LT(L_NAV_FN, KC_TAB)
 #define RA_SPC  RALT_T(KC_SPC)
 
@@ -106,7 +106,7 @@ enum custom_keycodes {
         KC_Q,    KC_W,    KC_F,    KC_P,    KC_G,    KC_J,    KC_L,    KC_U,    KC_Y,    KC_SCLN, \
         KC_A,    KC_R,    KC_S,    KC_T,    KC_D,    KC_H,    KC_N,    KC_E,    KC_I,    KC_O,    \
         LC_Z,    LG_X,    LA_C,    KC_V,    KC_B,    KC_K,    KC_M,    LA_COMM, RG_DOT,  RC_SLSH, \
-                                   LS_UNDS, K34,     K35,     RA_SPC)
+                                   LS_QUOT, K34,     K35,     RA_SPC)
 
 // The Nav+Fn layer gets duplicated for a momentary and a locked version.
 // The layer keys are parametrized. There are two versions with arrows on the
@@ -121,19 +121,19 @@ enum custom_keycodes {
 #ifdef KOLIBRI_NAV_ON_RIGHT
 #   define KEYMAP_NAV_FN(K34, K35) LAYOUT_KOLIBRI( \
         KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_PSCR, KC_SLCK, KC_HOME, KC_UP,   KC_END,  KC_VOLU, \
-        KC_ESC,  KC_ENT,  KC_BSPC, KC_DEL,  KC_INS,  KC_PGUP, KC_LEFT, KC_DOWN, KC_RGHT, KC_VOLD, \
+        KC_ESC,  KC_INS,  KC_BSPC, KC_DEL,  KC_ENT,  KC_PGUP, KC_LEFT, KC_DOWN, KC_RGHT, KC_VOLD, \
         LC_F5,   LG_F6,   LA_F7,   KC_F8,   KC_APP,  KC_PGDN, KC_F9,   LA_F10,  RG_F11,  RC_F12,  \
                                    RS_CAPS, K34,     K35,     MS_SPC)
 #else
 #   define KEYMAP_NAV_FN(K34, K35) LAYOUT_KOLIBRI( \
         KC_VOLU, KC_HOME, KC_UP,   KC_END,  KC_PSCR, KC_SLCK, KC_F1,   KC_F2,   KC_F3,   KC_F4,  \
-        KC_VOLD, KC_LEFT, KC_DOWN, KC_RGHT, KC_PGUP, KC_INS,  KC_BSPC, KC_DEL,  KC_ENT,  KC_ESC, \
+        KC_VOLD, KC_LEFT, KC_DOWN, KC_RGHT, KC_PGUP, KC_ENT,  KC_BSPC, KC_DEL,  KC_INS,  KC_ESC, \
         LC_F5,   LG_F6,   LA_F7,   KC_F8,   KC_PGDN, KC_APP,  KC_F9,   LA_F10,  RG_F11,  RC_F12, \
                                    RS_CAPS, K34,     K35,     MS_SPC)
 #endif
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    [L_BASE] = KEYMAP_BASE(SY_QUOT, FN_TAB),
+    [L_BASE] = KEYMAP_BASE(SY_UNDS, FN_TAB),
 
     // Locked Nav+Fn layer sits below the Num+Sym layer:
     // - Left key is Fn-unlock/Sym
@@ -147,7 +147,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // - Left key is Underscore/Ctl+Macro
     //   (both layer keys together always lead to Ctl+Macro)
     // - Right key is transparent
-    [L_BASE_OVERRIDE] = KEYMAP_BASE(CT_QUOT, _______),
+    [L_BASE_OVERRIDE] = KEYMAP_BASE(CT_UNDS, _______),
 
     [L_NUM_SYM] = LAYOUT_KOLIBRI(
         KC_GRV,  KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN,
@@ -238,7 +238,6 @@ macros:
 
         if (IS_LAYER_ON(L_NUM_SYM)) {
             switch (keycode) {
-            case LS_UNDS: code16 = KC_UNDS; break;
             case CT_DQUO: code16 = KC_DQUO; break;
             case LG_LCBR: code16 = KC_LCBR; break;
             case LA_RCBR: code16 = KC_RCBR; break;
@@ -253,7 +252,8 @@ macros:
                 if (record->event.pressed)
                     layer_invert(L_NAV_FN_LOCKED);
                 return false; // doesn't send any keycode
-            case LS_UNDS: code16 = KC_UNDS; break;
+            case SY_UNDS:
+            case CT_UNDS: code16 = KC_UNDS; break;
             default: return true;
             }
         }

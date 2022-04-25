@@ -136,7 +136,7 @@
       "y": -0.75,
       "x": 1
     },
-    "\n\n2\n\n\n\nR\n\n\n\n<i class='kb kb-Return-2'></i>",
+    "\n\n2\n\n\n\nR\n\n\n\nIns",
     {
       "x": 1
     },
@@ -168,7 +168,7 @@
         2
       ]
     },
-    "\n\n5\n\n\n\nD\n\n\n\nIns",
+    "\n\n5\n\n\n\nD\n\n\n\n<i class='kb kb-Return-2'></i>",
     {
       "x": 2,
       "fa": [
@@ -310,11 +310,13 @@
   ],
   [
     {
-      "x": 3.5
+      "x": 3.5,
+      "t": "#000000\n\n\n\n\n\n\n\n\n\n#c13828"
     },
-    "\n\n\n\nShift\n\n_\n\n\n\nCaps",
+    "'\n\n\n\nShift\n\n\n\n\n\nCaps",
     {
       "x": 3,
+      "t": "#000000\n\n#1db63a",
       "f": 3
     },
     "\n\n-\n\nAltGr\n\nSpc"
@@ -323,12 +325,21 @@
     {
       "y": -0.75,
       "x": 4.5,
-      "t": "#000000\n\n#1db63a\n\n#1db63a\n\n\n\n\n\n#c13828"
+      "t": "#000000\n\n\n\n#1db63a\n\n\n\n\n\n#c13828",
+      "fa": [
+        5,
+        5,
+        0,
+        0,
+        0,
+        0,
+        5
+      ]
     },
-    "\n\n\n\nSym\n\n'\n\n\n\nFnLock",
+    "_\n\n\n\nSym\n\n\n\n\n\nFnLock",
     {
       "x": 1,
-      "t": "#000000\n\n#1db63a\n\n#c13828\n\n\n\n\n\n#c13828",
+      "t": "#000000\n\n#1db63a\n\n#c13828",
       "f": 3
     },
     "\n\n\"\n\nFn\n\n<i class='kb kb-Line-Start-End'></i>"

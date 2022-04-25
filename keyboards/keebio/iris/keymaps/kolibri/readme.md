@@ -70,7 +70,7 @@ Ctrl, Gui and Alt modifiers are consistent across all layers, in the outer colum
   Home row tap:   A   R   S   T   D              H   N   E   I   O
 Bottom row tap:   Z   X   C   V   B              K   M   ,~  .!  /?
 Bottom row hold: Ctl Gui Alt                            Alt Gui Ctl
-     Thumb tap:                   _   '     Tab Spc
+     Thumb tap:                   '   _     Tab Spc
      Thumb hold:                Shft Sym    Fn AltGr
 ```
 
@@ -78,7 +78,7 @@ For right-handed users, Shift is on the left, AltGr on the right. This choice di
 
 Holding Space is AltGr. Since AltGr is less frequently used, it doesn't hurt that this key prefers the "tap" action. Tab is the "tap" action on the Fn layer key.
 
-Two symbols do not fit in the num+sym layer and need to move to the left thumb on the base layer. Apostrophe and '\_' are a convenient choice for typing and programming respectively. '\_' is placed on the Shift key, Apostrophe on the num+sym layer key.
+Two symbols do not fit in the num+sym layer and need to move to the left thumb on the base layer. Apostrophe and '\_' are a convenient choice for typing and programming respectively. Apostrophe is placed on the Shift key to avoid the thumb jumping when typing "I'm". '\_' is on the num+sym layer key, which forces the thumb to jump when typing "UPPER_CASE_MACRO" names and avoids accidentally activating a tap+hold of '\_' instead of holding the layer key.
 
 The shifted symbols of ',' and '.' are normally '<' and '>'. They are moved to the num+sym layer to avoid the thumbs jumping between Shift and Sym for common bigrams such as '->' and '=>'. They are replaced on the base layer with '~' and '!' by sending different keycodes when Shift is active.
 
@@ -106,7 +106,7 @@ The right thumb types double quotes and '-'. Since '-' is often surrounded by Sp
 
 ```
    Top row tap:   F1  F2  F3  F4 PScr          SLck Home ↑  End Vol+
-  Home row tap:  Esc  ↲   ⌫   ⌦  Ins           PgUp  ←   ↓   →  Vol-
+  Home row tap:  Esc Ins  ⌫   ⌦   ↲            PgUp  ←   ↓   →  Vol-
 Bottom row tap:   F5  F6  F7  F8 Menu          PgDn  F9 F10 F11 F12
 Bottom row hold: Ctl Gui Alt                            Alt Gui Ctl
      Thumb tap:                 Caps FnLk   ___ ___
@@ -116,7 +116,7 @@ Bottom row hold: Ctl Gui Alt                            Alt Gui Ctl
 
 The nav+fn layer has an inverted-T arrow key cluster in the home position of the right hand. Home and End keys are left and right of the Up key. PageUp/Down are on the inner index-finger column, where there are no mod-taps affecting key-repeat. Like on a normal keyboard, the arrow keys can be used one-handed.
 
-The left home row has Esc, Tab, Backspace, Delete, Insert, with Backspace and Delete on the strongest fingers.
+The left home row has Esc, Insert, Backspace, Delete, Enter, with Backspace and Delete on the strongest fingers. Enter is a little harder to reach on the inner column to avoid hitting it accidentally.
 
 The F-keys are arranged in groups of four: F1-F4 in top-left, F5-F8 in bottom-left, F9-F12 in bottom-right. The remaing spots are filled up with PrintScreen, ScrollLock, and media volume control.
 
@@ -130,7 +130,7 @@ The AltGr function is replaced by a Mouse layer key if mouse keys are enabled.
 
 ```
    Top row tap:   F1  F2  F3  F4 PScr          SLck Hom PDn PUp End
-  Home row tap:  Esc  ↲   ⌫   ⌦  Ins           Vol+  ←   ↓   ↑   →
+  Home row tap:  Esc Ins  ⌫   ⌦   ↲            Vol+  ←   ↓   ↑   →
 Bottom row tap:   F5  F6  F7  F8 Menu          Vol-  F9 F10 F11 F12
 Bottom row hold: Ctl Gui Alt                            Alt Gui Ctl
      Thumb tap:                 Caps FnLk   ___ ___
@@ -143,7 +143,6 @@ An alternative navigation layer puts all the arrow keys in the home row, and pag
 Arrow keys on the right hand enable one-handed navigation or lazy browsing with only one hand on the keyboard. Some users may prefer the arrow keys in the left hand to reduce strain from holding the layer key with the same thumb. That would move the editing keys and Esc to the right instead. This variant can be combined with either of the arrow-key layouts.
 
 ## Ctrl+Macro Layer
-
 
 I use this layer for RGB underglow control, QMK Reset and Debug functions, as well as a few macros of frequently typed text. It would also have space for many more media keys I never use.
 
