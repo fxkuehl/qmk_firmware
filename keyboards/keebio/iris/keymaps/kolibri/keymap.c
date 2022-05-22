@@ -84,7 +84,7 @@ enum custom_keycodes {
 #define RA_RBRC RALT_T(KC_RBRC)
 #define LA_LT   LALT_T(KC_LT)   // 16-bit
 #define RG_GT   RGUI_T(KC_GT)   // 16-bit
-#define RC_BSLS RCTL_T(KC_BSLS)
+#define RC_PIPE RCTL_T(KC_PIPE) // 16-bit
 #define CT_DQUO LT(L_CTL_MAC, KC_DQUO) // 16-bit
 #define RA_MINS RALT_T(KC_MINS)
 
@@ -150,9 +150,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [L_BASE_OVERRIDE] = KEYMAP_BASE(CT_UNDS, _______),
 
     [L_NUM_SYM] = LAYOUT_KOLIBRI(
-        KC_GRV,  KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN,
+        KC_EXLM, KC_GRV,  KC_TILD, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN,
         KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,
-        LC_LBRC, LG_LCBR, LA_RCBR, RA_RBRC, KC_PIPE, KC_PLUS, KC_EQL,  LA_LT,   RG_GT,   RC_BSLS,
+        LC_LBRC, LG_LCBR, LA_RCBR, RA_RBRC, KC_BSLS, KC_PLUS, KC_EQL,  LA_LT,   RG_GT,   RC_PIPE,
                                    _______, _______, CT_DQUO, RA_MINS),
 
     // Momentary Nav+Fn layer:
@@ -210,8 +210,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         uint16_t new_code;
 
         switch (keycode & 0xff) {
-        case KC_COMM: new_code = KC_GRV; break; // '~'
-        case KC_DOT:  new_code = KC_1;   break; // '!'
+        case KC_COMM: new_code = KC_3; break; // '#'
+        case KC_DOT:  new_code = KC_2; break; // '@'
         default: goto macros;
         }
         if (record->event.pressed)
@@ -243,6 +243,7 @@ macros:
             case LA_RCBR: code16 = KC_RCBR; break;
             case LA_LT:   code16 = KC_LT; break;
             case RG_GT:   code16 = KC_GT; break;
+            case RC_PIPE: code16 = KC_PIPE; break;
             default: return true;
             }
         } else {

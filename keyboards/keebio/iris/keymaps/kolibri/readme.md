@@ -25,7 +25,7 @@ The goal is to design a keyboard layout for small ergonomic/split keyboards that
 
 The 3x5 form factor with 3 thumb keys per hand is favoured by many for ergonomics, with all keys within easy reach of their fingers and thumbs. It turns out that a fully functional keyboard is possible even with only 2 thumb keys. A layout that fits that size can be expanded to fit almost any keyboard.
 
-For full functionality and comfort, all combinations of modifiers (Shift, Ctrl, Alt, Gui) plus any key should be possible to type without contorting the hands. The thumbs can only hold two modifiers at the same time. When one thumb is holding down a layer switching key, only one additional thumb-modifier is possible. Therefore most modifiers have to be assigned to fingers, with no more than one modifier per finger. The only way to do that on a 3x5 layout, without preventing fast typing, is with mod-tap, where the same key has two different functions when it is held or tapped. Modifier keys must be duplicated on both hands to avoid contortions and to make modifying any key possible.
+For full functionality and comfort, all combinations of modifiers (Shift, Ctrl, Alt, Gui) plus any key should be possible to type without contorting the hands. The thumbs can only hold two modifiers at the same time. When one thumb is holding down a layer switching key, only one additional thumb-modifier is possible. Therefore most modifiers have to be assigned to fingers, with no more than one modifier per finger. The most common way to do that on a 3x5 layout, without preventing fast typing, is with mod-tap, where the same key has two different functions when it is held or tapped. Modifier keys must be duplicated on both hands to avoid contortions and to make modifying any key possible.
 
 My experiments with mod-taps on the home row were not encouraging. Especially with Shift as a mod-tap on a home-row key, there is frequent ambiguity between mod+tap or tap+tap that can hurt typing flow. Moving mod-taps to less frequently used bottom-row keys helps. Moving Shift to a thumb key further makes it possible to configure mod-tap per-key to unambiguously favour "tap" on fingers and Space, and "hold" on other thumb keys, including Shift and layer keys.
 
@@ -68,7 +68,7 @@ Ctrl, Gui and Alt modifiers are consistent across all layers, in the outer colum
 ```
    Top row tap:   Q   W   F   P   G              J   L   U   Y   ;:
   Home row tap:   A   R   S   T   D              H   N   E   I   O
-Bottom row tap:   Z   X   C   V   B              K   M   ,~  .!  /?
+Bottom row tap:   Z   X   C   V   B              K   M   ,#  .@  /?
 Bottom row hold: Ctl Gui Alt                            Alt Gui Ctl
      Thumb tap:                   '   _     Tab Spc
      Thumb hold:                Shft Sym    Fn AltGr
@@ -80,25 +80,25 @@ Holding Space is AltGr. Since AltGr is less frequently used, it doesn't hurt tha
 
 Two symbols do not fit in the num+sym layer and need to move to the left thumb on the base layer. Apostrophe and '\_' are a convenient choice for typing and programming respectively. Apostrophe is placed on the Shift key to avoid the thumb jumping when typing "I'm". '\_' is on the num+sym layer key, which forces the thumb to jump when typing "UPPER_CASE_MACRO" names and avoids accidentally activating a tap+hold of '\_' instead of holding the layer key.
 
-The shifted symbols of ',' and '.' are normally '<' and '>'. They are moved to the num+sym layer to avoid the thumbs jumping between Shift and Sym for common bigrams such as '->' and '=>'. They are replaced on the base layer with '~' and '!' by sending different keycodes when Shift is active.
+The shifted symbols of ',' and '.' are normally '<' and '>'. They are moved to the num+sym layer to avoid the thumbs jumping between Shift and Sym for common bigrams such as '->', '<=' and '>='. They are replaced on the base layer with '#' and '@' by sending different keycodes when Shift is active. Those two symbols are not typically used in bigrams with other symbols, therefore they are the best candidates for moving to the base layer.
 
 Num+Sym Layer
 -------------
 
 ```
-   Top row tap:   `   @   #   $   %              ^   &   *   (   )
+   Top row tap:   !   `   ~   $   %              ^   &   *   (   )
   Home row tap:   1   2   3   4   5              6   7   8   9   0
-Bottom row tap:   [   {   }   ]   |              +   =   <   >   \
+Bottom row tap:   [   {   }   ]   \              +   =   <   >   |
 Bottom row hold: Ctl Gui Alt AGr                        Alt Gui Ctl
      Thumb tap:                  ___ ___     "   -
      Thumb hold:                            C+M AGr
 ```
 
-This layer works without the Shift key. Numbers are on the home row. The corresponding shifted number symbols are in the upper row (except '!', which is replacing '>' on the base layer).
+This layer works without the Shift key. Numbers are on the home row. The corresponding shifted number symbols are in the upper row (except '#' and '@', which are replacing '<' and '>' on the base layer).
 
-'<' and '>' keep their normal positions, so the only thing that changes is the "Shift" key used to activate them. Backslash takes the place of Slash. Plus and Equals take the remaining right-hand bottom-row keys.
+'<' and '>' keep their normal positions, so the only thing that changes is the "Shift" key used to activate them. Pipe takes the place of Slash. Plus and Equals take the remaining right-hand bottom-row keys. This puts most of the common math and logical operators on the right hand.
 
-The left bottom row has brackets, curly braces and Pipe. The nested arrangement of the brackets around the curly braces makes the "[]" bigram easier to type than having the closed bracket on the ring finger.
+The left bottom row has brackets, curly braces and Backslash. The nested arrangement of the brackets around the curly braces makes the "[]" bigram easier to type than having the closed bracket on the ring finger.
 
 The right thumb types double quotes and '-'. Since '-' is often surrounded by Space, it uses the same key as Space. That way the right thumb doesn't need to jump when typing such sequences. A second AltGr mod-tap key is added in the left bottom row to allow modifying the two symbols on the right thumb.
 

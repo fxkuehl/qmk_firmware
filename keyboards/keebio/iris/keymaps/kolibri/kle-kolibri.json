@@ -17,7 +17,7 @@
         2
       ]
     },
-    "\n\n#\n\n\n\nF\n\n\n\nF3",
+    "\n\n~\n\n\n\nF\n\n\n\nF3",
     {
       "x": 6,
       "fa": [
@@ -50,7 +50,7 @@
         2
       ]
     },
-    "\n\n@\n\n\n\nW\n\n\n\nF2",
+    "\n\n`\n\n\n\nW\n\n\n\nF2",
     {
       "x": 1
     },
@@ -101,7 +101,7 @@
         2
       ]
     },
-    "\n\n`\n\n\n\nQ\n\n\n\nF1",
+    "\n\n!\n\n\n\nQ\n\n\n\nF1",
     {
       "x": 10,
       "fa": [
@@ -238,7 +238,7 @@
     {
       "x": 6
     },
-    "~\n,\n<\n\nAlt\n\n\n\n\n\nF10"
+    "#\n,\n<\n\nAlt\n\n\n\n\n\nF10"
   ],
   [
     {
@@ -261,7 +261,7 @@
       "x": 1,
       "a": 0
     },
-    "!\n.\n>\n\nRGui\n\n\n\n\n\nF11"
+    "@\n.\n>\n\nRGui\n\n\n\n\n\nF11"
   ],
   [
     {
@@ -278,7 +278,7 @@
         5
       ]
     },
-    "\n\n|\n\n\n\nB\n\n\n\n<i class='kb kb-Hamburger-Menu'></i>",
+    "\n\n\\\n\n\n\nB\n\n\n\n<i class='kb kb-Hamburger-Menu'></i>",
     {
       "x": 2
     },
@@ -306,7 +306,7 @@
     {
       "x": 10
     },
-    "?\n/\n\\\n\nRCtl\n\n\n\n\n\nF12"
+    "?\n/\n|\n\nRCtl\n\n\n\n\n\nF12"
   ],
   [
     {
@@ -327,20 +327,13 @@
       "x": 4.5,
       "t": "#000000\n\n\n\n#1db63a\n\n\n\n\n\n#c13828",
       "fa": [
-        5,
-        5,
-        0,
-        0,
-        0,
-        0,
         5
       ]
     },
     "_\n\n\n\nSym\n\n\n\n\n\nFnLock",
     {
       "x": 1,
-      "t": "#000000\n\n#1db63a\n\n#c13828",
-      "f": 3
+      "t": "#000000\n\n#1db63a\n\n#c13828"
     },
     "\n\n\"\n\nFn\n\n<i class='kb kb-Line-Start-End'></i>"
   ]
