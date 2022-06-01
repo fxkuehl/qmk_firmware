@@ -166,9 +166,11 @@ Native support for other languages would require tweaks to the base and symbol l
 
 ## Per-Key Mod-Tap Configuration
 
-I configure mod-tap and layer-tap to prefer "tap" on the base layer finger keys and Space with `PERMISSIVE_HOLD` to allow fast key combos within the tapping term, but only if the modifier is held until after the tap-key is released.
+I configure mod-tap and layer-tap to prefer "tap" on finger keys and Space with `PERMISSIVE_HOLD`. This still allows fast modifier+key combos within the tapping term, but only if the modifier is held until after the other key is released.
 
-Other keys prefer "hold" with `HOLD_ON_OTHER_KEY`. This includes mod-tap keys on layers. I got random results pressing a layer-tap key with a mod-tap key on a layer when the hold-configuration of the two keys disagreed. Making all the mod-taps on the layers `HOLD_ON_OTHER_KEY` to agree with the layer-tap resulted in more predictable behaviour.
+Layer-taps and Shift on the thumbs prefer "hold" with `HOLD_ON_OTHER_KEY`.
+
+To make the tap-function of mod-taps on layers behave intuitively, a fix for [Bug17282](https://github.com/qmk/qmk_firmware/issues/17281) is needed.
 
 ## Mod-Tap with Shifted Symbols
 

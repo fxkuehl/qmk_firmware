@@ -185,7 +185,8 @@ static const uint16_t tap_preferred[] = {
 #ifdef MOUSEKEY_ENABLE
     MS_SPC,
 #endif
-    LC_Z, LG_X, LA_C, LA_COMM, RG_DOT, RC_SLSH, RA_SPC
+    LC_Z, LG_X, LA_C, LA_COMM, RG_DOT, RC_SLSH, RA_SPC,
+    LC_LBRC, LG_LCBR, LA_RCBR, RA_RBRC, LA_LT, RG_GT, RC_PIPE
 };
 
 static bool prefer_tap(uint16_t keycode) {
