@@ -268,6 +268,7 @@ macros:
     return true;
 }
 
+#ifdef RGBLIGHT_ENABLE
 // Lighting layers
 #define CAPSLOCK_COLOR HSV_CYAN
 const rgblight_segment_t PROGMEM my_capslock_layer[] = RGBLIGHT_LAYER_SEGMENTS(
@@ -320,3 +321,4 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     rgblight_set_layer_state(4, layer_state_cmp(state, L_CTL_MAC));
     return state;
 }
+#endif
