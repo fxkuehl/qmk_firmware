@@ -230,7 +230,7 @@ bool process_tapping(keyrecord_t *keyp) {
                  * https://github.com/tmk/tmk_keyboard/issues/60
                  */
                 else if (IS_RELEASED(event) && !waiting_buffer_typed(event)) {
-                    // Modifier should be retained till end of this tapping.
+                    // Modifier/Layer should be retained till end of this tapping.
                     action_t action = layer_switch_get_action(event.key);
                     switch (action.kind.id) {
                         case ACT_LMODS:
@@ -242,6 +242,15 @@ bool process_tapping(keyrecord_t *keyp) {
                         case ACT_RMODS_TAP:
                             if (action.key.mods && keyp->tap.count == 0) return false;
                             if (IS_MOD(action.key.code)) return false;
+                            break;
+                        case ACT_LAYER_TAP:
+                        case ACT_LAYER_TAP_EXT:
+                            if (action.layer_tap.code < OP_TAP_TOGGLE ||
+                                action.layer_tap.code == OP_ON_OFF ||
+                                action.layer_tap.code == OP_OFF_ON ||
+                                action.layer_tap.code == OP_SET_CLEAR) {
+                                return false;
+                            }
                             break;
                     }
                     // Release of key should be process immediately.
