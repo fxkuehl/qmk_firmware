@@ -103,9 +103,9 @@ enum custom_keycodes {
 // The Base layer gets duplicated to add a Base-Override layer that can be
 // layered on top of a locked Nav+Fn layer. The layer keys are parametrized.
 #define KEYMAP_BASE(K34, K35) LAYOUT_KOLIBRI( \
-        KC_Q,    KC_W,    KC_F,    KC_P,    KC_G,    KC_J,    KC_L,    KC_U,    KC_Y,    KC_SCLN, \
-        KC_A,    KC_R,    KC_S,    KC_T,    KC_D,    KC_H,    KC_N,    KC_E,    KC_I,    KC_O,    \
-        LC_Z,    LG_X,    LA_C,    KC_V,    KC_B,    KC_K,    KC_M,    LA_COMM, RG_DOT,  RC_SLSH, \
+        KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,    KC_J,    KC_L,    KC_U,    KC_Y,    KC_SCLN, \
+        KC_A,    KC_R,    KC_S,    KC_T,    KC_G,    KC_M,    KC_N,    KC_E,    KC_I,    KC_O,    \
+        LC_Z,    LG_X,    LA_C,    KC_D,    KC_V,    KC_K,    KC_H,    LA_COMM, RG_DOT,  RC_SLSH, \
                                    LS_QUOT, K34,     K35,     RA_SPC)
 
 // The Nav+Fn layer gets duplicated for a momentary and a locked version.
