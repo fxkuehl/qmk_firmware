@@ -2,64 +2,26 @@
 
 # Kolibri
 
-Kolobri is a keymap for small ergonomic/split keyboards with 3x5 keys and 2 thumb keys per hand. It is inspired by the elegance and conceptual clarity of Miryoku by Manna Harbour, but is designed from first principles with its own design choices and trade-offs.
-
-It is designed to be fully functional, comfortable to use, easy to learn and well suited for fast typing and programming. Major highlights are:
+Kolobri is a keymap for small ergonomic/split keyboards with 3x5 keys and 2 thumb keys per hand. It is designed to be fully functional, comfortable and intuitive to use, easy to learn and well suited for fast typing and programming. Major highlights are:
 
 * Shift, AltGr and layer keys on thumbs
-* Space, Tab, '_' and Apostrophe on thumbs
 * Bottom-row mod-taps for remaining modifiers
+* Space, Tab, Underscore and Apostrophe on thumbs
 * Per-key mod-tap configuration to favour "tap" on fingers and Space, "hold" on other thumb keys
-* Non-AltGr letters, symbols and numbers accessible with at most one modifier (either Shift or Symbol layer key)
+* Non-AltGr letters, symbols and numbers accessible with at most one modifier (either Shift or Sym layer key)
 * Most frequent keys on the home row: numbers, arrows, editing, Esc
-* Function layer can be locked
+* Fn layer can be locked
 * Options for left or right-handed thumb clusters and Function layers
 
-## About the Name
-
-Kolibri was the brand of the first typewriter I ever used as a kid, even before I had a computer. It was an elegant and well-built mechanical typewriter with a low profile, that came in its own faux-leather carrying case for luggability. You can read more about it on [typewriterreview.com](https://typewriterreview.com/2015/11/19/groma-kolibri/). Kolibri is also the German word for hummingbird. That makes it a fitting name for a keymap designed for small keyboards.
-
-# Motivation and Concepts
-
-The goal is to design a keyboard layout for small ergonomic/split keyboards that is comfortable, fully functional, suitable for programming, supports AltGr for international layouts, enables fast typing, and is easy to remember and learn.
-
-The 3x5 form factor with 3 thumb keys per hand is favoured by many for ergonomics, with all keys within easy reach of their fingers and thumbs. It turns out that a fully functional keyboard is possible even with only 2 thumb keys. A layout that fits that size can be expanded to fit almost any keyboard.
-
-For full functionality and comfort, all combinations of modifiers (Shift, Ctrl, Alt, Gui) plus any key should be possible to type without contorting the hands. The thumbs can only hold two modifiers at the same time. When one thumb is holding down a layer switching key, only one additional thumb-modifier is possible. Therefore most modifiers have to be assigned to fingers, with no more than one modifier per finger. The most common way to do that on a 3x5 layout, without preventing fast typing, is with mod-tap, where the same key has two different functions when it is held or tapped. Modifier keys must be duplicated on both hands to avoid contortions and to make modifying any key possible.
-
-My experiments with mod-taps on the home row were not encouraging. Especially with Shift as a mod-tap on a home-row key, there is frequent ambiguity between mod+tap or tap+tap that can hurt typing flow. Moving mod-taps to less frequently used bottom-row keys helps. Moving Shift to a thumb key further makes it possible to configure mod-tap per-key to unambiguously favour "tap" on fingers and Space, and "hold" on other thumb keys, including Shift and layer keys.
-
-Shift and AltGr are conceptually layer switching keys. Placing them both on thumb keys along with actual layer switching keys emphasizes this idea while minimizing the use of problematic mod-tap keys in the main typing area.
-
-# Design Choices and Constraints
-
-* 3x5 with 2 thumb keys per hand
-* Shift, AltGr and layer keys on the thumbs
-* Bottom-row mods for Ctrl, Gui, Alt
-* Space and Tab on thumbs on the base layer
-* Only one Space and one Shift key
-* Use home row for most frequent keys on layers: editing, navigation, numbers
-* Esc on the home row for use in Vim
-
-With Shift and AltGr on thumb keys, there are not enough thumb keys left for many Miryoku-style one-handed layers. Therefore this keymap uses fewer layers, which span both hands. That means, mod-tap modifiers are needed on both hands on all layers to allow all modifier+key combinations.
-
-It also means that thumb+finger key on the same hand is a common occurrence with this keymap with all Shift, AltGr and layer keys.
-
-Shift and AltGr must be on opposite thumbs to allow them to be combined. Space and Tab on the base layer must be modifiable with Shift.
-
-Right-handed users would place Shift on the left thumb so it can be used as a modifier with the mouse. Left-handed users with a left-hand mouse would place Shift on the right thumb. Consequently, Space and Tab will be on the thumb of the other (the dominant) hand. The layer descriptions below assume right-handedness. However, a version with flipped thumb-cluster is available for left-handed users.
-
-Layers can only use one of Shift or AltGr, but not both, because one thumb is already holding the layer switching key. The Number+Symbol layer can be designed to work without Shift, so it can use AltGr. This has the added benefit that all symbols that don't need AltGr, are reachable with a single modifier, either Shift or the layer key.
-
-Navigation+Function and (optional) Mouse layers need Shift (e.g. for highlighting text) but don't need AltGr.
-
-Mod-tap keys require two presses in quick succession to enable key-repeat. Therefore keys that are frequently used with key-repeat, such as arrow keys, should not be placed on bottom-row modifier keys.
+_[Groma Kolibri](https://typewriterreview.com/2015/11/19/groma-kolibri/) was the brand of my father's mechanical typewriter, the first I ever learned typing on as a kid. Kolibri is also the German word for hummingbird. Those two associations make it a fitting name for a small keyboard layout._
 
 # Layer Design
 
-The basic keyboard functionality is on three layers: Base (e.g. Colemak or QWERTY), num+sym, nav+fn. A fourth layer adds keyboard control (backlight, reset, etc.), media keys and macros.
+The basic keyboard functionality is on three layers: Base (e.g. Colemak or QWERTY), num+sym, nav+fn. A fourth ctrl+macro layer adds keyboard control (backlight, reset, etc.), media keys and macros. It is activated by holding both layer keys.
 
-Combining the two layer switching keys can reach the ctrl+macro layer. An optional mouse layer can be enabled via the locked nav+fn layer (see below).
+The nav+fn layer can be locked. In this mode the nav+fn layer key temporarily activates a base-layer overlay to allow inserting a few characters without unlocking nav+fn. The num+sym layer can also be activated on top of the locked nav+fn layer.
+
+An optional mouse layer can be enabled via the locked nav+fn layer. With more thumb keys per hand it could have a dedicated layer key on the base layer.
 
 Ctrl, Gui and Alt modifiers are consistent across all layers, in the outer columns of the bottom row.
 
@@ -74,16 +36,13 @@ Bottom row hold: Ctl Gui Alt                            Alt Gui Ctl
      Thumb hold:                Shft Sym    Fn AltGr
 ```
 
-For right-handed users, Shift is on the left, AltGr on the right. This choice dictates much of the rest of the thumb cluster layout. It means, the left thumb activates the num+fn layer that needs AltGr, and the right thumb activates the nav+fn layer that needs Shift. Space and Tab are on the right thumb and can be combined with Shift. Shift and Space, the most common thumb keys, are on the home positions of the thumbs.
+Other than the bottom-row mod-taps, the 3x5 finger keys are mostly standard Colemak or QWERTY, with two exceptions: The shifted symbols of ',' and '.' (normally '<' and '>') are moved to the num+sym layer to avoid the thumb jumping between Shift and Sym for common bigrams such as '->', '<=' and '>='. They are replaced on the base layer with '#' and '@', which are not typically used in bigrams with other symbols.
 
-Holding Space is AltGr. Since AltGr is less frequently used, it doesn't hurt that this key prefers the "tap" action. Tab is the "tap" action on the Fn layer key.
+For right-handed users, Shift is on the left thumb, AltGr on the right. This choice dictates much of the rest of the thumb cluster layout. The left thumb activates the num+fn layer that needs AltGr, and the right thumb activates the nav+fn layer that needs Shift. Space and Tab are on the right thumb and can be combined with Shift. Shift and Space, are on the home positions of the thumbs.
 
-Two symbols do not fit in the num+sym layer and need to move to the left thumb on the base layer. Apostrophe and '\_' are a convenient choice for typing and programming respectively. Apostrophe is placed on the Shift key to avoid the thumb jumping when typing "I'm". '\_' is on the num+sym layer key, which forces the thumb to jump when typing "UPPER_CASE_MACRO" names and avoids accidentally activating a tap+hold of '\_' instead of holding the layer key.
+Two symbols do not fit in the num+sym layer and need to move to the left thumb on the base layer. Apostrophe and Underscore are convenient choices for typing and programming respectively. Apostrophe is placed on the Shift key to avoid the thumb jumping when typing "I'm". Underscore is on the num+sym layer key, which forces the thumb to jump when typing "UPPER_CASE_MACRO" names and avoids accidentally activating a tap+hold of Underscore instead of holding Shift.
 
-The shifted symbols of ',' and '.' are normally '<' and '>'. They are moved to the num+sym layer to avoid the thumbs jumping between Shift and Sym for common bigrams such as '->', '<=' and '>='. They are replaced on the base layer with '#' and '@' by sending different keycodes when Shift is active. Those two symbols are not typically used in bigrams with other symbols, therefore they are the best candidates for moving to the base layer.
-
-Num+Sym Layer
--------------
+## Num+Sym Layer
 
 ```
    Top row tap:   !   `   ~   $   %              ^   &   *   (   )
@@ -94,11 +53,11 @@ Bottom row hold: Ctl Gui Alt AGr                        Alt Gui Ctl
      Thumb hold:                            C+M AGr
 ```
 
-This layer works without the Shift key. Numbers are on the home row. The corresponding shifted number symbols are in the upper row (except '#' and '@', which are replacing '<' and '>' on the base layer).
+This layer works without the Shift key. Numbers are on the home row. The corresponding shifted number symbols are in the upper row (except '#' and '@', which are replacing '<' and '>' on the base layer). This should be intuitive for users of TKL keyboards.
 
-'<' and '>' keep their normal positions, so the only thing that changes is the "Shift" key used to activate them. Pipe takes the place of Slash. Plus and Equals take the remaining right-hand bottom-row keys. This puts most of the common math and logical operators on the right hand.
+'<' and '>' keep their normal positions, so the only thing that changes is the "Shift" key used to activate them. '|' takes the place of '/'. '+' and '=' take the remaining right-hand bottom-row keys, which puts most of the common math and logical operators on the right hand.
 
-The left bottom row has brackets, curly braces and Backslash. The nested arrangement of the brackets around the curly braces makes the "[]" bigram easier to type than having the closed bracket on the ring finger.
+The left bottom row has brackets, curly braces and '\'. The nested arrangement of the brackets around the curly braces makes the "[]" bigram easier to type than having the closed bracket on the ring finger.
 
 The right thumb types double quotes and '-'. Since '-' is often surrounded by Space, it uses the same key as Space. That way the right thumb doesn't need to jump when typing such sequences. A second AltGr mod-tap key is added in the left bottom row to allow modifying the two symbols on the right thumb.
 
@@ -111,18 +70,18 @@ Bottom row tap:   F5  F6  F7  F8 Menu          PgDn  F9 F10 F11 F12
 Bottom row hold: Ctl Gui Alt                            Alt Gui Ctl
      Thumb tap:                 Caps FnLk   ___ ___
      Thumb hold:                Shft C+M
-     Thumb hold with FnLk:           Sym        Mouse
+     Thumb hold with FnLk:           Sym   Base Mouse
 ```
 
 The nav+fn layer has an inverted-T arrow key cluster in the home position of the right hand. Home and End keys are left and right of the Up key. PageUp/Down are on the inner index-finger column, where there are no mod-taps affecting key-repeat. Like on a normal keyboard, the arrow keys can be used one-handed.
 
 The left home row has Esc, Insert, Backspace, Delete, Enter, with Backspace and Delete on the strongest fingers. Enter is a little harder to reach on the inner column to avoid hitting it accidentally.
 
-The F-keys are arranged in groups of four: F1-F4 in top-left, F5-F8 in bottom-left, F9-F12 in bottom-right. The remaing spots are filled up with PrintScreen, ScrollLock, and media volume control.
+The F-keys are arranged in groups of four: F1-F4 in top-left, F5-F8 in bottom-left, F9-F12 in bottom-right. The remaining spots are filled up with Menu, PrintScreen, ScrollLock, and media volume control.
 
 Tapping the Shift key on this layer toggles CapsLock.
 
-The Nav+Fn layer can be locked with the FnLk key. Tapping the same key again unlocks the layer. FnLk can reduce strain and free up the right thumbs to type Space and Tab while editing or fixing indentation. The locked Nav+Fn layer is below the Num+Sym layer, so the Sym key still works on this layer. Holding the Fn key while the Nav+Fn layer is locked allows typing text without unlocking Nav+Fn. This is analogous to using Shift while CapsLock is enabled.
+The Nav+Fn layer can be locked with the FnLk key. Tapping the same key again unlocks the layer. FnLk can reduce strain and free up the right thumb to type Space and Tab while editing or fixing indentation. The locked Nav+Fn layer is below the Num+Sym layer in the layer stack, so the Sym key still works on this layer. Holding the Fn key while the Nav+Fn layer is locked allows typing text without unlocking Nav+Fn. This is analogous to using Shift while CapsLock is enabled.
 
 The AltGr function is replaced by a Mouse layer key if mouse keys are enabled.
 
@@ -135,7 +94,7 @@ Bottom row tap:   F5  F6  F7  F8 Menu          Vol-  F9 F10 F11 F12
 Bottom row hold: Ctl Gui Alt                            Alt Gui Ctl
      Thumb tap:                 Caps FnLk   ___ ___
      Thumb hold:                Shft C+M
-     Thumb hold with FnLk:           Sym        Mouse
+     Thumb hold with FnLk:           Sym   Base Mouse
 ```
 
 An alternative navigation layer puts all the arrow keys in the home row, and paging, home and end keys in the upper row. This may have ergonomic benefits but requires more changes to muscle memory for anyone not used to Vi-style arrow keys.
@@ -144,7 +103,7 @@ Arrow keys on the right hand enable one-handed navigation or lazy browsing with 
 
 ## Ctrl+Macro Layer
 
-I use this layer for RGB underglow control, QMK Reset and Debug functions, as well as a few macros of frequently typed text. It would also have space for many more media keys I never use.
+This layer can control RGB underglow, QMK Reset and Debug functions as well as dynamic tapping term. It also has space for more media keys and personalized macros.
 
 TODO: Formalize definition and reserve space for user-defined macros
 
@@ -154,19 +113,56 @@ The right hand is used for mouse movement (inverted-T cluster) and left-right sc
 
 The thumb keys have Shift and one key to control mouse acceleration.
 
-# Support for other layouts and languages (TODO)
+## Support for other layouts and languages (TODO)
 
-Kolibri works best for US-English QWERTY and Colemak layouts where the OS keymap is set to US-English or an International layout with extra symbols on an AltGr layer.
+Kolibri works best for US-English QWERTY and Colemak layouts where the OS keymap is set to US-English or a derived International layout with extra symbols on an AltGr layer.
 
 Using Dvorak would require small changes to some symbol key positions since quotes would end up on the left pinky instead of thumb keys. Or Quotes could keep their Kolibri positions on the thumb keys and the left pinky gets ';:' instead.
 
 Native support for other languages would require tweaks to the base and symbol layers. ISO keyboard layouts have one more key. To fit that, one key would need to move to the Nav+Fn layer.
 
+# Motivation and Concepts
+
+A popular layout for 3x5 split keyboards is [Miryoku](https://github.com/manna-harbour/miryoku). But its use of home-row mods is not for everyone. Especially Shift as mod-tap on a home-row key leads to frequent ambiguity between mod+tap or tap-tap that can hurt typing flow.
+
+Kolibri is designed to be a fully functional alternative that is comfortable and intuitive to use without disrupting the flow of typing or coding. It aims to be easy to remember and learn for anyone coming from a TKL or similar keyboard without a num-pad. Requiring only two thumb keys per hand makes it compatible with a wider range of keyboards out of the box.
+
+For full functionality and comfort, all modifier+key combinations must be possible to type without reaching or straining. The thumbs can only hold two modifiers or layer keys at the same time. Therefore most modifiers have to be assigned to fingers, with no more than one modifier per finger. On a 3x5 layout this requires dual-function keys. Modifier keys must be duplicated on both hands to avoid contortions and to make modifying any key possible.
+
+Shift and AltGr are conceptually layer switching keys, except they are handled by the host rather than the keyboard firmware. Placing them on thumb keys along with firmware layer switching keys feels intuitive, while minimizing the use of problematic mod-tap or layer-tap keys in the 3x5 typing area. Moving remaining mod-taps to less frequently used bottom-row keys further reduces the impact on typing flow. Per-key mod-tap configuration can unambiguously favour "tap" on fingers and Space, and "hold" on Shift and layer thumb keys.
+
+## Design Choices and Constraints
+
+* 3x5 with 2 thumb keys per hand
+* Shift, AltGr and layer keys on the thumbs
+* Bottom-row mods for Ctrl, Gui, Alt
+* Space and Tab on thumbs on the base layer
+* Only one Space and one Shift key
+* Use home row for most frequent keys on layers: editing, navigation, numbers
+* Esc on the home row for use in Vim
+
+With Shift and AltGr on thumbs, the remaining thumb keys are are too few for many Miryoku-style one-handed layers. Therefore this keymap uses fewer layers, which span both hands. Consequently mod-tap modifiers are needed on both hands on all layers to allow all modifier+key combinations, and combinations of thumb modifier/layer with same-hand finger keys are common by design.
+
+Shift and AltGr must be on opposite thumbs to allow Shift+AltGr combinations. Right-handed users need Shift on the left thumb so it can be used as a modifier with the mouse. Space and Tab must be on the right thumb to allow combinations with Shift. The layer descriptions assume right-handedness. However, a version with flipped thumb-cluster is available for left-handed users.
+
+Layers can use either Shift or AltGr, but not both, because one thumb is already holding the layer key. The num+sym layer is designed to work without Shift, so it can use AltGr. This also avoids three-key chords for all the common symbols. Nav+fn and (optional) Mouse layers need Shift (e.g. for highlighting text) but don't need AltGr.
+
+Mod-tap keys require two presses in quick succession to enable key-repeat. Therefore keys that are frequently used with key-repeat, such as arrow keys, will not be placed on bottom-row modifier keys.
+
+All four thumb keys are dual-function keys. With 3 thumb keys per hand, Space and Shift could be made single-function keys. The choice of "tap" functions of the base layer thumb keys is driven both by utility on the base layer and space-constraints on the num+sym layer:
+
+* Space (obvious)
+* Tab (Tab-completion, Alt+Tab, switching between UI elements, indentation)
+* Underscore (snake_case function and variable names when programming)
+* Apostrophe (I'm sure this doesn't need an explanation. It's obvious, isn't it?)
+
+Enter is deliberately not on a thumb key to avoid pressing it accidentally. Backspace and Delete are quicker and more comfortable to hit repeatedly with one of the strong fingers on the nav+fn layer.
+
 # QMK hacks
 
 ## Per-Key Mod-Tap Configuration
 
-I configure mod-tap and layer-tap to prefer "tap" on finger keys and Space with `PERMISSIVE_HOLD`. This still allows fast modifier+key combos within the tapping term, but only if the modifier is held until after the other key is released.
+I configure mod-tap and layer-tap to prefer "tap" on finger keys and Space with `PERMISSIVE_HOLD`. This still allows fast modifier+key combos within the tapping term, but only if the modifier is held until after the other key is released. `IGNORE_MOD_TAP_INTERRUPT` is enabled to make mod-tap keys respect the `PERMISSIVE_HOLD` setting.
 
 Layer-taps and Shift on the thumbs prefer "hold" with `HOLD_ON_OTHER_KEY`.
 
@@ -174,17 +170,17 @@ To make the tap-function of mod-taps on layers behave intuitively, a fix for [Bu
 
 ## Mod-Tap with Shifted Symbols
 
-Mod-Tap only works with 8-bit keycodes. Extended keycodes that apply a modifier (e.g. Shift for upper case letters) don't work with it out of the box. The QMK documentation suggests a [workaround that intercepts `process_record_user` and sends 16 bit keycodes with `tap_code16`](https://docs.qmk.fm/#/mod_tap?id=intercepting-mod-taps). I modified this idea to use the proper `register_code16` and `unregister_code16` calls to fix that problem.
+Mod-Tap only works with 8-bit keycodes. Extended keycodes that apply a modifier (e.g. Shift for upper case letters) don't work with it out of the box. The QMK documentation suggests a [workaround that intercepts `process_record_user` and sends 16 bit keycodes with `tap_code16`](https://docs.qmk.fm/#/mod_tap?id=intercepting-mod-taps). I modified this idea to use the proper `register_code16` and `unregister_code16` calls to get tap+hold key-repeat.
 
 ## Moving '<' and '>' to the Num+Sym layer
 
-This is done with a small hack in `process_record_user` that sends different keycodes when `KC_COMM` or `KC_DOT` are pressed with Shift held.
+Replacing '<' and '>' on the base layer is done with a small hack in `process_record_user` that sends different keycodes when `KC_COMM` or `KC_DOT` are pressed with Shift held.
 
 ## Nav+Fn layer lock
 
-The locked layer is mostly a copy of the normal layer but with different thumb-key assignments. This allows overriding the locked Nav+Fn layer with Num+Sym or a base-override layer. And it keeps the key combination to get to the Ctl+Macro layer consistent in all cases.
+The locked layer is mostly a copy of the normal layer but with different thumb-key assignments. This allows overriding the locked Nav+Fn layer with Num+Sym or a base layer overlay. And it keeps the key combination to get to the Ctl+Macro layer consistent in all cases.
 
-I cannot simply use `TG(L_NAV_FN_LOCKED)` because that's a 16-bit key code that doesn't work with `MT` or `LT`. I hijacked an unused 8-bit keycode for this and process it myself in `process_record_user`.
+The FnLock key is also a layer-tap key for the Num+Sym layer. Therefore I cannot simply use `TG(L_NAV_FN_LOCKED)`, which is a 16-bit key code that doesn't work with `LT`. Instead I hijacked an unused 8-bit keycode for this key and process it myself in `process_record_user`.
 
 # LICENSE
 Copyright 2022 Felix Kuehling <felix.kuehling@gmail.com>
