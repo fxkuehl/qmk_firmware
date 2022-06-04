@@ -57,7 +57,7 @@ This layer works without the Shift key. Numbers are on the home row. The corresp
 
 '<' and '>' keep their normal positions, so the only thing that changes is the "Shift" key used to activate them. '|' takes the place of '/'. '+' and '=' take the remaining right-hand bottom-row keys, which puts most of the common math and logical operators on the right hand.
 
-The left bottom row has brackets, curly braces and '\'. The nested arrangement of the brackets around the curly braces makes the "[]" bigram easier to type than having the closed bracket on the ring finger.
+The left bottom row has brackets, curly braces and '\\'. The nested arrangement of the brackets around the curly braces makes the "[]" bigram easier to type than having the closed bracket on the ring finger.
 
 The right thumb types double quotes and '-'. Since '-' is often surrounded by Space, it uses the same key as Space. That way the right thumb doesn't need to jump when typing such sequences. A second AltGr mod-tap key is added in the left bottom row to allow modifying the two symbols on the right thumb.
 
