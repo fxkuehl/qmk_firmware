@@ -175,27 +175,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 #endif
 };
 
-// MTs on the base layer bottom row and Space prefer tap over hold. Everything
-// else prefers hold: LTs and MTs on the thumbs and MTs on the other layers.
-//
-// I suspect that QMK doesn't handle conflicting MT/LT per-key preferences
-// very well. So this rule ensures that LTs on the thumbs agree with MTs on
-// the fingers (on their layer).
-static const uint16_t tap_preferred[] = {
-#ifdef MOUSEKEY_ENABLE
-    MS_SPC,
-#endif
-    LC_Z, LG_X, LA_C, LA_COMM, RG_DOT, RC_SLSH, RA_SPC,
-    LC_LBRC, LG_LCBR, LA_RCBR, RA_RBRC, LA_LT, RG_GT, RC_PIPE
-};
-
+/* Prefer tap on all MTs except Shift. These are all the bottom-row mods and
+ * AltGr. Other thumb keys (Shift and layers) prefer hold.
+ */
 static bool prefer_tap(uint16_t keycode) {
-    int i;
-
-    for (i = 0; i < sizeof(tap_preferred)/sizeof(*tap_preferred); i++)
-        if (tap_preferred[i] == keycode)
-            return true;
-    return false;
+    return (keycode & 0xe000) == QK_MOD_TAP &&
+         (keycode & 0x0f00) != MOD_LSFT << 8;
 }
 bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
     return !prefer_tap(keycode);
