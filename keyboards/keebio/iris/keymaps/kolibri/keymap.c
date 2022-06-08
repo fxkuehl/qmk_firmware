@@ -205,21 +205,46 @@ bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    // Modify shifted '.' and ',' on the base layer to move '<' and '>' to the
-    // Num+Sym layer
-    if (get_mods() & MOD_MASK_SHIFT) {
-        uint16_t new_code;
+    /* Modify shifted '.' and ',' on the base layer to move '<' and '>' to the
+     * Num+Sym layer. Remember the modified code for releasing it later even
+     * if shift was released first.
+     */
+    static uint16_t comm_release = 0;
+    static uint16_t  dot_release = 0;
+
+    /* Only customize shifted keycodes on taps, not on holds. Sym layer
+     * doesn't use shift, so skip custom shift processing.
+     */
+    if (IS_LAYER_ON(L_NUM_SYM) || !record->tap.count)
+        goto macros;
+
+    if ((get_mods() & MOD_MASK_SHIFT) && record->event.pressed) {
+        uint16_t new_code = 0;
 
         switch (keycode & 0xff) {
-        case KC_COMM: new_code = KC_3; break; // '#'
-        case KC_DOT:  new_code = KC_2; break; // '@'
-        default: goto macros;
+        case KC_COMM: new_code = comm_release = (keycode & 0xff00) | KC_3; break; // '#'
+        case KC_DOT:  new_code =  dot_release = (keycode & 0xff00) | KC_2; break; // '@'
         }
-        if (record->event.pressed)
-            register_code(new_code);
-        else
-            unregister_code(new_code);
-        return false;
+        if (new_code) {
+            register_code16(new_code);
+            return false;
+        }
+    } else if (record->event.pressed) {
+        switch (keycode & 0xff) {
+        case KC_COMM: comm_release = 0; break;
+        case KC_DOT:   dot_release = 0; break;
+        }
+    } else { // Release event
+        uint16_t new_code = 0;
+
+        switch (keycode & 0xff) {
+        case KC_COMM: new_code = comm_release; break;
+        case KC_DOT:  new_code =  dot_release; break;
+        }
+        if (new_code) {
+            unregister_code16(new_code);
+            return false;
+        }
     }
 
 macros:
