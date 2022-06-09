@@ -81,9 +81,9 @@ The F-keys are arranged in groups of four: F1-F4 in top-left, F5-F8 in bottom-le
 
 Tapping the Shift key on this layer toggles CapsLock.
 
-The Nav+Fn layer can be locked with the FnLk key. Tapping the same key again unlocks the layer. FnLk can reduce strain and free up the right thumb to type Space and Tab while editing or fixing indentation. The locked Nav+Fn layer is below the Num+Sym layer in the layer stack, so the Sym key still works on this layer. Holding the Fn key while the Nav+Fn layer is locked allows typing text without unlocking Nav+Fn. This is analogous to using Shift while CapsLock is enabled.
+The Nav+Fn layer can be locked to reduce strain and free up the right thumb to type Space and Tab while editing or fixing indentation. The same key combination is used to lock and unlock the layer: hold Fn + tap FnLock. The locked Nav+Fn layer is below the Num+Sym layer in the layer stack, so the Sym key still works on this layer. Holding the Fn key while the Nav+Fn layer is locked allows typing text without unlocking Nav+Fn. This is analogous to using Shift while CapsLock is enabled to type lower-case letters.
 
-The AltGr function is replaced by a Mouse layer key if mouse keys are enabled.
+AltGr is replaced by a Mouse layer key if mouse keys are enabled.
 
 ## Alternative Nav+Fn Layers (TODO)
 

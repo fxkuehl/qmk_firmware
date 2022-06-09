@@ -73,7 +73,6 @@ enum custom_keycodes {
 #define RC_SLSH RCTL_T(KC_SLSH)
 #define LS_QUOT LSFT_T(KC_QUOT)
 #define SY_UNDS LT(L_NUM_SYM, KC_UNDS) // 16-bit
-#define CT_UNDS LT(L_CTL_MAC, KC_UNDS) // 16-bit
 #define FN_TAB  LT(L_NAV_FN, KC_TAB)
 #define RA_SPC  RALT_T(KC_SPC)
 
@@ -96,7 +95,6 @@ enum custom_keycodes {
 #define RG_F11  RGUI_T(KC_F11)
 #define RC_F12  RCTL_T(KC_F12)
 #define RS_CAPS RSFT_T(KC_CAPS)
-#define SY_FNLK LT(L_NUM_SYM, KC_FNLK)
 #define CT_FNLK LT(L_CTL_MAC, KC_FNLK)
 #define OV_TAB  LT(L_BASE_OVERRIDE, KC_TAB)
 
@@ -136,18 +134,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [L_BASE] = KEYMAP_BASE(SY_UNDS, FN_TAB),
 
     // Locked Nav+Fn layer sits below the Num+Sym layer:
-    // - Left key is Fn-unlock/Sym
-    // - Right key is Tab/Base-Override
+    // - Left key is Underscore/Sym passed through from base
+    // - Right key is Tab/Base-Overlay
     //
-    // Unlock disables the locked Nav+Fn layer. Base-Override temporarily
-    // restores a (slightly modified) base layer on top of it.
-    [L_NAV_FN_LOCKED] = KEYMAP_NAV_FN(SY_FNLK, OV_TAB),
+    // Base-Overlay temporarily restores a (slightly modified) base layer
+    [L_NAV_FN_LOCKED] = KEYMAP_NAV_FN(_______, OV_TAB),
 
-    // Base-Override layer that overlays the locked Nav+Fn layer:
-    // - Left key is Underscore/Ctl+Macro
-    //   (both layer keys together always lead to Ctl+Macro)
-    // - Right key is transparent
-    [L_BASE_OVERRIDE] = KEYMAP_BASE(CT_UNDS, _______),
+    // Base-Overlay over the locked Nav+Fn layer:
+    // - Left key is Fn-unlock/Ctl+Macro
+    // - Right key is transparent (held to enable this layer)
+    //
+    // Holding both layer keys always enables the Ctl+Macro layer.
+    // Hold right+tap left layer is the same key combo to Fn lock or unlock.
+    [L_BASE_OVERRIDE] = KEYMAP_BASE(CT_FNLK, _______),
 
     [L_NUM_SYM] = LAYOUT_KOLIBRI(
         KC_EXLM, KC_GRV,  KC_TILD, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN,
@@ -157,7 +156,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     // Momentary Nav+Fn layer:
     // - Left key is Fn-lock/Ctl+Macro
-    // - Right key is transparent
+    // - Right key is transparent (held to enable this layer)
     [L_NAV_FN] = KEYMAP_NAV_FN(CT_FNLK, _______),
 
     [L_CTL_MAC] = LAYOUT_KOLIBRI(
@@ -259,13 +258,11 @@ macros:
             }
         } else {
             switch (keycode) {
-            case CT_FNLK: // Nav+Fn-Lock
-            case SY_FNLK: // Nav+Fn-Unlock
+            case CT_FNLK: // Nav+Fn-Lock/Unlock
                 if (record->event.pressed)
                     layer_invert(L_NAV_FN_LOCKED);
                 return false; // doesn't send any keycode
-            case SY_UNDS:
-            case CT_UNDS: code16 = KC_UNDS; break;
+            case SY_UNDS: code16 = KC_UNDS; break;
             default: return true;
             }
         }
