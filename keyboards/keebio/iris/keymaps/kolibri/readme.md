@@ -28,9 +28,9 @@ Ctrl, Gui and Alt modifiers are consistent across all layers, in the outer colum
 ## Base Layer
 
 ```
-   Top row tap:   Q   W   F   P   G              J   L   U   Y   ;:
-  Home row tap:   A   R   S   T   D              H   N   E   I   O
-Bottom row tap:   Z   X   C   V   B              K   M   ,#  .@  /?
+   Top row tap:   Q   W   F   P   B              J   L   U   Y   ;:
+  Home row tap:   A   R   S   T   G              M   N   E   I   O
+Bottom row tap:   Z   X   C   D   V              K   H   ,#  .@  /?
 Bottom row hold: Ctl Gui Alt                            Alt Gui Ctl
      Thumb tap:                   '   _     Tab Spc
      Thumb hold:                Shft Sym    Fn AltGr
