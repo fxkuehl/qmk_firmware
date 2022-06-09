@@ -40,10 +40,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // Layer definitions
 enum layers {
     L_BASE,
-    L_NAV_FN_LOCKED,
+    L_FN_LOCKED,
     L_BASE_OVERRIDE,
-    L_NUM_SYM,
-    L_NAV_FN,
+    L_SYM,
+    L_FN,
     L_CTL_MAC,
 #ifdef MOUSEKEY_ENABLE
     L_MOUSE,
@@ -72,8 +72,8 @@ enum custom_keycodes {
 #define RG_DOT  RGUI_T(KC_DOT)
 #define RC_SLSH RCTL_T(KC_SLSH)
 #define LS_QUOT LSFT_T(KC_QUOT)
-#define SY_UNDS LT(L_NUM_SYM, KC_UNDS) // 16-bit
-#define FN_TAB  LT(L_NAV_FN, KC_TAB)
+#define SY_UNDS LT(L_SYM, KC_UNDS) // 16-bit
+#define FN_TAB  LT(L_FN, KC_TAB)
 #define RA_SPC  RALT_T(KC_SPC)
 
 // Num+Sym layer
@@ -117,13 +117,13 @@ enum custom_keycodes {
 #endif
 
 #ifdef KOLIBRI_NAV_ON_RIGHT
-#   define KEYMAP_NAV_FN(K34, K35) LAYOUT_KOLIBRI( \
+#   define KEYMAP_FN(K34, K35) LAYOUT_KOLIBRI( \
         KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_PSCR, KC_SLCK, KC_HOME, KC_UP,   KC_END,  KC_VOLU, \
         KC_ESC,  KC_INS,  KC_BSPC, KC_DEL,  KC_ENT,  KC_PGUP, KC_LEFT, KC_DOWN, KC_RGHT, KC_VOLD, \
         LC_F5,   LG_F6,   LA_F7,   KC_F8,   KC_APP,  KC_PGDN, KC_F9,   LA_F10,  RG_F11,  RC_F12,  \
                                    RS_CAPS, K34,     K35,     MS_SPC)
 #else
-#   define KEYMAP_NAV_FN(K34, K35) LAYOUT_KOLIBRI( \
+#   define KEYMAP_FN(K34, K35) LAYOUT_KOLIBRI( \
         KC_VOLU, KC_HOME, KC_UP,   KC_END,  KC_PSCR, KC_SLCK, KC_F1,   KC_F2,   KC_F3,   KC_F4,  \
         KC_VOLD, KC_LEFT, KC_DOWN, KC_RGHT, KC_PGUP, KC_ENT,  KC_BSPC, KC_DEL,  KC_INS,  KC_ESC, \
         LC_F5,   LG_F6,   LA_F7,   KC_F8,   KC_PGDN, KC_APP,  KC_F9,   LA_F10,  RG_F11,  RC_F12, \
@@ -138,7 +138,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // - Right key is Tab/Base-Overlay
     //
     // Base-Overlay temporarily restores a (slightly modified) base layer
-    [L_NAV_FN_LOCKED] = KEYMAP_NAV_FN(_______, OV_TAB),
+    [L_FN_LOCKED] = KEYMAP_FN(_______, OV_TAB),
 
     // Base-Overlay over the locked Nav+Fn layer:
     // - Left key is Fn-unlock/Ctl+Macro
@@ -148,7 +148,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // Hold right+tap left layer is the same key combo to Fn lock or unlock.
     [L_BASE_OVERRIDE] = KEYMAP_BASE(CT_FNLK, _______),
 
-    [L_NUM_SYM] = LAYOUT_KOLIBRI(
+    [L_SYM] = LAYOUT_KOLIBRI(
         KC_EXLM, KC_GRV,  KC_TILD, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN,
         KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,
         LC_LBRC, LG_LCBR, LA_RCBR, RA_RBRC, KC_BSLS, KC_PLUS, KC_EQL,  LA_LT,   RG_GT,   RC_PIPE,
@@ -157,7 +157,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // Momentary Nav+Fn layer:
     // - Left key is Fn-lock/Ctl+Macro
     // - Right key is transparent (held to enable this layer)
-    [L_NAV_FN] = KEYMAP_NAV_FN(CT_FNLK, _______),
+    [L_FN] = KEYMAP_FN(CT_FNLK, _______),
 
     [L_CTL_MAC] = LAYOUT_KOLIBRI(
         RESET,   _______, _______, _______, DEBUG,   KC_PAUS, DT_PRNT, DT_DOWN, DT_UP,   _______,
@@ -199,7 +199,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     /* Only customize shifted keycodes on taps, not on holds. Sym layer
      * doesn't use shift, so skip custom shift processing.
      */
-    if (IS_LAYER_ON(L_NUM_SYM) || !record->tap.count)
+    if (IS_LAYER_ON(L_SYM) || !record->tap.count)
         goto macros;
 
     if ((get_mods() & MOD_MASK_SHIFT) && record->event.pressed) {
@@ -246,7 +246,7 @@ macros:
     if (record->tap.count) { // Mod-tap with modified tap-action
         uint16_t code16;
 
-        if (IS_LAYER_ON(L_NUM_SYM)) {
+        if (IS_LAYER_ON(L_SYM)) {
             switch (keycode) {
             case CT_DQUO: code16 = KC_DQUO; break;
             case LG_LCBR: code16 = KC_LCBR; break;
@@ -260,7 +260,7 @@ macros:
             switch (keycode) {
             case CT_FNLK: // Nav+Fn-Lock/Unlock
                 if (record->event.pressed)
-                    layer_invert(L_NAV_FN_LOCKED);
+                    layer_invert(L_FN_LOCKED);
                 return false; // doesn't send any keycode
             case SY_UNDS: code16 = KC_UNDS; break;
             default: return true;
@@ -285,10 +285,10 @@ const rgblight_segment_t PROGMEM my_capslock_layer[] = RGBLIGHT_LAYER_SEGMENTS(
     {11, 1, CAPSLOCK_COLOR}  // Right hand, top left LED
 );
 
-#define NAVFLOCK_COLOR HSV_CYAN
+#define FNLOCK_COLOR HSV_CYAN
 const rgblight_segment_t PROGMEM my_navflock_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-    { 3, 1, NAVFLOCK_COLOR}, // Left hand, bottom left LED
-    { 8, 1, NAVFLOCK_COLOR}  // Right hand, bottom right LED
+    { 3, 1, FNLOCK_COLOR}, // Left hand, bottom left LED
+    { 8, 1, FNLOCK_COLOR}  // Right hand, bottom right LED
 );
 
 #define LAYER_COLOR HSV_CHARTREUSE
@@ -323,9 +323,9 @@ bool led_update_user(led_t led_state) {
 }
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-    rgblight_set_layer_state(1, layer_state_cmp(state, L_NAV_FN_LOCKED));
-    rgblight_set_layer_state(2, layer_state_cmp(state, L_NUM_SYM));
-    rgblight_set_layer_state(3, layer_state_cmp(state, L_NAV_FN));
+    rgblight_set_layer_state(1, layer_state_cmp(state, L_FN_LOCKED));
+    rgblight_set_layer_state(2, layer_state_cmp(state, L_SYM));
+    rgblight_set_layer_state(3, layer_state_cmp(state, L_FN));
     rgblight_set_layer_state(4, layer_state_cmp(state, L_CTL_MAC));
     return state;
 }
