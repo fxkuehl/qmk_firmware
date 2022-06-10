@@ -10,6 +10,7 @@ Kolobri is a keymap for small ergonomic/split keyboards with 3x5 keys and 2 thum
 * Per-key mod-tap configuration to favour "tap" on fingers and Space, "hold" on other thumb keys
 * Non-AltGr letters, symbols and numbers accessible with at most one modifier (either Shift or Sym layer key)
 * Most frequent keys on the home row: numbers, arrows, editing, Esc
+* One-handed use of arrow keys
 * Fn layer can be locked
 * Options for left or right-handed thumb clusters and Function layers
 
@@ -76,7 +77,7 @@ Esc Ins  ⌫   ⌦   ↲     PgUp  ←   ↓   →  Paus
 Ctl Gui Alt                     Alt Gui Ctl
            Caps FnLk    ___ ___
            Shft C+M
-FnLk:        '   _      Tab Spc
+FnLk:      Caps  _      Tab Spc
 FnLk:      Shft Sym    Base Mouse
 ```
 
@@ -103,7 +104,7 @@ Esc Ins  ⌫   ⌦   ↲     Calc  ←   ↓   ↑   →
 Ctl Gui Alt                     Alt Gui Ctl
            Caps FnLk    ___ ___
            Shft C+M
-FnLk:        '   _      Tab Spc
+FnLk:      Caps  _      Tab Spc
 FnLk:      Shft Sym    Base Mouse
 ```
 
@@ -175,7 +176,7 @@ Shift and AltGr are conceptually layer switching keys, except they are handled b
 
 With Shift and AltGr on thumbs, the remaining thumb keys are are too few for many Miryoku-style one-handed layers. Therefore this keymap uses fewer layers, which span both hands. Consequently mod-tap modifiers are needed on both hands on all layers to allow all modifier+key combinations, and combinations of thumb modifier/layer with same-hand finger keys are common by design.
 
-This design choice is applied to arrow keys, which are on the same hand as the Fn layer key, so they can be used with one hand for lazy browsing and navigation in documents.
+This design choice is prominently applied to arrow keys, which are on the same hand as the Fn layer key, so they can be used with one hand for lazy browsing and navigation in documents.
 
 Shift and AltGr must be on opposite thumbs to allow Shift+AltGr combinations. Right-handed users need Shift on the left thumb so it can be used as a modifier with the mouse. Space and Tab must be on the right thumb to allow combinations with Shift. The layer descriptions assume right-handedness. However, a version with flipped thumb-cluster is available for left-handed users.
 
