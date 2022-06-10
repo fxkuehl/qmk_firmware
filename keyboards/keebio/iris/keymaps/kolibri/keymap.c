@@ -118,14 +118,14 @@ enum custom_keycodes {
 
 #ifdef KOLIBRI_NAV_ON_RIGHT
 #   define KEYMAP_FN(K34, K35) LAYOUT_KOLIBRI( \
-        KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_PSCR, KC_SLCK, KC_HOME, KC_UP,   KC_END,  KC_VOLU, \
-        KC_ESC,  KC_INS,  KC_BSPC, KC_DEL,  KC_ENT,  KC_PGUP, KC_LEFT, KC_DOWN, KC_RGHT, KC_VOLD, \
+        KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_PSCR, KC_SLCK, KC_HOME, KC_UP,   KC_END,  KC_CALC, \
+        KC_ESC,  KC_INS,  KC_BSPC, KC_DEL,  KC_ENT,  KC_PGUP, KC_LEFT, KC_DOWN, KC_RGHT, KC_PAUS, \
         LC_F5,   LG_F6,   LA_F7,   KC_F8,   KC_APP,  KC_PGDN, KC_F9,   LA_F10,  RG_F11,  RC_F12,  \
                                    RS_CAPS, K34,     K35,     MS_SPC)
 #else
 #   define KEYMAP_FN(K34, K35) LAYOUT_KOLIBRI( \
-        KC_VOLU, KC_HOME, KC_UP,   KC_END,  KC_PSCR, KC_SLCK, KC_F1,   KC_F2,   KC_F3,   KC_F4,  \
-        KC_VOLD, KC_LEFT, KC_DOWN, KC_RGHT, KC_PGUP, KC_ENT,  KC_BSPC, KC_DEL,  KC_INS,  KC_ESC, \
+        KC_CALC, KC_HOME, KC_UP,   KC_END,  KC_PSCR, KC_SLCK, KC_F1,   KC_F2,   KC_F3,   KC_F4,  \
+        KC_PAUS, KC_LEFT, KC_DOWN, KC_RGHT, KC_PGUP, KC_ENT,  KC_BSPC, KC_DEL,  KC_INS,  KC_ESC, \
         LC_F5,   LG_F6,   LA_F7,   KC_F8,   KC_PGDN, KC_APP,  KC_F9,   LA_F10,  RG_F11,  RC_F12, \
                                    RS_CAPS, K34,     K35,     MS_SPC)
 #endif
@@ -160,16 +160,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [L_FN] = KEYMAP_FN(CT_FNLK, _______),
 
     [L_CTL_MAC] = LAYOUT_KOLIBRI(
-        RESET,   _______, _______, _______, DEBUG,   KC_PAUS, DT_PRNT, DT_DOWN, DT_UP,   _______,
-        _______, _______, M_XARGS, M_EMAIL, _______, RGB_TOG, RGB_MOD, RGB_VAI, RGB_SAI, RGB_HUI,
-        _______, _______, _______, _______, _______, _______, RGB_RMOD,RGB_VAD, RGB_SAD, RGB_HUD,
+        RESET,   DT_PRNT, DT_DOWN, DT_UP,   DEBUG,   RGB_MOD, RGB_SPI, RGB_VAI, RGB_SAI, RGB_HUI,
+        _______, _______, M_XARGS, M_EMAIL, _______, RGB_TOG, KC_MPRV, KC_MPLY, KC_MNXT, KC_VOLU,
+        _______, _______, _______, _______, _______, KC_MYCM, KC_MSEL, KC_MSTP, KC_MUTE, KC_VOLD,
                                    _______, _______, _______, _______),
 
 #ifdef MOUSEKEY_ENABLE
     [L_MOUSE] = LAYOUT_KOLIBRI(
-        KC_BTN5, KC_BTN3, KC_WH_U, _______, _______, _______, KC_WH_L, KC_MS_U, KC_WH_R, _______,
+        KC_BTN5, KC_WH_L, KC_WH_U, KC_WH_R, _______, _______, _______, KC_MS_U, _______, _______,
         KC_BTN4, KC_BTN2, KC_WH_D, KC_BTN1, _______, _______, KC_MS_L, KC_MS_D, KC_MS_R, _______,
-        KC_LCTL, KC_LGUI, KC_LALT, _______, _______, _______, _______, KC_LALT, KC_RGUI, KC_RCTL,
+        KC_LCTL, KC_LGUI, KC_LALT, KC_BTN3, _______, _______, _______, KC_LALT, KC_RGUI, KC_RCTL,
                                    KC_LSFT, KC_ACL0, _______, _______)
 #endif
 };

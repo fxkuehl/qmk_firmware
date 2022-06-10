@@ -2,169 +2,331 @@
   [
     {
       "x": 2,
-      "t": "#000000\n\n#1db63a\n#c13828",
+      "t": "#000000\n\n\n#c13828\n\n\n\n\n#1db63a",
       "f": 5,
       "fa": [
+        0,
+        0,
+        0,
+        3,
+        0,
         0,
         0,
         0,
         3
       ]
     },
-    "\n\n~\nF3\n\n\nF",
+    "\n\n\nF3\n\n\nF\n\n~",
     {
-      "x": 6
+      "x": 6,
+      "fa": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0
+      ]
     },
-    "\n\n*\n&uarr;\n\n\nU"
+    "\n\n\n&uarr;\n\n\nU\n\n*"
   ],
   [
     {
       "y": -0.75,
-      "x": 1
+      "x": 1,
+      "fa": [
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        3
+      ]
     },
-    "\n\n`\nF2\n\n\nW",
+    "\n\n\nF2\n\n\nW\n\n`",
     {
       "x": 1
     },
-    "\n\n$\nF4\n\n\nP",
+    "\n\n\nF4\n\n\nP\n\n$",
     {
-      "x": 4
+      "x": 4,
+      "fa": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3
+      ]
     },
-    "\n\n&\n<i class='kb kb-Arrows-Top-3'></i>\n\n\nL",
+    "\n\n\n<i class='kb kb-Line-Start'></i>\n\n\nL\n\n&",
     {
       "x": 1
     },
-    "\n\n(\n<i class='kb kb-Arrows-Bottom-3'></i>\n\n\nY"
+    "\n\n\n<i class='kb kb-Line-End'></i>\n\n\nY\n\n("
   ],
   [
     {
       "y": -0.9,
       "x": 4
     },
-    "\n\n%\n<i class='kb kb-Unicode-PrintScreen-1'></i>\n\n\nB",
+    "\n\n\n<i class='kb kb-Unicode-PrintScreen-1'></i>\n\n\nB\n\n%",
     {
       "x": 2
     },
-    "\n\n^\n<i class='kb kb-Unicode-Scroll-1'></i>\n\n\nJ"
+    "\n\n\n<i class='kb kb-Unicode-Scroll-1'></i>\n\n\nJ\n\n^"
   ],
   [
     {
-      "y": -0.6000000000000001
+      "y": -0.6000000000000001,
+      "fa": [
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        3
+      ]
     },
-    "\n\n!\nF1\n\n\nQ",
+    "\n\n\nF1\n\n\nQ\n\n!",
     {
-      "x": 10
+      "x": 10,
+      "fa": [
+        3,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3
+      ]
     },
-    ":\n;\n)\n<i class='kb kb-Multimedia-Volume-Up-1'></i>"
+    ":\n;\n\n<i class='fa fa-calculator'></i>\n\n\n\n\n)"
   ],
   [
     {
       "y": -0.75,
       "x": 2
     },
-    "\n\n3\n<i class='kb kb-Unicode-BackSpace-DeleteLeft-Big'></i>\n\n\nS",
+    "\n\n\n<i class='kb kb-Unicode-BackSpace-DeleteLeft-Big'></i>\n\n\nS\n\n3",
     {
-      "x": 6
+      "x": 6,
+      "t": "#000000\n\n#4367fa\n#c13828\n\n\n\n\n#1db63a",
+      "fa": [
+        3,
+        3,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3
+      ]
     },
-    "\n\n8\n&darr;\n\n\nE"
+    "\n\n<i class='kb kb-Multimedia-Play-Pause'></i>\n&darr;\n\n\nE\n\n8"
   ],
   [
     {
       "y": -0.75,
-      "x": 1
+      "x": 1,
+      "t": "#000000\n\n\n#c13828\n\n\n\n\n#1db63a",
+      "fa": [
+        3,
+        3,
+        3,
+        3,
+        0,
+        0,
+        0,
+        0,
+        3
+      ]
     },
-    "\n\n2\nIns\n\n\nR",
+    "\n\n\nIns\n\n\nR\n\n2",
+    {
+      "x": 1,
+      "fa": [
+        3,
+        3,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3
+      ]
+    },
+    "\n\n\n<i class='kb kb-Unicode-DeleteRight-Big'></i>\n\n\nT\n\n4",
+    {
+      "x": 4,
+      "t": "#000000\n\n#4367fa\n#c13828\n\n\n\n\n#1db63a"
+    },
+    "\n\n<i class='kb kb-Multimedia-Rewind'></i>\n&larr;\n\n\nN\n\n7",
     {
       "x": 1
     },
-    "\n\n4\n<i class='kb kb-Unicode-DeleteRight-Big'></i>\n\n\nT",
-    {
-      "x": 4
-    },
-    "\n\n7\n&larr;\n\n\nN",
-    {
-      "x": 1
-    },
-    "\n\n9\n&rarr;\n\n\nI"
+    "\n\n<i class='kb kb-Multimedia-FastForwar'></i>\n&rarr;\n\n\nI\n\n9"
   ],
   [
     {
       "y": -0.8999999999999999,
-      "x": 4
+      "x": 4,
+      "t": "#000000\n\n\n#c13828\n\n\n\n\n#1db63a"
     },
-    "\n\n5\n<i class='kb kb-Return-2'></i>\n\n\nG",
+    "\n\n\n<i class='kb kb-Return-2'></i>\n\n\nG\n\n5",
     {
       "x": 2
     },
-    "\n\n6\n<i class='kb kb-Unicode-Page-Up-3'></i>\n\n\nM"
+    "\n\n\n<i class='kb kb-Unicode-Page-Up-1'></i>\n\n\nM\n\n6"
   ],
   [
     {
-      "y": -0.6000000000000001
+      "y": -0.6000000000000001,
+      "fa": [
+        3,
+        3,
+        3,
+        3,
+        0,
+        0,
+        0,
+        0,
+        3
+      ]
     },
-    "\n\n1\nEsc\n\n\nA",
+    "\n\n\nEsc\n\n\nA\n\n1",
     {
-      "x": 10
+      "x": 10,
+      "t": "#000000\n\n#4367fa\n#c13828\n\n\n\n\n#1db63a"
     },
-    "\n\n0\n<i class='kb kb-Multimedia-Volume-Down-1'></i>\n\n\nO"
+    "\n\n<i class='kb kb-Multimedia-Volume-Up-1'></i>\nPause\n\n\nO\n\n0"
   ],
   [
     {
       "y": -0.75,
       "x": 2,
+      "t": "#000000\n\n\n#c13828\n\n\n\n\n#1db63a",
       "a": 0
     },
-    "\n\n}\nF7\nAlt\n\nC",
+    "\n\n\nF7\nAlt\n\nC\n\n}",
     {
-      "x": 6
+      "x": 6,
+      "t": "#000000\n\n#4367fa\n#c13828\n\n\n\n\n#1db63a"
     },
-    "#\n,\n<\nF10\nAlt"
+    "#\n,\n<i class='kb kb-Multimedia-Stop'></i>\nF10\nAlt\n\n\n\n<"
   ],
   [
     {
       "y": -0.75,
-      "x": 1
+      "x": 1,
+      "t": "#000000\n\n\n#c13828\n\n\n\n\n#1db63a"
     },
-    "\n\n{\nF6\nLGui\n\nX",
+    "\n\n\nF6\nLGui\n\nX\n\n{",
     {
       "x": 1,
-      "t": "#000000\n\n#1db63a\n#c13828\n\n#1db63a"
+      "t": "#000000\n\n\n#c13828\n\n#1db63a\n\n\n#1db63a"
     },
-    "\n\n]\nF8\n\nAltGr\nD",
+    "\n\n\nF8\n\nAltGr\nD\n\n]",
     {
       "x": 4,
-      "t": "#000000\n\n#1db63a\n#c13828",
-      "a": 4
+      "t": "#000000\n\n#4367fa\n#c13828\n\n\n\n\n#1db63a",
+      "a": 4,
+      "fa": [
+        3,
+        3,
+        2,
+        3,
+        0,
+        0,
+        0,
+        0,
+        3
+      ]
     },
-    "\n\n=\nF9\n\n\nH",
+    "\n\n<i class='fa fa-music'></i>\nF9\n\n\nH\n\n=",
     {
       "x": 1,
       "a": 0
     },
-    "@\n.\n>\nF11\nRGui"
+    "@\n.\n<i class='kb kb-Multimedia-Mute-1'></i>\nF11\nRGui\n\n\n\n>"
   ],
   [
     {
       "y": -0.8999999999999999,
       "x": 4,
-      "a": 4
+      "t": "#000000\n\n\n#c13828\n\n\n\n\n#1db63a",
+      "a": 4,
+      "fa": [
+        3,
+        3,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3
+      ]
     },
-    "\n\n\\\n<i class='kb kb-Hamburger-Menu'></i>\n\n\nV",
+    "\n\n\n<i class='kb kb-Hamburger-Menu'></i>\n\n\nV\n\n\\",
     {
-      "x": 2
+      "x": 2,
+      "t": "#000000\n\n#4367fa\n#c13828\n\n\n\n\n#1db63a",
+      "fa": [
+        3,
+        3,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3
+      ]
     },
-    "\n\n+\n<i class='kb kb-Unicode-Page-Down-3'></i>\n\n\nK"
+    "\n\n<i class='fa fa-folder-o'></i>\n<i class='kb kb-Unicode-Page-Down-1'></i>\n\n\nK\n\n+"
   ],
   [
     {
       "y": -0.6000000000000001,
-      "a": 0
+      "t": "#000000\n\n\n#c13828\n\n\n\n\n#1db63a",
+      "a": 0,
+      "fa": [
+        3,
+        3,
+        3,
+        3,
+        0,
+        0,
+        0,
+        0,
+        3
+      ]
     },
-    "\n\n[\nF5\nLCtl\n\nZ",
+    "\n\n\nF5\nLCtl\n\nZ\n\n[",
     {
-      "x": 10
+      "x": 10,
+      "t": "#000000\n\n#4367fa\n#c13828\n\n\n\n\n#1db63a"
     },
-    "?\n/\n|\nF12\nRCtl"
+    "?\n/\n<i class='kb kb-Multimedia-Volume-Down-1'></i>\nF12\nRCtl\n\n\n\n|"
   ],
   [
     {
@@ -172,50 +334,48 @@
       "x": 3.5,
       "t": "#000000\n\n\n#c13828"
     },
-    "'\n\n\nCaps\nShift",
+    "\n\n\nCaps\nShift\n\n'",
     {
       "x": 3,
-      "t": "#000000\n\n#1db63a\n\n\n#ffff00",
+      "t": "#000000\n\n\n\n\n#ad3324\n\n\n#1db63a",
       "fa": [
-        0,
-        0,
-        0,
+        3,
+        3,
+        3,
         3,
         0,
         0,
         3,
         0,
-        0,
+        3,
         0,
         0
       ]
     },
-    "\n\n-\n\nAGr\nMs\nSpc"
+    "\n\n\n\nAGr\nMs\nSpc\n\n-"
   ],
   [
     {
       "y": -0.8999999999999999,
       "x": 4.5,
-      "t": "#000000\n\n\n#c13828\n#1db63a"
-    },
-    "_\n\n\nFnLk\nSym",
-    {
-      "x": 1,
-      "t": "#000000\n\n#1db63a\n\n#c13828",
+      "t": "#000000\n\n\n#c13828\n#1db63a\n#4367fa",
       "fa": [
-        0,
-        0,
-        0,
+        3,
+        3,
+        3,
         3,
         0,
         0,
         0,
         0,
-        0,
-        0,
-        0
+        3
       ]
     },
-    "\n\n\"\n\nFn\n\n<i class='kb kb-Line-Start-End'></i>"
+    "\n\n\nFnLk\nSym\nMM\n_",
+    {
+      "x": 1,
+      "t": "#000000\n\n\n\n#ad3324\n#4367fa\n\n\n#1db63a"
+    },
+    "\n\n\n\nFn\nMM\n<i class='kb kb-Line-Start-End'></i>\n\n\""
   ]
 ]
