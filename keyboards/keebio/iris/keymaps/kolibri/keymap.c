@@ -211,6 +211,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
         if (new_code) {
             register_code16(new_code);
+            clear_weak_mods();
             return false;
         }
     } else if (record->event.pressed) {
@@ -266,9 +267,10 @@ macros:
             default: return true;
             }
         }
-        if (record->event.pressed)
+        if (record->event.pressed) {
             register_code16(code16);
-        else
+            clear_weak_mods();
+	} else
             unregister_code16(code16);
 	return false;
     }
