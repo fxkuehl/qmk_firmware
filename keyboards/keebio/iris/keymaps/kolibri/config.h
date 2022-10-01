@@ -59,4 +59,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // Options
 #define KOLIBRI_ONE_HANDED_NAV
-
+#define KOLIBRI_NUMPAD

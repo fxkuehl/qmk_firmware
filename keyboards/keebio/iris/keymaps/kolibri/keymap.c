@@ -87,6 +87,11 @@ enum custom_keycodes {
 #define CT_DQUO LT(L_CTL_MAC, KC_DQUO) // 16-bit
 #define RA_MINS RALT_T(KC_MINS)
 
+// Numpad
+#define LA_2    LALT_T(KC_2)
+#define RG_3    RGUI_T(KC_3)
+#define RA_0    RALT_T(KC_0)
+
 // Nav+Fn layer
 #define LC_F5   LCTL_T(KC_F5)
 #define LG_F6   LGUI_T(KC_F6)
@@ -148,11 +153,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // Hold right+tap left layer is the same key combo to Fn lock or unlock.
     [L_BASE_OVERRIDE] = KEYMAP_BASE(CT_FNLK, _______),
 
+#ifdef KOLIBRI_NUMPAD
+    [L_SYM] = LAYOUT_KOLIBRI(
+        KC_BSLS, KC_LPRN, KC_RPRN, KC_DLR,  KC_PERC, KC_CIRC, KC_7,    KC_8,    KC_9,    KC_COLN,
+        KC_EXLM, KC_LT,   KC_EQL,  KC_GT,   KC_SCLN, KC_ASTR, KC_4,    KC_5,    KC_6,    KC_MINS,
+        LC_LBRC, LG_LCBR, LA_RCBR, RA_RBRC, KC_PIPE, KC_AMPR, KC_1,    LA_2,    RG_3,    RC_PLUS,
+                                   _______, _______, CT_DQUO, RA_0),
+#else
     [L_SYM] = LAYOUT_KOLIBRI(
         KC_EXLM, KC_LPRN, KC_RPRN, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_SCLN, KC_COLN,
         KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,
         LC_LBRC, LG_LCBR, LA_RCBR, RA_RBRC, KC_PIPE, KC_BSLS, KC_EQL,  LA_LT,   RG_GT,   RC_PLUS,
                                    _______, _______, CT_DQUO, RA_MINS),
+#endif
 
     // Momentary Nav+Fn layer:
     // - Left key is Fn-lock/Ctl+Macro
@@ -206,8 +219,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         uint16_t new_code = 0;
 
         switch (keycode & 0xff) {
-        case KC_COMM: new_code = comm_release = (keycode & 0xff00) | KC_3; break; // '#'
-        case KC_DOT:  new_code =  dot_release = (keycode & 0xff00) | KC_2; break; // '@'
+        case KC_COMM: new_code = comm_release = (keycode & 0xff00) | KC_2; break; // '@'
+        case KC_DOT:  new_code =  dot_release = (keycode & 0xff00) | KC_3; break; // '#'
         }
         if (new_code) {
             register_code16(new_code);
@@ -252,8 +265,10 @@ macros:
             case CT_DQUO: code16 = KC_DQUO; break;
             case LG_LCBR: code16 = KC_LCBR; break;
             case LA_RCBR: code16 = KC_RCBR; break;
+#ifndef KOLIBRI_NUMPAD
             case LA_LT:   code16 = KC_LT; break;
             case RG_GT:   code16 = KC_GT; break;
+#endif
             case RC_PLUS: code16 = KC_PLUS; break;
             default: return true;
             }
