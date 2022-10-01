@@ -83,7 +83,7 @@ enum custom_keycodes {
 #define RA_RBRC RALT_T(KC_RBRC)
 #define LA_LT   LALT_T(KC_LT)   // 16-bit
 #define RG_GT   RGUI_T(KC_GT)   // 16-bit
-#define RC_PIPE RCTL_T(KC_PIPE) // 16-bit
+#define RC_PLUS RCTL_T(KC_PLUS) // 16-bit
 #define CT_DQUO LT(L_CTL_MAC, KC_DQUO) // 16-bit
 #define RA_MINS RALT_T(KC_MINS)
 
@@ -101,7 +101,7 @@ enum custom_keycodes {
 // The Base layer gets duplicated to add a Base-Override layer that can be
 // layered on top of a locked Nav+Fn layer. The layer keys are parametrized.
 #define KEYMAP_BASE(K34, K35) LAYOUT_KOLIBRI( \
-        KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,    KC_J,    KC_L,    KC_U,    KC_Y,    KC_SCLN, \
+        KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,    KC_J,    KC_L,    KC_U,    KC_Y,    KC_GRV,  \
         KC_A,    KC_R,    KC_S,    KC_T,    KC_G,    KC_M,    KC_N,    KC_E,    KC_I,    KC_O,    \
         LC_Z,    LG_X,    LA_C,    KC_D,    KC_V,    KC_K,    KC_H,    LA_COMM, RG_DOT,  RC_SLSH, \
                                    LS_QUOT, K34,     K35,     RA_SPC)
@@ -149,9 +149,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [L_BASE_OVERRIDE] = KEYMAP_BASE(CT_FNLK, _______),
 
     [L_SYM] = LAYOUT_KOLIBRI(
-        KC_EXLM, KC_GRV,  KC_TILD, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN,
+        KC_EXLM, KC_LPRN, KC_RPRN, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_SCLN, KC_COLN,
         KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,
-        LC_LBRC, LG_LCBR, LA_RCBR, RA_RBRC, KC_BSLS, KC_PLUS, KC_EQL,  LA_LT,   RG_GT,   RC_PIPE,
+        LC_LBRC, LG_LCBR, LA_RCBR, RA_RBRC, KC_PIPE, KC_BSLS, KC_EQL,  LA_LT,   RG_GT,   RC_PLUS,
                                    _______, _______, CT_DQUO, RA_MINS),
 
     // Momentary Nav+Fn layer:
@@ -254,7 +254,7 @@ macros:
             case LA_RCBR: code16 = KC_RCBR; break;
             case LA_LT:   code16 = KC_LT; break;
             case RG_GT:   code16 = KC_GT; break;
-            case RC_PIPE: code16 = KC_PIPE; break;
+            case RC_PLUS: code16 = KC_PLUS; break;
             default: return true;
             }
         } else {
