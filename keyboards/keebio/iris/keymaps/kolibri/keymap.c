@@ -18,12 +18,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include QMK_KEYBOARD_H
 
 // Mirror the thumbs on left-handed layout
-#ifdef LAYOUT_KOLIBRI_LEFTY
-#   define LAYOUT_KOLIBRI(                                \
+#if defined(LAYOUT_KOLIBRI_LEFTY_34)
+#   define LAYOUT_KOLIBRI_34(                             \
         K00, K01, K02, K03, K04, K05, K06, K07, K08, K09, \
         K10, K11, K12, K13, K14, K15, K16, K17, K18, K19, \
         K20, K21, K22, K23, K24, K25, K26, K27, K28, K29, \
-                       K33, K34, K35, K36) LAYOUT_KOLIBRI_LEFTY( \
+                       K33, K34, K35, K36) LAYOUT_KOLIBRI_LEFTY_34( \
         K00,     K01,     K02,     K03,     K04,     K05,     K06,     K07,     K08,     K09, \
         K10,     K11,     K12,     K13,     K14,     K15,     K16,     K17,     K18,     K19, \
         K20,     K21,     K22,     K23,     K24,     K25,     K26,     K27,     K28,     K29, \
@@ -31,10 +31,37 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #   ifndef KOLIBRI_ONE_HANDED_NAV
 #       define KOLIBRE_NAV_ON_RIGHT
 #   endif
+#elif defined(LAYOUT_KOLIBRI_LEFTY_36)
+#   define LAYOUT_KOLIBRI_36(                             \
+        K00, K01, K02, K03, K04, K05, K06, K07, K08, K09, \
+        K10, K11, K12, K13, K14, K15, K16, K17, K18, K19, \
+        K20, K21, K22, K23, K24, K25, K26, K27, K28, K29, \
+                  K32, K33, K34, K35, K36, K37) LAYOUT_KOLIBRI_LEFTY_36( \
+        K00,     K01,     K02,     K03,     K04,     K05,     K06,     K07,     K08,     K09, \
+        K10,     K11,     K12,     K13,     K14,     K15,     K16,     K17,     K18,     K19, \
+        K20,     K21,     K22,     K23,     K24,     K25,     K26,     K27,     K28,     K29, \
+                          K37,     K36,     K35,     K34,     K33,     K32)
+#   ifndef KOLIBRI_ONE_HANDED_NAV
+#       define KOLIBRE_NAV_ON_RIGHT
+#   endif
 #else
 #   ifdef KOLIBRI_ONE_HANDED_NAV
 #       define KOLIBRI_NAV_ON_RIGHT
 #   endif
+#endif
+
+// Define the 34-key layout by discarding the two extra thumb keys from the
+// 36-key layout
+#ifdef LAYOUT_KOLIBRI_34
+#   define LAYOUT_KOLIBRI_36(                             \
+        K00, K01, K02, K03, K04, K05, K06, K07, K08, K09, \
+        K10, K11, K12, K13, K14, K15, K16, K17, K18, K19, \
+        K20, K21, K22, K23, K24, K25, K26, K27, K28, K29, \
+                  K32, K33, K34, K35, K36, K37) LAYOUT_KOLIBRI_34( \
+        K00,     K01,     K02,     K03,     K04,     K05,     K06,     K07,     K08,     K09, \
+        K10,     K11,     K12,     K13,     K14,     K15,     K16,     K17,     K18,     K19, \
+        K20,     K21,     K22,     K23,     K24,     K25,     K26,     K27,     K28,     K29, \
+                                   K33,     K34,     K35,     K36)
 #endif
 
 // Layer definitions
@@ -61,55 +88,77 @@ enum custom_keycodes {
 // a Layer-Tap
 #define KC_FNLK KC_EXSEL
 
-// Short cuts for mod-tap and layer-tap keys. 16-bit key codes need special
-// handling in process_record_user
+// Short cuts for mod-tap and layer-tap keys. On the 36-key version LALT moves
+// to the outer left thumb key as one-shot mod. RALT moves to the outer right
+// thumb key. 16-bit key codes need special handling in process_record_user.
 
 // Base layer
 #define LC_Z    LCTL_T(KC_Z)
 #define LG_X    LGUI_T(KC_X)
-#define LA_C    LALT_T(KC_C)
-#define LA_COMM LALT_T(KC_COMM)
 #define RG_DOT  RGUI_T(KC_DOT)
 #define RC_SLSH RCTL_T(KC_SLSH)
 #define LS_QUOT LSFT_T(KC_QUOT)
 #define SY_UNDS LT(L_SYM, KC_UNDS) // 16-bit
 #define FN_TAB  LT(L_FN, KC_TAB)
-#define RA_SPC  RALT_T(KC_SPC)
+#ifdef LAYOUT_KOLIBRI_34
+#   define LA_C    LALT_T(KC_C)
+#   define LA_COMM LALT_T(KC_COMM)
+#   define RA_SPC  RALT_T(KC_SPC)
+#else
+#   define LA_C    KC_C
+#   define LA_COMM KC_COMM
+#   define RA_SPC  KC_SPC
+#   define RA_DEL  RALT_T(KC_DEL)
+#   define OS_LALT OSM(MOD_LALT)
+#endif
 
 // Num+Sym layer
 #define LC_LBRC LCTL_T(KC_LBRC)
 #define LG_LCBR LGUI_T(KC_LCBR) // 16-bit
-#define LA_RCBR LALT_T(KC_RCBR) // 16-bit
-#define RA_RBRC RALT_T(KC_RBRC)
-#define LA_LT   LALT_T(KC_LT)   // 16-bit
 #define RG_GT   RGUI_T(KC_GT)   // 16-bit
+#define RG_3    RGUI_T(KC_3)
 #define RC_PLUS RCTL_T(KC_PLUS) // 16-bit
 #define CT_DQUO LT(L_CTL_MAC, KC_DQUO) // 16-bit
-#define RA_MINS RALT_T(KC_MINS)
-
-// Numpad
-#define LA_2    LALT_T(KC_2)
-#define RG_3    RGUI_T(KC_3)
-#define RA_0    RALT_T(KC_0)
+#ifdef LAYOUT_KOLIBRI_34
+#   define LA_RCBR LALT_T(KC_RCBR) // 16-bit
+#   define RA_RBRC RALT_T(KC_RBRC)
+#   define LA_LT   LALT_T(KC_LT)   // 16-bit
+#   define LA_2    LALT_T(KC_2)
+#   define RA_MINS RALT_T(KC_MINS)
+#   define RA_0    RALT_T(KC_0)
+#else
+#   define LA_RCBR RALT_T(KC_RCBR) // 16-bit
+#   define RA_RBRC KC_RBRC
+#   define LA_LT   KC_LT
+#   define LA_2    KC_2
+#   define RA_MINS KC_MINS
+#   define RA_0    KC_0
+#   define RA_DOT  RALT_T(KC_DOT)
+#endif
 
 // Nav+Fn layer
 #define LC_F5   LCTL_T(KC_F5)
 #define LG_F6   LGUI_T(KC_F6)
-#define LA_F7   LALT_T(KC_F7)
-#define LA_F10  LALT_T(KC_F10)
 #define RG_F11  RGUI_T(KC_F11)
 #define RC_F12  RCTL_T(KC_F12)
 #define RS_CAPS RSFT_T(KC_CAPS)
 #define CT_FNLK LT(L_CTL_MAC, KC_FNLK)
 #define OV_TAB  LT(L_BASE_OVERRIDE, KC_TAB)
+#ifdef LAYOUT_KOLIBRI_34
+#   define LA_F7   LALT_T(KC_F7)
+#   define LA_F10  LALT_T(KC_F10)
+#else
+#   define LA_F7   KC_F7
+#   define LA_F10  KC_F10
+#endif
 
 // The Base layer gets duplicated to add a Base-Override layer that can be
 // layered on top of a locked Nav+Fn layer. The layer keys are parametrized.
-#define KEYMAP_BASE(K34, K35) LAYOUT_KOLIBRI( \
+#define KEYMAP_BASE(K34, K35) LAYOUT_KOLIBRI_36( \
         KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,    KC_J,    KC_L,    KC_U,    KC_Y,    KC_GRV,  \
         KC_A,    KC_R,    KC_S,    KC_T,    KC_G,    KC_M,    KC_N,    KC_E,    KC_I,    KC_O,    \
         LC_Z,    LG_X,    LA_C,    KC_D,    KC_V,    KC_K,    KC_H,    LA_COMM, RG_DOT,  RC_SLSH, \
-                                   LS_QUOT, K34,     K35,     RA_SPC)
+                          OS_LALT, LS_QUOT, K34,     K35,     RA_SPC,  RA_DEL)
 
 // The Nav+Fn layer gets duplicated for a momentary and a locked version.
 // The layer keys are parametrized. There are two versions with arrows on the
@@ -122,17 +171,17 @@ enum custom_keycodes {
 #endif
 
 #ifdef KOLIBRI_NAV_ON_RIGHT
-#   define KEYMAP_FN(K34, K35) LAYOUT_KOLIBRI( \
+#   define KEYMAP_FN(K34, K35) LAYOUT_KOLIBRI_36( \
         KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_PSCR, KC_SLCK, KC_HOME, KC_UP,   KC_END,  KC_CALC, \
         KC_ESC,  KC_INS,  KC_BSPC, KC_DEL,  KC_ENT,  KC_PGUP, KC_LEFT, KC_DOWN, KC_RGHT, KC_PAUS, \
         LC_F5,   LG_F6,   LA_F7,   KC_F8,   KC_APP,  KC_PGDN, KC_F9,   LA_F10,  RG_F11,  RC_F12,  \
-                                   RS_CAPS, K34,     K35,     MS_SPC)
+                          _______, RS_CAPS, K34,     K35,     MS_SPC,  _______)
 #else
-#   define KEYMAP_FN(K34, K35) LAYOUT_KOLIBRI( \
+#   define KEYMAP_FN(K34, K35) LAYOUT_KOLIBRI_36( \
         KC_CALC, KC_HOME, KC_UP,   KC_END,  KC_PSCR, KC_SLCK, KC_F1,   KC_F2,   KC_F3,   KC_F4,  \
         KC_PAUS, KC_LEFT, KC_DOWN, KC_RGHT, KC_PGUP, KC_ENT,  KC_BSPC, KC_DEL,  KC_INS,  KC_ESC, \
         LC_F5,   LG_F6,   LA_F7,   KC_F8,   KC_PGDN, KC_APP,  KC_F9,   LA_F10,  RG_F11,  RC_F12, \
-                                   RS_CAPS, K34,     K35,     MS_SPC)
+                          _______, RS_CAPS, K34,     K35,     MS_SPC,  _______)
 #endif
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -154,17 +203,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [L_BASE_OVERRIDE] = KEYMAP_BASE(CT_FNLK, _______),
 
 #ifdef KOLIBRI_NUMPAD
-    [L_SYM] = LAYOUT_KOLIBRI(
+    [L_SYM] = LAYOUT_KOLIBRI_36(
         KC_BSLS, KC_LPRN, KC_RPRN, KC_DLR,  KC_PERC, KC_CIRC, KC_7,    KC_8,    KC_9,    KC_COLN,
         KC_EXLM, KC_LT,   KC_EQL,  KC_GT,   KC_SCLN, KC_ASTR, KC_4,    KC_5,    KC_6,    KC_MINS,
         LC_LBRC, LG_LCBR, LA_RCBR, RA_RBRC, KC_PIPE, KC_AMPR, KC_1,    LA_2,    RG_3,    RC_PLUS,
-                                   _______, _______, CT_DQUO, RA_0),
+                          _______, _______, _______, CT_DQUO, RA_0,    RA_DOT),
 #else
-    [L_SYM] = LAYOUT_KOLIBRI(
+    [L_SYM] = LAYOUT_KOLIBRI_36(
         KC_EXLM, KC_LPRN, KC_RPRN, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_SCLN, KC_COLN,
         KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,
         LC_LBRC, LG_LCBR, LA_RCBR, RA_RBRC, KC_PIPE, KC_BSLS, KC_EQL,  LA_LT,   RG_GT,   RC_PLUS,
-                                   _______, _______, CT_DQUO, RA_MINS),
+                          _______, _______, _______, CT_DQUO, RA_MINS, RA_DOT),
 #endif
 
     // Momentary Nav+Fn layer:
@@ -172,18 +221,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // - Right key is transparent (held to enable this layer)
     [L_FN] = KEYMAP_FN(CT_FNLK, _______),
 
-    [L_CTL_MAC] = LAYOUT_KOLIBRI(
+    [L_CTL_MAC] = LAYOUT_KOLIBRI_36(
         RESET,   DT_PRNT, DT_DOWN, DT_UP,   DEBUG,   RGB_MOD, RGB_SPI, RGB_VAI, RGB_SAI, RGB_HUI,
         _______, _______, M_XARGS, M_EMAIL, _______, RGB_TOG, KC_MPRV, KC_MPLY, KC_MNXT, KC_VOLU,
         _______, _______, _______, _______, _______, KC_MYCM, KC_MSEL, KC_MSTP, KC_MUTE, KC_VOLD,
-                                   _______, _______, _______, _______),
+                          _______, _______, _______, _______, _______, _______),
 
 #ifdef MOUSEKEY_ENABLE
-    [L_MOUSE] = LAYOUT_KOLIBRI(
+    [L_MOUSE] = LAYOUT_KOLIBRI_36(
         KC_BTN5, KC_WH_L, KC_WH_U, KC_WH_R, _______, _______, _______, KC_MS_U, _______, _______,
         KC_BTN4, KC_BTN2, KC_WH_D, KC_BTN1, _______, _______, KC_MS_L, KC_MS_D, KC_MS_R, _______,
         KC_LCTL, KC_LGUI, KC_LALT, KC_BTN3, _______, _______, _______, KC_LALT, KC_RGUI, KC_RCTL,
-                                   KC_LSFT, KC_ACL0, _______, _______)
+                          _______, KC_LSFT, KC_ACL0, _______, _______, _______)
 #endif
 };
 
@@ -209,10 +258,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     static uint16_t comm_release = 0;
     static uint16_t  dot_release = 0;
 
-    /* Only customize shifted keycodes on taps, not on holds. Sym layer
-     * doesn't use shift, so skip custom shift processing.
-     */
-    if (IS_LAYER_ON(L_SYM) || !record->tap.count)
+    /* Sym layer doesn't use shift, so skip custom shift processing. */
+    if (IS_LAYER_ON(L_SYM))
         goto macros;
 
     if ((get_mods() & MOD_MASK_SHIFT) && record->event.pressed) {
@@ -266,7 +313,9 @@ macros:
             case LG_LCBR: code16 = KC_LCBR; break;
             case LA_RCBR: code16 = KC_RCBR; break;
 #ifndef KOLIBRI_NUMPAD
+#ifdef LAYOUT_KOLIBRI_34
             case LA_LT:   code16 = KC_LT; break;
+#endif
             case RG_GT:   code16 = KC_GT; break;
 #endif
             case RC_PLUS: code16 = KC_PLUS; break;

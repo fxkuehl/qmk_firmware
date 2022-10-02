@@ -44,9 +44,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #   define MOUSEKEY_TIME_TO_MAX 80
 #endif
 
-// Mapping the 34-key Kolibri layout to Iris
-// Define LAYOUT_KOLIBRI_LEFTY instead to get a left-handed layout
-#define LAYOUT_KOLIBRI(                                   \
+// Mapping the Kolibri layout to Iris
+// Define one of the following macros to get a 34 or 36-key layout
+// right- or left-handed:
+//
+// LAYOUT_KOLIBRI_34
+// LAYOUT_KOLIBRI_36
+// LAYOUT_KOLIBRI_LEFTY_34
+// LAYOUT_KOLIBRI_LEFTY_36
+#if 0
+#define LAYOUT_KOLIBRI_34(                                \
         K00, K01, K02, K03, K04, K05, K06, K07, K08, K09, \
         K10, K11, K12, K13, K14, K15, K16, K17, K18, K19, \
         K20, K21, K22, K23, K24, K25, K26, K27, K28, K29, \
@@ -56,6 +63,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         KC_NO,   K10,     K11,     K12,     K13,     K14,                                K15,     K16,     K17,     K18,     K19,     KC_NO, \
         KC_NO,   K20,     K21,     K22,     K23,     K24,     KC_NO,            KC_NO,   K25,     K26,     K27,     K28,     K29,     KC_NO, \
                                             KC_NO,   K33,     K34,              K35,     K36,     KC_NO)
+#else
+#define LAYOUT_KOLIBRI_36(                                \
+        K00, K01, K02, K03, K04, K05, K06, K07, K08, K09, \
+        K10, K11, K12, K13, K14, K15, K16, K17, K18, K19, \
+        K20, K21, K22, K23, K24, K25, K26, K27, K28, K29, \
+                  K32, K33, K34, K35, K36, K37)   LAYOUT( \
+        KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,                              KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO, \
+        KC_NO,   K00,     K01,     K02,     K03,     K04,                                K05,     K06,     K07,     K08,     K09,     KC_NO, \
+        KC_NO,   K10,     K11,     K12,     K13,     K14,                                K15,     K16,     K17,     K18,     K19,     KC_NO, \
+        KC_NO,   K20,     K21,     K22,     K23,     K24,     KC_NO,            KC_NO,   K25,     K26,     K27,     K28,     K29,     KC_NO, \
+                                            K32,     K33,     K34,              K35,     K36,     K37)
+#endif
 
 // Options
 #define KOLIBRI_ONE_HANDED_NAV
