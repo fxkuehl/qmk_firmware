@@ -31,6 +31,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #   ifndef KOLIBRI_ONE_HANDED_NAV
 #       define KOLIBRE_NAV_ON_RIGHT
 #   endif
+#   ifdef KOLIBRI_NUMPAD
+#       define KOLIBRI_SOUTHPAW
+#   endif
 #elif defined(LAYOUT_KOLIBRI_LEFTY_36)
 #   define LAYOUT_KOLIBRI_36(                             \
         K00, K01, K02, K03, K04, K05, K06, K07, K08, K09, \
@@ -43,6 +46,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                           K37,     K36,     K35,     K34,     K33,     K32)
 #   ifndef KOLIBRI_ONE_HANDED_NAV
 #       define KOLIBRE_NAV_ON_RIGHT
+#   endif
+#   ifdef KOLIBRI_NUMPAD
+#       define KOLIBRI_SOUTHPAW
 #   endif
 #else
 #   ifdef KOLIBRI_ONE_HANDED_NAV
@@ -114,14 +120,18 @@ enum custom_keycodes {
 
 // Num+Sym layer
 #define LC_LBRC LCTL_T(KC_LBRC)
+#define LC_PLUS LCTL_T(KC_PLUS) // 16-bit
 #define LG_LCBR LGUI_T(KC_LCBR) // 16-bit
+#define LG_1    LGUI_T(KC_1)
 #define RG_GT   RGUI_T(KC_GT)   // 16-bit
 #define RG_3    RGUI_T(KC_3)
 #define RC_PLUS RCTL_T(KC_PLUS) // 16-bit
+#define RC_EXLM RCTL_T(KC_EXLM) // 16-bit
 #define CT_DQUO LT(L_CTL_MAC, KC_DQUO) // 16-bit
 #ifdef LAYOUT_KOLIBRI_34
 #   define LA_RCBR LALT_T(KC_RCBR) // 16-bit
 #   define RA_RBRC RALT_T(KC_RBRC)
+#   define RA_EQL  RALT_T(KC_EQL)
 #   define LA_LT   LALT_T(KC_LT)   // 16-bit
 #   define LA_2    LALT_T(KC_2)
 #   define RA_MINS RALT_T(KC_MINS)
@@ -129,7 +139,12 @@ enum custom_keycodes {
 #else
 #   define LA_RCBR RALT_T(KC_RCBR) // 16-bit
 #   define RA_RBRC KC_RBRC
-#   define LA_LT   KC_LT
+#   define RA_EQL  KC_EQL
+#   ifdef KOLIBRI_SOUTHPAW
+#       define LA_LT   RALT_T(KC_LT) // 16-bit
+#   else
+#       define LA_LT   KC_LT
+#   endif
 #   define LA_2    KC_2
 #   define RA_MINS KC_MINS
 #   define RA_0    KC_0
@@ -203,11 +218,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [L_BASE_OVERRIDE] = KEYMAP_BASE(CT_FNLK, _______),
 
 #ifdef KOLIBRI_NUMPAD
+#   ifdef KOLIBRI_SOUTHPAW
+    [L_SYM] = LAYOUT_KOLIBRI_36(
+        KC_PIPE, KC_7,    KC_8,    KC_9,    KC_PERC, KC_CIRC, KC_DLR,  KC_LPRN, KC_RPRN, KC_COLN,
+        KC_MINS, KC_4,    KC_5,    KC_6,    KC_ASTR, KC_SCLN, KC_LBRC, KC_LCBR, KC_RCBR, KC_RBRC,
+        LC_PLUS, LG_1,    LA_2,    KC_3,    KC_AMPR, KC_BSLS, RA_EQL,  LA_LT,   RG_GT,   RC_EXLM,
+                          _______, _______, _______, CT_DQUO, RA_0,    RA_DOT),
+#   else
     [L_SYM] = LAYOUT_KOLIBRI_36(
         KC_BSLS, KC_LPRN, KC_RPRN, KC_DLR,  KC_PERC, KC_CIRC, KC_7,    KC_8,    KC_9,    KC_COLN,
         KC_EXLM, KC_LT,   KC_EQL,  KC_GT,   KC_SCLN, KC_ASTR, KC_4,    KC_5,    KC_6,    KC_MINS,
         LC_LBRC, LG_LCBR, LA_RCBR, RA_RBRC, KC_PIPE, KC_AMPR, KC_1,    LA_2,    RG_3,    RC_PLUS,
                           _______, _______, _______, CT_DQUO, RA_0,    RA_DOT),
+#   endif
 #else
     [L_SYM] = LAYOUT_KOLIBRI_36(
         KC_EXLM, KC_LPRN, KC_RPRN, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_SCLN, KC_COLN,
@@ -310,15 +333,20 @@ macros:
         if (IS_LAYER_ON(L_SYM)) {
             switch (keycode) {
             case CT_DQUO: code16 = KC_DQUO; break;
+#if defined(KOLIBRI_SOUTHPAW)
+            case LC_PLUS: code16 = KC_PLUS; break;
+            case RC_EXLM: code16 = KC_EXLM; break;
+#else
             case LG_LCBR: code16 = KC_LCBR; break;
             case LA_RCBR: code16 = KC_RCBR; break;
-#ifndef KOLIBRI_NUMPAD
-#ifdef LAYOUT_KOLIBRI_34
-            case LA_LT:   code16 = KC_LT; break;
+            case RC_PLUS: code16 = KC_PLUS; break;
 #endif
+#if !defined(KOLIBRI_NUMPAD) || defined(KOLIBRI_SOUTHPAW)
+#   if defined(LAYOUT_KOLIBRI_34) || defined(KOLIBRI_SOUTHPAW)
+            case LA_LT:   code16 = KC_LT; break;
+#   endif
             case RG_GT:   code16 = KC_GT; break;
 #endif
-            case RC_PLUS: code16 = KC_PLUS; break;
             default: return true;
             }
         } else {
