@@ -74,9 +74,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 enum layers {
     L_BASE,
     L_FN_LOCKED,
-    L_BASE_OVERRIDE,
-    L_SYM,
+    L_BASE_OV_FN,
+    L_SYM_LOCKED,
+    L_BASE_OV_SYM,
     L_FN,
+    L_SYM,
     L_CTL_MAC,
 #ifdef MOUSEKEY_ENABLE
     L_MOUSE,
@@ -90,9 +92,10 @@ enum custom_keycodes {
   M_XARGS
 };
 
-// Hi-jack an unused 8-bit keycode for the Nav+Fn-(un)lock that can be used in
-// a Layer-Tap
+// Hi-jack two unused 8-bit keycodes for the layer-(un)lock that can be used
+// in a Layer-Tap
 #define KC_FNLK KC_EXSEL
+#define KC_SYLK KC_CRSEL
 
 // Short cuts for mod-tap and layer-tap keys. On the 36-key version LALT moves
 // to the outer left thumb key as one-shot mod. RALT moves to the outer right
@@ -128,6 +131,8 @@ enum custom_keycodes {
 #define RC_PLUS RCTL_T(KC_PLUS) // 16-bit
 #define RC_EXLM RCTL_T(KC_EXLM) // 16-bit
 #define FN_DQUO LT(L_FN, KC_DQUO) // 16-bit
+#define CT_SYLK LT(L_CTL_MAC, KC_SYLK)
+#define OVS_TAB LT(L_BASE_OV_SYM, KC_TAB)
 #ifdef LAYOUT_KOLIBRI_34
 #   define LA_RCBR LALT_T(KC_RCBR) // 16-bit
 #   define RA_RBRC RALT_T(KC_RBRC)
@@ -158,7 +163,7 @@ enum custom_keycodes {
 #define RC_F12  RCTL_T(KC_F12)
 #define RS_CAPS RSFT_T(KC_CAPS)
 #define CT_FNLK LT(L_CTL_MAC, KC_FNLK)
-#define OV_TAB  LT(L_BASE_OVERRIDE, KC_TAB)
+#define OVF_TAB LT(L_BASE_OV_FN, KC_TAB)
 #ifdef LAYOUT_KOLIBRI_34
 #   define LA_F7   LALT_T(KC_F7)
 #   define LA_F10  LALT_T(KC_F10)
@@ -169,11 +174,11 @@ enum custom_keycodes {
 
 // The Base layer gets duplicated to add a Base-Override layer that can be
 // layered on top of a locked Nav+Fn layer. The layer keys are parametrized.
-#define KEYMAP_BASE(K35, K36) LAYOUT_KOLIBRI_36( \
+#define KEYMAP_BASE(K33, K34, K35, K36) LAYOUT_KOLIBRI_36( \
         KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,    KC_J,    KC_L,    KC_U,    KC_Y,    KC_GRV,  \
         KC_A,    KC_R,    KC_S,    KC_T,    KC_G,    KC_M,    KC_N,    KC_E,    KC_I,    KC_O,    \
         LC_Z,    LG_X,    LA_C,    KC_D,    KC_V,    KC_K,    KC_H,    LA_COMM, RG_DOT,  RC_SLSH, \
-                          OS_LALT, LS_QUOT, SY_UNDS, K35,     K36,     RA_DEL)
+                          OS_LALT, K33,     K34,     K35,     K36,     RA_DEL)
 
 // The Nav+Fn layer gets duplicated for a momentary and a locked version.
 // The layer keys are parametrized. There are two versions with arrows on the
@@ -199,50 +204,70 @@ enum custom_keycodes {
                           _______, RS_CAPS, _______, K35,     K36,     _______)
 #endif
 
-const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    [L_BASE] = KEYMAP_BASE(FN_TAB, RA_SPC),
+#ifdef KOLIBRI_NUMPAD
+#   ifdef KOLIBRI_SOUTHPAW
+#       define KEYMAP_SYM(K33, K34) LAYOUT_KOLIBRI_36( \
+        KC_PIPE, KC_7,    KC_8,    KC_9,    KC_PERC, KC_CIRC, KC_DLR,  KC_LPRN, KC_RPRN, KC_COLN, \
+        KC_MINS, KC_4,    KC_5,    KC_6,    KC_ASTR, KC_SCLN, KC_LBRC, KC_LCBR, KC_RCBR, KC_RBRC, \
+        LC_PLUS, LG_1,    LA_2,    KC_3,    KC_AMPR, KC_BSLS, RA_EQL,  LA_LT,   RG_GT,   RC_EXLM, \
+                          _______, K33,     K34,     FN_DQUO, RA_0,    RA_DOT)
+#   else
+#       define KEYMAP_SYM(K33, K34) LAYOUT_KOLIBRI_36( \
+        KC_BSLS, KC_LPRN, KC_RPRN, KC_DLR,  KC_PERC, KC_CIRC, KC_7,    KC_8,    KC_9,    KC_COLN, \
+        KC_EXLM, KC_LT,   KC_EQL,  KC_GT,   KC_SCLN, KC_ASTR, KC_4,    KC_5,    KC_6,    KC_MINS, \
+        LC_LBRC, LG_LCBR, LA_RCBR, RA_RBRC, KC_PIPE, KC_AMPR, KC_1,    LA_2,    RG_3,    RC_PLUS, \
+                          _______, K33,     K34,     FN_DQUO, RA_0,    RA_DOT)
+#   endif
+#else
+#   define KEYMAP_SYM(K33, K34) LAYOUT_KOLIBRI_36( \
+        KC_EXLM, KC_LPRN, KC_RPRN, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_SCLN, KC_COLN, \
+        KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    \
+        LC_LBRC, LG_LCBR, LA_RCBR, RA_RBRC, KC_PIPE, KC_BSLS, KC_EQL,  LA_LT,   RG_GT,   RC_PLUS, \
+                          _______, K33,     K34,     FN_DQUO, RA_MINS, RA_DOT)
+#endif
 
-    // Locked Nav+Fn layer sits below the Num+Sym layer:
+const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
+    [L_BASE] = KEYMAP_BASE(LS_QUOT, SY_UNDS, FN_TAB, RA_SPC),
+
+    // Locked Fn layer sits below the Sym layer:
     // - Inner key is Tab/Base-Overlay
     // - Home key is Space/Mouse-layer
     //
     // Base-Overlay temporarily restores a (slightly modified) base layer
-    [L_FN_LOCKED] = KEYMAP_FN(OV_TAB, MS_SPC),
+    [L_FN_LOCKED] = KEYMAP_FN(OVF_TAB, MS_SPC),
 
-    // Base-Overlay over the locked Nav+Fn layer:
+    // Base-Overlay over the locked Fn layer:
     // - Inner key is transparent (held by thumb to enable this layer)
     // - Home key (pressed by the index finger) is Fn-unlock/Ctl+Macro
     //
     // Hold inner + hold home key always enables the Ctl+Macro layer
     // Hold inner + tap home key is the same key combo to Fn lock or unlock.
-    [L_BASE_OVERRIDE] = KEYMAP_BASE(_______, CT_FNLK),
+    [L_BASE_OV_FN] = KEYMAP_BASE(LS_QUOT, SY_UNDS, _______, CT_FNLK),
 
-#ifdef KOLIBRI_NUMPAD
-#   ifdef KOLIBRI_SOUTHPAW
-    [L_SYM] = LAYOUT_KOLIBRI_36(
-        KC_PIPE, KC_7,    KC_8,    KC_9,    KC_PERC, KC_CIRC, KC_DLR,  KC_LPRN, KC_RPRN, KC_COLN,
-        KC_MINS, KC_4,    KC_5,    KC_6,    KC_ASTR, KC_SCLN, KC_LBRC, KC_LCBR, KC_RCBR, KC_RBRC,
-        LC_PLUS, LG_1,    LA_2,    KC_3,    KC_AMPR, KC_BSLS, RA_EQL,  LA_LT,   RG_GT,   RC_EXLM,
-                          _______, _______, _______, FN_DQUO, RA_0,    RA_DOT),
-#   else
-    [L_SYM] = LAYOUT_KOLIBRI_36(
-        KC_BSLS, KC_LPRN, KC_RPRN, KC_DLR,  KC_PERC, KC_CIRC, KC_7,    KC_8,    KC_9,    KC_COLN,
-        KC_EXLM, KC_LT,   KC_EQL,  KC_GT,   KC_SCLN, KC_ASTR, KC_4,    KC_5,    KC_6,    KC_MINS,
-        LC_LBRC, LG_LCBR, LA_RCBR, RA_RBRC, KC_PIPE, KC_AMPR, KC_1,    LA_2,    RG_3,    RC_PLUS,
-                          _______, _______, _______, FN_DQUO, RA_0,    RA_DOT),
-#   endif
-#else
-    [L_SYM] = LAYOUT_KOLIBRI_36(
-        KC_EXLM, KC_LPRN, KC_RPRN, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_SCLN, KC_COLN,
-        KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,
-        LC_LBRC, LG_LCBR, LA_RCBR, RA_RBRC, KC_PIPE, KC_BSLS, KC_EQL,  LA_LT,   RG_GT,   RC_PLUS,
-                          _______, _______, _______, FN_DQUO, RA_MINS, RA_DOT),
-#endif
+    // Locked Sym layer sits below the Fn layer:
+    // - Inner key is Underscore/Base-Overlay
+    // - Home key is Space/Shift (adds an extra Space key to use between numbers/symbols)
+    //
+    // Base-Overlay temporarily restores a (slightly modified) base layer
+    [L_SYM_LOCKED] = KEYMAP_SYM(KC_SPC, OVS_TAB),
 
-    // Momentary Nav+Fn layer:
+    // Base-Overlay over the locked Sym layer:
+    // - Inner key is transparent (held by thumb to enable this layer)
+    // - Home key (pressed by the index finger) is Sym-lock/Ctl+Macro
+    //
+    // Hold inner + hold home key always enables the Ctl+Macro layer
+    // Hold inner + tap home key is the same key combo to Sym lock or unlock
+    [L_BASE_OV_SYM] = KEYMAP_BASE(CT_SYLK, _______, FN_TAB, RA_SPC),
+
+    // Momentary Fn layer:
     // - Inner key is transparent (held by thumb to enable this layer)
     // - Home key (pressed by index finger) is Fn-lock/Ctl+Macro
     [L_FN] = KEYMAP_FN(_______, CT_FNLK),
+
+    // Momentary Sym layer:
+    // - Inner key is transparent (held by thumb to enable this layer)
+    // - Home key (pressed by index finger) is Sym-lock/Ctl+Macro
+    [L_SYM] = KEYMAP_SYM(CT_SYLK, _______),
 
     [L_CTL_MAC] = LAYOUT_KOLIBRI_36(
         RESET,   DT_PRNT, DT_DOWN, DT_UP,   DEBUG,   RGB_MOD, RGB_SPI, RGB_VAI, RGB_SAI, RGB_HUI,
@@ -327,10 +352,29 @@ macros:
         }
     }
 
-    if (record->tap.count) { // Mod-tap with modified tap-action
+    if (record->tap.count) {
         uint16_t code16;
 
-        if (IS_LAYER_ON(L_SYM)) {
+        // Layer locking
+        switch(keycode) {
+        case CT_FNLK: // Fn-Lock/Unlock
+            if (record->event.pressed) {
+                layer_invert(L_FN_LOCKED);
+                layer_off(L_SYM_LOCKED);
+            }
+            return false; // doesn't send any keycode
+        case CT_SYLK: // Sym-Lock/Unlock
+            if (record->event.pressed) {
+                layer_invert(L_SYM_LOCKED);
+                layer_off(L_FN_LOCKED);
+            }
+            return false; // doesn't send any keycode
+        default:
+	    break; // fall through
+        }
+
+        // Mod-tap with modified tap-action
+        if (IS_LAYER_ON(L_SYM) || IS_LAYER_ON(L_SYM_LOCKED)) {
             switch (keycode) {
             case FN_DQUO: code16 = KC_DQUO; break;
 #if defined(KOLIBRI_SOUTHPAW)
@@ -351,10 +395,6 @@ macros:
             }
         } else {
             switch (keycode) {
-            case CT_FNLK: // Nav+Fn-Lock/Unlock
-                if (record->event.pressed)
-                    layer_invert(L_FN_LOCKED);
-                return false; // doesn't send any keycode
             case SY_UNDS: code16 = KC_UNDS; break;
             default: return true;
             }
