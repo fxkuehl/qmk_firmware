@@ -127,7 +127,7 @@ enum custom_keycodes {
 #define RG_3    RGUI_T(KC_3)
 #define RC_PLUS RCTL_T(KC_PLUS) // 16-bit
 #define RC_EXLM RCTL_T(KC_EXLM) // 16-bit
-#define CT_DQUO LT(L_CTL_MAC, KC_DQUO) // 16-bit
+#define FN_DQUO LT(L_FN, KC_DQUO) // 16-bit
 #ifdef LAYOUT_KOLIBRI_34
 #   define LA_RCBR LALT_T(KC_RCBR) // 16-bit
 #   define RA_RBRC RALT_T(KC_RBRC)
@@ -169,11 +169,11 @@ enum custom_keycodes {
 
 // The Base layer gets duplicated to add a Base-Override layer that can be
 // layered on top of a locked Nav+Fn layer. The layer keys are parametrized.
-#define KEYMAP_BASE(K34, K35) LAYOUT_KOLIBRI_36( \
+#define KEYMAP_BASE(K35, K36) LAYOUT_KOLIBRI_36( \
         KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,    KC_J,    KC_L,    KC_U,    KC_Y,    KC_GRV,  \
         KC_A,    KC_R,    KC_S,    KC_T,    KC_G,    KC_M,    KC_N,    KC_E,    KC_I,    KC_O,    \
         LC_Z,    LG_X,    LA_C,    KC_D,    KC_V,    KC_K,    KC_H,    LA_COMM, RG_DOT,  RC_SLSH, \
-                          OS_LALT, LS_QUOT, K34,     K35,     RA_SPC,  RA_DEL)
+                          OS_LALT, LS_QUOT, SY_UNDS, K35,     K36,     RA_DEL)
 
 // The Nav+Fn layer gets duplicated for a momentary and a locked version.
 // The layer keys are parametrized. There are two versions with arrows on the
@@ -186,36 +186,36 @@ enum custom_keycodes {
 #endif
 
 #ifdef KOLIBRI_NAV_ON_RIGHT
-#   define KEYMAP_FN(K34, K35) LAYOUT_KOLIBRI_36( \
+#   define KEYMAP_FN(K35, K36) LAYOUT_KOLIBRI_36( \
         KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_PSCR, KC_SLCK, KC_HOME, KC_UP,   KC_END,  KC_CALC, \
         KC_ESC,  KC_INS,  KC_BSPC, KC_DEL,  KC_ENT,  KC_PGUP, KC_LEFT, KC_DOWN, KC_RGHT, KC_PAUS, \
         LC_F5,   LG_F6,   LA_F7,   KC_F8,   KC_APP,  KC_PGDN, KC_F9,   LA_F10,  RG_F11,  RC_F12,  \
-                          _______, RS_CAPS, K34,     K35,     MS_SPC,  _______)
+                          _______, RS_CAPS, _______, K35,     K36,     _______)
 #else
-#   define KEYMAP_FN(K34, K35) LAYOUT_KOLIBRI_36( \
+#   define KEYMAP_FN(K35, K36) LAYOUT_KOLIBRI_36( \
         KC_CALC, KC_HOME, KC_UP,   KC_END,  KC_PSCR, KC_SLCK, KC_F1,   KC_F2,   KC_F3,   KC_F4,  \
         KC_PAUS, KC_LEFT, KC_DOWN, KC_RGHT, KC_PGUP, KC_ENT,  KC_BSPC, KC_DEL,  KC_INS,  KC_ESC, \
         LC_F5,   LG_F6,   LA_F7,   KC_F8,   KC_PGDN, KC_APP,  KC_F9,   LA_F10,  RG_F11,  RC_F12, \
-                          _______, RS_CAPS, K34,     K35,     MS_SPC,  _______)
+                          _______, RS_CAPS, _______, K35,     K36,     _______)
 #endif
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    [L_BASE] = KEYMAP_BASE(SY_UNDS, FN_TAB),
+    [L_BASE] = KEYMAP_BASE(FN_TAB, RA_SPC),
 
     // Locked Nav+Fn layer sits below the Num+Sym layer:
-    // - Left key is Underscore/Sym passed through from base
-    // - Right key is Tab/Base-Overlay
+    // - Inner key is Tab/Base-Overlay
+    // - Home key is Space/Mouse-layer
     //
     // Base-Overlay temporarily restores a (slightly modified) base layer
-    [L_FN_LOCKED] = KEYMAP_FN(_______, OV_TAB),
+    [L_FN_LOCKED] = KEYMAP_FN(OV_TAB, MS_SPC),
 
     // Base-Overlay over the locked Nav+Fn layer:
-    // - Left key is Fn-unlock/Ctl+Macro
-    // - Right key is transparent (held to enable this layer)
+    // - Inner key is transparent (held by thumb to enable this layer)
+    // - Home key (pressed by the index finger) is Fn-unlock/Ctl+Macro
     //
-    // Holding both layer keys always enables the Ctl+Macro layer.
-    // Hold right+tap left layer is the same key combo to Fn lock or unlock.
-    [L_BASE_OVERRIDE] = KEYMAP_BASE(CT_FNLK, _______),
+    // Hold inner + hold home key always enables the Ctl+Macro layer
+    // Hold inner + tap home key is the same key combo to Fn lock or unlock.
+    [L_BASE_OVERRIDE] = KEYMAP_BASE(_______, CT_FNLK),
 
 #ifdef KOLIBRI_NUMPAD
 #   ifdef KOLIBRI_SOUTHPAW
@@ -223,26 +223,26 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_PIPE, KC_7,    KC_8,    KC_9,    KC_PERC, KC_CIRC, KC_DLR,  KC_LPRN, KC_RPRN, KC_COLN,
         KC_MINS, KC_4,    KC_5,    KC_6,    KC_ASTR, KC_SCLN, KC_LBRC, KC_LCBR, KC_RCBR, KC_RBRC,
         LC_PLUS, LG_1,    LA_2,    KC_3,    KC_AMPR, KC_BSLS, RA_EQL,  LA_LT,   RG_GT,   RC_EXLM,
-                          _______, _______, _______, CT_DQUO, RA_0,    RA_DOT),
+                          _______, _______, _______, FN_DQUO, RA_0,    RA_DOT),
 #   else
     [L_SYM] = LAYOUT_KOLIBRI_36(
         KC_BSLS, KC_LPRN, KC_RPRN, KC_DLR,  KC_PERC, KC_CIRC, KC_7,    KC_8,    KC_9,    KC_COLN,
         KC_EXLM, KC_LT,   KC_EQL,  KC_GT,   KC_SCLN, KC_ASTR, KC_4,    KC_5,    KC_6,    KC_MINS,
         LC_LBRC, LG_LCBR, LA_RCBR, RA_RBRC, KC_PIPE, KC_AMPR, KC_1,    LA_2,    RG_3,    RC_PLUS,
-                          _______, _______, _______, CT_DQUO, RA_0,    RA_DOT),
+                          _______, _______, _______, FN_DQUO, RA_0,    RA_DOT),
 #   endif
 #else
     [L_SYM] = LAYOUT_KOLIBRI_36(
         KC_EXLM, KC_LPRN, KC_RPRN, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_SCLN, KC_COLN,
         KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,
         LC_LBRC, LG_LCBR, LA_RCBR, RA_RBRC, KC_PIPE, KC_BSLS, KC_EQL,  LA_LT,   RG_GT,   RC_PLUS,
-                          _______, _______, _______, CT_DQUO, RA_MINS, RA_DOT),
+                          _______, _______, _______, FN_DQUO, RA_MINS, RA_DOT),
 #endif
 
     // Momentary Nav+Fn layer:
-    // - Left key is Fn-lock/Ctl+Macro
-    // - Right key is transparent (held to enable this layer)
-    [L_FN] = KEYMAP_FN(CT_FNLK, _______),
+    // - Inner key is transparent (held by thumb to enable this layer)
+    // - Home key (pressed by index finger) is Fn-lock/Ctl+Macro
+    [L_FN] = KEYMAP_FN(_______, CT_FNLK),
 
     [L_CTL_MAC] = LAYOUT_KOLIBRI_36(
         RESET,   DT_PRNT, DT_DOWN, DT_UP,   DEBUG,   RGB_MOD, RGB_SPI, RGB_VAI, RGB_SAI, RGB_HUI,
@@ -332,7 +332,7 @@ macros:
 
         if (IS_LAYER_ON(L_SYM)) {
             switch (keycode) {
-            case CT_DQUO: code16 = KC_DQUO; break;
+            case FN_DQUO: code16 = KC_DQUO; break;
 #if defined(KOLIBRI_SOUTHPAW)
             case LC_PLUS: code16 = KC_PLUS; break;
             case RC_EXLM: code16 = KC_EXLM; break;
