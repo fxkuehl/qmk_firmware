@@ -31,7 +31,7 @@
         3
       ]
     },
-    "\n\n\n&uarr;\n\n\nU\n\n*"
+    "\n\n\n&uarr;\n\n\nU\n\n8"
   ],
   [
     {
@@ -68,11 +68,11 @@
         3
       ]
     },
-    "\n\n\n<i class='kb kb-Line-Start'></i>\n\n\nL\n\n&",
+    "\n\n\n<i class='kb kb-Line-Start'></i>\n\n\nL\n\n7",
     {
       "x": 1
     },
-    "\n\n\n<i class='kb kb-Line-End'></i>\n\n\nY\n\n;"
+    "\n\n\n<i class='kb kb-Line-End'></i>\n\n\nY\n\n9"
   ],
   [
     {
@@ -100,7 +100,7 @@
         3
       ]
     },
-    "\n\n\nF1\n\n\nQ\n\n!",
+    "\n\n\nF1\n\n\nQ\n\n\\",
     {
       "x": 10,
       "fa": [
@@ -122,7 +122,7 @@
       "y": -0.75,
       "x": 2
     },
-    "\n\n\n<i class='kb kb-Unicode-BackSpace-DeleteLeft-Big'></i>\n\n\nS\n\n3",
+    "\n\n\n<i class='kb kb-Unicode-BackSpace-DeleteLeft-Big'></i>\n\n\nS\n\n=",
     {
       "x": 6,
       "t": "#000000\n\n#4367fa\n#c13828\n\n\n\n\n#1db63a",
@@ -138,7 +138,7 @@
         3
       ]
     },
-    "\n\n<i class='kb kb-Multimedia-Play-Pause'></i>\n&darr;\n\n\nE\n\n8"
+    "\n\n<i class='kb kb-Multimedia-Play-Pause'></i>\n&darr;\n\n\nE\n\n5"
   ],
   [
     {
@@ -157,7 +157,7 @@
         3
       ]
     },
-    "\n\n\nIns\n\n\nR\n\n2",
+    "\n\n\nIns\n\n\nR\n\n<",
     {
       "x": 1,
       "fa": [
@@ -172,16 +172,16 @@
         3
       ]
     },
-    "\n\n\n<i class='kb kb-Unicode-DeleteRight-Big'></i>\n\n\nT\n\n4",
+    "\n\n\n<i class='kb kb-Unicode-DeleteRight-Big'></i>\n\n\nT\n\n>",
     {
       "x": 4,
       "t": "#000000\n\n#4367fa\n#c13828\n\n\n\n\n#1db63a"
     },
-    "\n\n<i class='kb kb-Multimedia-Rewind'></i>\n&larr;\n\n\nN\n\n7",
+    "\n\n<i class='kb kb-Multimedia-Rewind'></i>\n&larr;\n\n\nN\n\n4",
     {
       "x": 1
     },
-    "\n\n<i class='kb kb-Multimedia-FastForwar'></i>\n&rarr;\n\n\nI\n\n9"
+    "\n\n<i class='kb kb-Multimedia-FastForwar'></i>\n&rarr;\n\n\nI\n\n6"
   ],
   [
     {
@@ -189,11 +189,11 @@
       "x": 4,
       "t": "#000000\n\n\n#c13828\n\n\n\n\n#1db63a"
     },
-    "\n\n\n<i class='kb kb-Return-2'></i>\n\n\nG\n\n5",
+    "\n\n\n<i class='kb kb-Return-2'></i>\n\n\nG\n\n;",
     {
       "x": 2
     },
-    "\n\n\n<i class='kb kb-Unicode-Page-Up-1'></i>\n\n\nM\n\n6"
+    "\n\n\n<i class='kb kb-Unicode-Page-Up-1'></i>\n\n\nM\n\n*"
   ],
   [
     {
@@ -210,43 +210,44 @@
         3
       ]
     },
-    "\n\n\nEsc\n\n\nA\n\n1",
+    "\n\n\nEsc\n\n\nA\n\n!",
     {
       "x": 10,
       "t": "#000000\n\n#4367fa\n#c13828\n\n\n\n\n#1db63a"
     },
-    "\n\n<i class='kb kb-Multimedia-Volume-Up-1'></i>\nPause\n\n\nO\n\n0"
+    "\n\n<i class='kb kb-Multimedia-Volume-Up-1'></i>\nPause\n\n\nO\n\n-"
   ],
   [
     {
       "y": -0.75,
       "x": 2,
-      "t": "#000000\n\n\n#c13828\n\n\n\n\n#1db63a",
+      "t": "#000000\n\n\n#c13828\n\n#1db63a\n\n\n#1db63a",
       "a": 0
     },
-    "\n\n\nF7\nAlt\n\nC\n\n}",
+    "\n\n\nF7\n\nAltGr\nC\n\n}",
     {
       "x": 6,
-      "t": "#000000\n\n#4367fa\n#c13828\n\n\n\n\n#1db63a"
+      "t": "#000000\n\n#4367fa\n#c13828\n\n\n\n\n#1db63a",
+      "a": 4
     },
-    "#\n,\n<i class='kb kb-Multimedia-Stop'></i>\nF10\nAlt\n\n\n\n<"
+    "#\n,\n<i class='kb kb-Multimedia-Stop'></i>\nF10\n\n\n\n\n2"
   ],
   [
     {
       "y": -0.75,
       "x": 1,
-      "t": "#000000\n\n\n#c13828\n\n\n\n\n#1db63a"
+      "t": "#000000\n\n\n#c13828\n\n\n\n\n#1db63a",
+      "a": 0
     },
     "\n\n\nF6\nLGui\n\nX\n\n{",
     {
       "x": 1,
-      "t": "#000000\n\n\n#c13828\n\n#1db63a\n\n\n#1db63a"
+      "a": 4
     },
-    "\n\n\nF8\n\nAltGr\nD\n\n]",
+    "\n\n\nF8\n\n\nD\n\n]",
     {
       "x": 4,
       "t": "#000000\n\n#4367fa\n#c13828\n\n\n\n\n#1db63a",
-      "a": 4,
       "fa": [
         3,
         3,
@@ -259,12 +260,12 @@
         3
       ]
     },
-    "\n\n<i class='fa fa-music'></i>\nF9\n\n\nH\n\n=",
+    "\n\n<i class='fa fa-music'></i>\nF9\n\n\nH\n\n1",
     {
       "x": 1,
       "a": 0
     },
-    "@\n.\n<i class='kb kb-Multimedia-Mute-1'></i>\nF11\nRGui\n\n\n\n>"
+    "@\n.\n<i class='kb kb-Multimedia-Mute-1'></i>\nF11\nRGui\n\n\n\n3"
   ],
   [
     {
@@ -300,7 +301,7 @@
         3
       ]
     },
-    "\n\n<i class='fa fa-folder-o'></i>\n<i class='kb kb-Unicode-Page-Down-1'></i>\n\n\nK\n\n\\"
+    "\n\n<i class='fa fa-folder-o'></i>\n<i class='kb kb-Unicode-Page-Down-1'></i>\n\n\nK\n\n&"
   ],
   [
     {
@@ -328,17 +329,43 @@
   ],
   [
     {
-      "y": -0.25,
+      "y": -0.3500000000000001,
+      "x": 2.5,
+      "t": "#000000\n\n\n#c13828",
+      "f": 3
+    },
+    "\n\n\nAlt\nOSM\n\nAlt",
+    {
+      "x": 5,
+      "t": "#000000\n\n\n\n\n\n\n\n#1db63a"
+    },
+    "\n\n\n\nAltGr\n\nDel\n\n."
+  ],
+  [
+    {
+      "y": -0.9000000000000004,
       "x": 3.5,
-      "t": "#000000\n\n\n#c13828\n\n#4367fa\n\n\n#1db63a"
+      "t": "#000000\n\n\n#c13828\n\n#4367fa\n\n\n#1db63a",
+      "f": 5,
+      "fa": [
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        3
+      ]
     },
     "\n\n\nCaps\nShft\nMM\n'\n\nLock",
     {
       "x": 3,
       "fa": [
-        3,
-        3,
-        3,
+        0,
+        0,
+        0,
         3,
         0,
         0,
@@ -347,28 +374,28 @@
         3
       ]
     },
-    "\n\n\nLock\nAGr\nMM\nSpc\n\n-"
+    "\n\n\nLock\n\nMM\nSpc\n\n0"
   ],
   [
     {
       "y": -0.8999999999999999,
       "x": 4.5,
-      "t": "#000000\n\n\n#c13828\n#1db63a\n#4367fa",
+      "t": "#000000\n\n\n#c13828\n#1db63a",
       "fa": [
-        3,
-        3,
-        3,
+        0,
+        0,
+        0,
         3
       ]
     },
     "\n\n\n_\nSym\n\n_",
     {
       "x": 1,
-      "t": "#000000\n\n\n\n#ad3324\n#4367fa\n\n\n#1db63a",
+      "t": "#000000\n\n\n\n#ad3324\n\n\n\n#1db63a",
       "fa": [
-        3,
-        3,
-        3,
+        0,
+        0,
+        0,
         3,
         0,
         0,
