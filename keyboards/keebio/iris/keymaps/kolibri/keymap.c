@@ -79,7 +79,8 @@ enum layers {
     L_BASE_OV_SYM,
     L_FN,
     L_SYM,
-    L_CTL_MAC,
+    L_MACRO,
+    L_MEDIA,
 #ifdef MOUSEKEY_ENABLE
     L_MOUSE,
 #endif
@@ -131,7 +132,7 @@ enum custom_keycodes {
 #define RC_PLUS RCTL_T(KC_PLUS) // 16-bit
 #define RC_EXLM RCTL_T(KC_EXLM) // 16-bit
 #define FN_DQUO LT(L_FN, KC_DQUO) // 16-bit
-#define CT_SYLK LT(L_CTL_MAC, KC_SYLK)
+#define MD_SYLK LT(L_MEDIA, KC_SYLK)
 #define OVS_TAB LT(L_BASE_OV_SYM, KC_TAB)
 #ifdef LAYOUT_KOLIBRI_34
 #   define LA_RCBR LALT_T(KC_RCBR) // 16-bit
@@ -162,7 +163,7 @@ enum custom_keycodes {
 #define RG_F11  RGUI_T(KC_F11)
 #define RC_F12  RCTL_T(KC_F12)
 #define RS_CAPS RSFT_T(KC_CAPS)
-#define CT_FNLK LT(L_CTL_MAC, KC_FNLK)
+#define MC_FNLK LT(L_MACRO, KC_FNLK)
 #define OVF_TAB LT(L_BASE_OV_FN, KC_TAB)
 #ifdef LAYOUT_KOLIBRI_34
 #   define LA_F7   LALT_T(KC_F7)
@@ -238,11 +239,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     // Base-Overlay over the locked Fn layer:
     // - Inner key is transparent (held by thumb to enable this layer)
-    // - Home key (pressed by the index finger) is Fn-unlock/Ctl+Macro
+    // - Home key (pressed by the index finger) is Fn-unlock/Macro
     //
-    // Hold inner + hold home key always enables the Ctl+Macro layer
+    // Hold inner + hold home key always enables the Macro layer
     // Hold inner + tap home key is the same key combo to Fn lock or unlock.
-    [L_BASE_OV_FN] = KEYMAP_BASE(LS_QUOT, SY_UNDS, _______, CT_FNLK),
+    [L_BASE_OV_FN] = KEYMAP_BASE(LS_QUOT, SY_UNDS, _______, MC_FNLK),
 
     // Locked Sym layer sits below the Fn layer:
     // - Inner key is Underscore/Base-Overlay
@@ -253,27 +254,33 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     // Base-Overlay over the locked Sym layer:
     // - Inner key is transparent (held by thumb to enable this layer)
-    // - Home key (pressed by the index finger) is Sym-lock/Ctl+Macro
+    // - Home key (pressed by the index finger) is Sym-lock/Media
     //
-    // Hold inner + hold home key always enables the Ctl+Macro layer
+    // Hold inner + hold home key always enables the Media layer
     // Hold inner + tap home key is the same key combo to Sym lock or unlock
-    [L_BASE_OV_SYM] = KEYMAP_BASE(CT_SYLK, _______, FN_TAB, RA_SPC),
+    [L_BASE_OV_SYM] = KEYMAP_BASE(MD_SYLK, _______, FN_TAB, RA_SPC),
 
     // Momentary Fn layer:
     // - Inner key is transparent (held by thumb to enable this layer)
-    // - Home key (pressed by index finger) is Fn-lock/Ctl+Macro
-    [L_FN] = KEYMAP_FN(_______, CT_FNLK),
+    // - Home key (pressed by index finger) is Fn-lock/Media
+    [L_FN] = KEYMAP_FN(_______, MC_FNLK),
 
     // Momentary Sym layer:
     // - Inner key is transparent (held by thumb to enable this layer)
-    // - Home key (pressed by index finger) is Sym-lock/Ctl+Macro
-    [L_SYM] = KEYMAP_SYM(CT_SYLK, _______),
+    // - Home key (pressed by index finger) is Sym-lock/Macro
+    [L_SYM] = KEYMAP_SYM(MD_SYLK, _______),
 
-    [L_CTL_MAC] = LAYOUT_KOLIBRI_36(
-        RESET,   DT_PRNT, DT_DOWN, DT_UP,   DEBUG,   RGB_MOD, RGB_SPI, RGB_VAI, RGB_SAI, RGB_HUI,
-        _______, _______, M_XARGS, M_EMAIL, _______, RGB_TOG, KC_MPRV, KC_MPLY, KC_MNXT, KC_VOLU,
-        _______, _______, _______, _______, _______, KC_MYCM, KC_MSEL, KC_MSTP, KC_MUTE, KC_VOLD,
-                          _______, _______, _______, _______, _______, _______),
+    [L_MACRO] = LAYOUT_KOLIBRI_36(
+        RESET,   DT_PRNT, DT_DOWN, DT_UP,   DEBUG,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+        XXXXXXX, XXXXXXX, M_XARGS, M_EMAIL, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+                          XXXXXXX, KC_LSFT, XXXXXXX, _______, _______, XXXXXXX),
+
+    [L_MEDIA] = LAYOUT_KOLIBRI_36(
+        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, RGB_MOD, RGB_SPI, RGB_VAI, RGB_SAI, RGB_HUI,
+        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, RGB_TOG, KC_MPRV, KC_MPLY, KC_MNXT, KC_VOLU,
+        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_MYCM, KC_MSEL, KC_MSTP, KC_MUTE, KC_VOLD,
+                          XXXXXXX, _______, _______, XXXXXXX, KC_RSFT, XXXXXXX),
 
 #ifdef MOUSEKEY_ENABLE
     [L_MOUSE] = LAYOUT_KOLIBRI_36(
@@ -357,13 +364,13 @@ macros:
 
         // Layer locking
         switch(keycode) {
-        case CT_FNLK: // Fn-Lock/Unlock
+        case MC_FNLK: // Fn-Lock/Unlock
             if (record->event.pressed) {
                 layer_invert(L_FN_LOCKED);
                 layer_off(L_SYM_LOCKED);
             }
             return false; // doesn't send any keycode
-        case CT_SYLK: // Sym-Lock/Unlock
+        case MD_SYLK: // Sym-Lock/Unlock
             if (record->event.pressed) {
                 layer_invert(L_SYM_LOCKED);
                 layer_off(L_FN_LOCKED);
@@ -460,7 +467,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     rgblight_set_layer_state(1, layer_state_cmp(state, L_FN_LOCKED));
     rgblight_set_layer_state(2, layer_state_cmp(state, L_SYM));
     rgblight_set_layer_state(3, layer_state_cmp(state, L_FN));
-    rgblight_set_layer_state(4, layer_state_cmp(state, L_CTL_MAC));
+    rgblight_set_layer_state(4, layer_state_cmp(state, L_MACRO) || layer_state_cmp(state, L_MEDIA));
     return state;
 }
 #endif
