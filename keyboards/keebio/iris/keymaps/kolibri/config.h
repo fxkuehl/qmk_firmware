@@ -76,6 +76,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                             K32,     K33,     K34,              K35,     K36,     K37)
 #endif
 
+// KOLIBRI_BASE_LAYOUT defines the base layer layout for the 10x3 typing area.
+// You can define your own or use one of the pre-defined ones:
+// * KOLIBRI_BASE_QWERTY
+// * KOLIBRI_BASE_DVORAK
+// * KOLIBRI_BASE_COLEMAK
+// * KOLIBRI_BASE_COLEMAK_DH
+//
+// If nothing is defined, the default is Colemak-DH
+#define KOLIBRI_BASE_LAYOUT KOLIBRI_BASE_COLEMAK_DH
+
 // Options
 #define KOLIBRI_ONE_HANDED_NAV
 #define KOLIBRI_NUMPAD

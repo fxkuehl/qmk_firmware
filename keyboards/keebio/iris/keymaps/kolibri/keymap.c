@@ -103,20 +103,18 @@ enum custom_keycodes {
 // thumb key. 16-bit key codes need special handling in process_record_user.
 
 // Base layer
-#define LC_Z    LCTL_T(KC_Z)
-#define LG_X    LGUI_T(KC_X)
-#define RG_DOT  RGUI_T(KC_DOT)
-#define RC_SLSH RCTL_T(KC_SLSH)
+#define LC_T(K) LCTL_T(K)
+#define LG_T(K) LGUI_T(K)
+#define RG_T(K) RGUI_T(K)
+#define RC_T(K) RCTL_T(K)
 #define LS_QUOT LSFT_T(KC_QUOT)
 #define SY_UNDS LT(L_SYM, KC_UNDS) // 16-bit
 #define FN_TAB  LT(L_FN, KC_TAB)
 #ifdef LAYOUT_KOLIBRI_34
-#   define LA_C    LALT_T(KC_C)
-#   define LA_COMM LALT_T(KC_COMM)
+#   define LA_T(K) LALT_T(K)
 #   define RA_SPC  RALT_T(KC_SPC)
 #else
-#   define LA_C    KC_C
-#   define LA_COMM KC_COMM
+#   define LA_T(K) K
 #   define RA_SPC  KC_SPC
 #   define RA_DEL  RALT_T(KC_DEL)
 #   define OS_LALT OSM(MOD_LALT)
@@ -173,12 +171,49 @@ enum custom_keycodes {
 #   define LA_F10  KC_F10
 #endif
 
-// The Base layer gets duplicated to add a Base-Override layer that can be
-// layered on top of a locked Nav+Fn layer. The layer keys are parametrized.
-#define KEYMAP_BASE(K33, K34, K35, K36) LAYOUT_KOLIBRI_36( \
+// Pre-defined base layouts with slight adaptations that optimize the symbol
+// layer: < > ; : are on the symbol layer. They are replaced on the base layer
+// with @ # ` ~. On QWERTY P and `~ are swapped. In Dvorak, /? is back on the
+// base layer, replacing ;:, while '\" is replaced with `~.
+#define KOLIBRI_BASE_QWERTY \
+        KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_GRV,  \
+        KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_P,    \
+        KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH
+
+#define KOLIBRI_BASE_DVORAK \
+        KC_GRV,  KC_COMM, KC_DOT,  KC_P,    KC_Y,    KC_F,    KC_G,    KC_C,    KC_R,    KC_L,    \
+        KC_A,    KC_O,    KC_E,    KC_U,    KC_I,    KC_D,    KC_H,    KC_T,    KC_N,    KC_S,    \
+        KC_SLSH, KC_Q,    KC_J,    KC_K,    KC_X,    KC_B,    KC_M,    KC_W,    KC_V,    KC_Z
+
+#define KOLIBRI_BASE_COLEMAK \
+        KC_Q,    KC_W,    KC_F,    KC_P,    KC_G,    KC_J,    KC_L,    KC_U,    KC_Y,    KC_GRV,  \
+        KC_A,    KC_R,    KC_S,    KC_T,    KC_D,    KC_H,    KC_N,    KC_E,    KC_I,    KC_O,    \
+        KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_K,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH
+
+#define KOLIBRI_BASE_COLEMAK_DH \
         KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,    KC_J,    KC_L,    KC_U,    KC_Y,    KC_GRV,  \
         KC_A,    KC_R,    KC_S,    KC_T,    KC_G,    KC_M,    KC_N,    KC_E,    KC_I,    KC_O,    \
-        LC_Z,    LG_X,    LA_C,    KC_D,    KC_V,    KC_K,    KC_H,    LA_COMM, RG_DOT,  RC_SLSH, \
+        KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,    KC_K,    KC_H,    KC_COMM, KC_DOT,  KC_SLSH
+
+// Colemak-DK is the default base layout, if none is specified in config.h
+#ifndef KOLIBRI_BASE_LAYOUT
+#   define KOLIBRI_BASE_LAYOUT KOLIBRI_BASE_COLEMAK_DH
+#endif
+
+// Add bottom row mod-taps to the base layout
+#define LAYOUT_KOLIBRI_BASE_MODS_36( \
+        K00, K01, K02, K03, K04, K05, K06, K07, K08, K09, \
+        K10, K11, K12, K13, K14, K15, K16, K17, K18, K19, \
+        K20, K21, K22, K23, K24, K25, K26, K27, K28, K29, \
+                  K32, K33, K34, K35, K36, K37) LAYOUT_KOLIBRI_36( \
+        K00,      K01,      K02,     K03,     K04,     K05,     K06,     K07,      K08,      K09, \
+        K10,      K11,      K12,     K13,     K14,     K15,     K16,     K17,      K18,      K19, \
+   LC_T(K20),LG_T(K21),LA_T(K22),    K23,     K24,     K25,     K26,LA_T(K27),RG_T(K28),RC_T(K29),\
+                            K32,     K33,     K34,     K35,     K36,     K37)
+
+// The Base layer gets duplicated to add a Base-Override layer that can be
+// layered on top of a locked Nav+Fn layer. The layer keys are parametrized.
+#define KEYMAP_BASE(LAYOUT, K33, K34, K35, K36) LAYOUT_KOLIBRI_BASE_MODS_36(LAYOUT, \
                           OS_LALT, K33,     K34,     K35,     K36,     RA_DEL)
 
 // The Nav+Fn layer gets duplicated for a momentary and a locked version.
@@ -228,7 +263,7 @@ enum custom_keycodes {
 #endif
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    [L_BASE] = KEYMAP_BASE(LS_QUOT, SY_UNDS, FN_TAB, RA_SPC),
+    [L_BASE] = KEYMAP_BASE(KOLIBRI_BASE_LAYOUT, LS_QUOT, SY_UNDS, FN_TAB, RA_SPC),
 
     // Locked Fn layer sits below the Sym layer:
     // - Inner key is Tab/Base-Overlay
@@ -243,7 +278,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //
     // Hold inner + hold home key always enables the Macro layer
     // Hold inner + tap home key is the same key combo to Fn lock or unlock.
-    [L_BASE_OV_FN] = KEYMAP_BASE(LS_QUOT, SY_UNDS, _______, MC_FNLK),
+    [L_BASE_OV_FN] = KEYMAP_BASE(KOLIBRI_BASE_LAYOUT, LS_QUOT, SY_UNDS, _______, MC_FNLK),
 
     // Locked Sym layer sits below the Fn layer:
     // - Inner key is Underscore/Base-Overlay
@@ -258,7 +293,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //
     // Hold inner + hold home key always enables the Media layer
     // Hold inner + tap home key is the same key combo to Sym lock or unlock
-    [L_BASE_OV_SYM] = KEYMAP_BASE(MD_SYLK, _______, FN_TAB, RA_SPC),
+    [L_BASE_OV_SYM] = KEYMAP_BASE(KOLIBRI_BASE_LAYOUT, MD_SYLK, _______, FN_TAB, RA_SPC),
 
     // Momentary Fn layer:
     // - Inner key is transparent (held by thumb to enable this layer)
