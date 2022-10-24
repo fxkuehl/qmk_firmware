@@ -16,6 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include QMK_KEYBOARD_H
+#include "fxkuehl_kolibri.h"
 
 // Mirror the thumbs on left-handed layout
 #if defined(LAYOUT_KOLIBRI_LEFTY_34)
