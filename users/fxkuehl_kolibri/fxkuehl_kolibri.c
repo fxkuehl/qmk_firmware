@@ -91,7 +91,7 @@ enum custom_keycodes {
 #define LG_T(K) LGUI_T(K)
 #define RG_T(K) RGUI_T(K)
 #define RC_T(K) RCTL_T(K)
-#define LS_QUOT LSFT_T(KC_QUOT)
+#define LS_QUES LSFT_T(KC_QUES) // 16-bit
 #define SY_UNDS LT(L_SYM, KC_UNDS) // 16-bit
 #define FN_TAB  LT(L_FN, KC_TAB)
 #ifdef LAYOUT_KOLIBRI_34
@@ -111,9 +111,10 @@ enum custom_keycodes {
 #define LG_1    LGUI_T(KC_1)
 #define RG_GT   RGUI_T(KC_GT)   // 16-bit
 #define RG_3    RGUI_T(KC_3)
+#define RC_SLSH RCTL_T(KC_SLSH)
 #define RC_PLUS RCTL_T(KC_PLUS) // 16-bit
-#define RC_EXLM RCTL_T(KC_EXLM) // 16-bit
-#define FN_DQUO LT(L_FN, KC_DQUO) // 16-bit
+#define RC_PIPE RCTL_T(KC_PIPE) // 16-bit
+#define FN_COLN LT(L_FN, KC_COLN) // 16-bit
 #define MD_SYLK LT(L_MEDIA, KC_SYLK)
 #define OVS_TAB LT(L_BASE_OV_SYM, KC_TAB)
 #ifdef LAYOUT_KOLIBRI_34
@@ -156,28 +157,28 @@ enum custom_keycodes {
 #endif
 
 // Pre-defined base layouts with slight adaptations that optimize the symbol
-// layer: < > ; : are on the symbol layer. They are replaced on the base layer
-// with @ # ` ~. On QWERTY P and `~ are swapped. In Dvorak, /? is back on the
-// base layer, replacing ;:, while '\" is replaced with `~.
+// layer: < > ; : / are on the symbol layer. Quotes are more easily reachable
+// on the base layer on QWERTY and Colemak-based layouts. < > are replaced
+// with @ #. ? is on a thumb key.
 #define KOLIBRI_BASE_QWERTY \
-        KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_GRV,  \
-        KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_P,    \
-        KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH
+        KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    \
+        KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_QUOT, \
+        KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_GRV
 
 #define KOLIBRI_BASE_DVORAK \
-        KC_GRV,  KC_COMM, KC_DOT,  KC_P,    KC_Y,    KC_F,    KC_G,    KC_C,    KC_R,    KC_L,    \
+        KC_QUOT, KC_COMM, KC_DOT,  KC_P,    KC_Y,    KC_F,    KC_G,    KC_C,    KC_R,    KC_L,    \
         KC_A,    KC_O,    KC_E,    KC_U,    KC_I,    KC_D,    KC_H,    KC_T,    KC_N,    KC_S,    \
-        KC_SLSH, KC_Q,    KC_J,    KC_K,    KC_X,    KC_B,    KC_M,    KC_W,    KC_V,    KC_Z
+        KC_GRV,  KC_Q,    KC_J,    KC_K,    KC_X,    KC_B,    KC_M,    KC_W,    KC_V,    KC_Z
 
 #define KOLIBRI_BASE_COLEMAK \
         KC_Q,    KC_W,    KC_F,    KC_P,    KC_G,    KC_J,    KC_L,    KC_U,    KC_Y,    KC_GRV,  \
         KC_A,    KC_R,    KC_S,    KC_T,    KC_D,    KC_H,    KC_N,    KC_E,    KC_I,    KC_O,    \
-        KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_K,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH
+        KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_K,    KC_M,    KC_COMM, KC_DOT,  KC_QUOT
 
 #define KOLIBRI_BASE_COLEMAK_DH \
         KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,    KC_J,    KC_L,    KC_U,    KC_Y,    KC_GRV,  \
         KC_A,    KC_R,    KC_S,    KC_T,    KC_G,    KC_M,    KC_N,    KC_E,    KC_I,    KC_O,    \
-        KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,    KC_K,    KC_H,    KC_COMM, KC_DOT,  KC_SLSH
+        KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,    KC_K,    KC_H,    KC_COMM, KC_DOT,  KC_QUOT
 
 // Colemak-DK is the default base layout, if none is specified in config.h
 #ifndef KOLIBRI_BASE_LAYOUT
@@ -227,27 +228,27 @@ enum custom_keycodes {
 #ifdef KOLIBRI_NUMPAD
 #   ifdef KOLIBRI_SOUTHPAW
 #       define KEYMAP_SYM(K33, K34) LAYOUT_KOLIBRI_36( \
-        KC_PIPE, KC_7,    KC_8,    KC_9,    KC_PERC, KC_CIRC, KC_DLR,  KC_LPRN, KC_RPRN, KC_COLN, \
-        KC_MINS, KC_4,    KC_5,    KC_6,    KC_ASTR, KC_SCLN, KC_LBRC, KC_LCBR, KC_RCBR, KC_RBRC, \
-        LC_PLUS, LG_1,    LA_2,    KC_3,    KC_AMPR, KC_BSLS, RA_EQL,  LA_LT,   RG_GT,   RC_EXLM, \
-                          _______, K33,     K34,     FN_DQUO, RA_0,    RA_DOT)
+        KC_EXLM, KC_7,    KC_8,    KC_9,    KC_PERC, KC_CIRC, KC_AMPR, KC_LPRN, KC_RPRN, KC_SCLN, \
+        KC_MINS, KC_4,    KC_5,    KC_6,    KC_ASTR, KC_DLR,  KC_LBRC, KC_LCBR, KC_RCBR, KC_RBRC, \
+        LC_PLUS, LG_1,    LA_2,    KC_3,    KC_SLSH, KC_BSLS, RA_EQL,  LA_LT,   RG_GT,   RC_PIPE, \
+                          _______, K33,     K34,     FN_COLN, RA_0,    RA_DOT)
 #   else
 #       define KEYMAP_SYM(K33, K34) LAYOUT_KOLIBRI_36( \
-        KC_BSLS, KC_LPRN, KC_RPRN, KC_DLR,  KC_PERC, KC_CIRC, KC_7,    KC_8,    KC_9,    KC_COLN, \
-        KC_EXLM, KC_LT,   KC_EQL,  KC_GT,   KC_SCLN, KC_ASTR, KC_4,    KC_5,    KC_6,    KC_MINS, \
-        LC_LBRC, LG_LCBR, LA_RCBR, RA_RBRC, KC_PIPE, KC_AMPR, KC_1,    LA_2,    RG_3,    RC_PLUS, \
-                          _______, K33,     K34,     FN_DQUO, RA_0,    RA_DOT)
+        KC_BSLS, KC_LPRN, KC_RPRN, KC_DLR,  KC_PERC, KC_CIRC, KC_7,    KC_8,    KC_9,    KC_SCLN, \
+        KC_EXLM, KC_LT,   KC_EQL,  KC_GT,   KC_AMPR, KC_ASTR, KC_4,    KC_5,    KC_6,    KC_MINS, \
+        LC_LBRC, LG_LCBR, LA_RCBR, RA_RBRC, KC_PIPE, KC_SLSH, KC_1,    LA_2,    RG_3,    RC_PLUS, \
+                          _______, K33,     K34,     FN_COLN, RA_0,    RA_DOT)
 #   endif
 #else
 #   define KEYMAP_SYM(K33, K34) LAYOUT_KOLIBRI_36( \
-        KC_EXLM, KC_LPRN, KC_RPRN, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_SCLN, KC_COLN, \
+        KC_EXLM, KC_LPRN, KC_RPRN, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_PLUS, KC_SCLN, \
         KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    \
-        LC_LBRC, LG_LCBR, LA_RCBR, RA_RBRC, KC_PIPE, KC_BSLS, KC_EQL,  LA_LT,   RG_GT,   RC_PLUS, \
-                          _______, K33,     K34,     FN_DQUO, RA_MINS, RA_DOT)
+        LC_LBRC, LG_LCBR, LA_RCBR, RA_RBRC, KC_PIPE, KC_BSLS, KC_EQL,  LA_LT,   RG_GT,   RC_SLSH, \
+                          _______, K33,     K34,     FN_COLN, RA_MINS, RA_DOT)
 #endif
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    [L_BASE] = KEYMAP_BASE(KOLIBRI_BASE_LAYOUT, LS_QUOT, SY_UNDS, FN_TAB, RA_SPC),
+    [L_BASE] = KEYMAP_BASE(KOLIBRI_BASE_LAYOUT, LS_QUES, SY_UNDS, FN_TAB, RA_SPC),
 
     // Locked Fn layer sits below the Sym layer:
     // - Inner key is Tab/Base-Overlay
@@ -262,7 +263,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //
     // Hold inner + hold home key always enables the Macro layer
     // Hold inner + tap home key is the same key combo to Fn lock or unlock.
-    [L_BASE_OV_FN] = KEYMAP_BASE(KOLIBRI_BASE_LAYOUT, LS_QUOT, SY_UNDS, _______, MC_FNLK),
+    [L_BASE_OV_FN] = KEYMAP_BASE(KOLIBRI_BASE_LAYOUT, LS_QUES, SY_UNDS, _______, MC_FNLK),
 
     // Locked Sym layer sits below the Fn layer:
     // - Inner key is Underscore/Base-Overlay
@@ -402,10 +403,10 @@ macros:
         // Mod-tap with modified tap-action
         if (IS_LAYER_ON(L_SYM) || IS_LAYER_ON(L_SYM_LOCKED)) {
             switch (keycode) {
-            case FN_DQUO: code16 = KC_DQUO; break;
+            case FN_COLN: code16 = KC_COLN; break;
 #if defined(KOLIBRI_SOUTHPAW)
             case LC_PLUS: code16 = KC_PLUS; break;
-            case RC_EXLM: code16 = KC_EXLM; break;
+            case RC_PIPE: code16 = KC_PIPE; break;
 #else
             case LG_LCBR: code16 = KC_LCBR; break;
             case LA_RCBR: code16 = KC_RCBR; break;
@@ -421,6 +422,7 @@ macros:
             }
         } else {
             switch (keycode) {
+            case LS_QUES: code16 = KC_QUES; break;
             case SY_UNDS: code16 = KC_UNDS; break;
             default: return true;
             }
