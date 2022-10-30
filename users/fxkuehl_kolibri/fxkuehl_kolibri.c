@@ -29,6 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         K10,     K11,     K12,     K13,     K14,     K15,     K16,     K17,     K18,     K19, \
         K20,     K21,     K22,     K23,     K24,     K25,     K26,     K27,     K28,     K29, \
                                    K36,     K35,     K34,     K33)
+#   define LAYOUT_KOLIBRI_RAW_34 LAYOUT_KOLIBRI_LEFTY_34
 #   ifndef KOLIBRI_ONE_HANDED_NAV
 #       define KOLIBRE_NAV_ON_RIGHT
 #   endif
@@ -45,6 +46,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         K10,     K11,     K12,     K13,     K14,     K15,     K16,     K17,     K18,     K19, \
         K20,     K21,     K22,     K23,     K24,     K25,     K26,     K27,     K28,     K29, \
                           K37,     K36,     K35,     K34,     K33,     K32)
+#   define LAYOUT_KOLIBRI_RAW_36 LAYOUT_KOLIBRI_LEFTY_36
 #   ifndef KOLIBRI_ONE_HANDED_NAV
 #       define KOLIBRE_NAV_ON_RIGHT
 #   endif
@@ -69,6 +71,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         K10,     K11,     K12,     K13,     K14,     K15,     K16,     K17,     K18,     K19, \
         K20,     K21,     K22,     K23,     K24,     K25,     K26,     K27,     K28,     K29, \
                                    K33,     K34,     K35,     K36)
+#   define LAYOUT_KOLIBRI_RAW_36(                         \
+        K00, K01, K02, K03, K04, K05, K06, K07, K08, K09, \
+        K10, K11, K12, K13, K14, K15, K16, K17, K18, K19, \
+        K20, K21, K22, K23, K24, K25, K26, K27, K28, K29, \
+                  K32, K33, K34, K35, K36, K37) LAYOUT_KOLIBRI_RAW_34( \
+        K00,     K01,     K02,     K03,     K04,     K05,     K06,     K07,     K08,     K09, \
+        K10,     K11,     K12,     K13,     K14,     K15,     K16,     K17,     K18,     K19, \
+        K20,     K21,     K22,     K23,     K24,     K25,     K26,     K27,     K28,     K29, \
+                                   K33,     K34,     K35,     K36)
+#endif
+
+#ifndef LAYOUT_KOLIBRI_RAW_36
+#   define LAYOUT_KOLIBRI_RAW_36 LAYOUT_KOLIBRI_36
 #endif
 
 // Macro keys
@@ -113,7 +128,11 @@ enum custom_keycodes {
 #define RG_3    RGUI_T(KC_3)
 #define RC_SLSH RCTL_T(KC_SLSH)
 #define FN_SCLN LT(L_FN, KC_SCLN)
-#define MD_SYLK LT(L_MEDIA, KC_SYLK)
+#if defined(LAYOUT_KOLIBRI_LEFTY_34) || defined(LAYOUT_KOLIBRI_LEFTY_36)
+#   define MD_SYLK LT(L_MACRO, KC_SYLK)
+#else
+#   define MD_SYLK LT(L_MEDIA, KC_SYLK)
+#endif
 #define OVS_TAB LT(L_BASE_OV_SYM, KC_TAB)
 #ifdef LAYOUT_KOLIBRI_34
 #   define LA_RCBR LALT_T(KC_RCBR) // 16-bit
@@ -144,7 +163,11 @@ enum custom_keycodes {
 #define RG_F11  RGUI_T(KC_F11)
 #define RC_F12  RCTL_T(KC_F12)
 #define RS_CAPS RSFT_T(KC_CAPS)
-#define MC_FNLK LT(L_MACRO, KC_FNLK)
+#if defined(LAYOUT_KOLIBRI_LEFTY_34) || defined(LAYOUT_KOLIBRI_LEFTY_36)
+#   define MC_FNLK LT(L_MEDIA, KC_FNLK)
+#else
+#   define MC_FNLK LT(L_MACRO, KC_FNLK)
+#endif
 #define OVF_TAB LT(L_BASE_OV_FN, KC_TAB)
 #ifdef LAYOUT_KOLIBRI_34
 #   define LA_F7   LALT_T(KC_F7)
@@ -288,13 +311,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // - Home key (pressed by index finger) is Sym-lock/Macro
     [L_SYM] = KEYMAP_SYM(MD_SYLK, _______),
 
-    [L_MACRO] = LAYOUT_KOLIBRI_36(
+    [L_MACRO] = LAYOUT_KOLIBRI_RAW_36(
         RESET,   DT_PRNT, DT_DOWN, DT_UP,   DEBUG,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
         XXXXXXX, XXXXXXX, M_XARGS, M_EMAIL, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
                           XXXXXXX, KC_LSFT, XXXXXXX, _______, _______, XXXXXXX),
 
-    [L_MEDIA] = LAYOUT_KOLIBRI_36(
+    [L_MEDIA] = LAYOUT_KOLIBRI_RAW_36(
         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, RGB_MOD, RGB_SPI, RGB_VAI, RGB_SAI, RGB_HUI,
         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, RGB_TOG, KC_MPRV, KC_MPLY, KC_MNXT, KC_VOLU,
         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_MYCM, KC_MSEL, KC_MSTP, KC_MUTE, KC_VOLD,
