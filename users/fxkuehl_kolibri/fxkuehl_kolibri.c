@@ -346,116 +346,118 @@ bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
     return prefer_tap(keycode);
 }
 
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    /* Modify shifted ',', '.' and '`' on the base layer to move '<', '>' and
-     * '/' to the Sym layer while keeping ',', '.' and '?' on the Base layer.
-     * Remember the modified code for releasing it later even if shift was
-     * released first.
-     */
-    static uint16_t comm_release = 0;
-    static uint16_t  dot_release = 0;
-    static uint16_t  grv_release = 0;
+/* Replace some shifted symbols with different ones. Used to selectively move
+ * some symbols from the base layer to the Sym layer.
+ */
+static bool process_record_shifted_symbols(uint16_t keycode, keyrecord_t *record) {
+    // Remember the modified code for releasing it later even if Shift was
+    // released first.
+    static uint16_t comm_release, dot_release, grv_release;
+    uint16_t new_code = 0;
 
-    /* Sym layer doesn't use shift, so skip custom shift processing. */
+    // Ignore Sym-layer where the shifted symbols moved to
     if (IS_LAYER_ON(L_SYM))
-        goto macros;
+        return true;
 
-    if ((get_mods() & MOD_MASK_SHIFT) && record->event.pressed) {
-        uint16_t new_code = 0;
-
+    if ((get_mods() & MOD_MASK_SHIFT) && record->event.pressed) { // Shifted key press
         switch (keycode & 0xff) {
         case KC_COMM: new_code = comm_release = (keycode & 0xff00) | KC_2;    break; // '@'
         case KC_DOT:  new_code =  dot_release = (keycode & 0xff00) | KC_3;    break; // '#'
         case KC_GRV:  new_code =  grv_release = (keycode & 0xff00) | KC_SLSH; break; // '?'
+        default: return true; // continue processing other keys normally
         }
-        if (new_code) {
-            register_code16(new_code);
-            clear_weak_mods();
-            return false;
-        }
-    } else if (record->event.pressed) {
+        register_code16(new_code);
+        return false; // stop processing
+    } else if (record->event.pressed) { // Non-shifted key press
         switch (keycode & 0xff) {
         case KC_COMM: comm_release = 0; break;
         case KC_DOT:   dot_release = 0; break;
         case KC_GRV:   grv_release = 0; break;
         }
-    } else { // Release event
-        uint16_t new_code = 0;
-
+        return true; // continue processing normally
+    } else { // Key release
         switch (keycode & 0xff) {
         case KC_COMM: new_code = comm_release; break;
         case KC_DOT:  new_code =  dot_release; break;
         case KC_GRV:  new_code =  grv_release; break;
         }
-        if (new_code) {
-            unregister_code16(new_code);
-            return false;
-        }
+        if (!new_code)
+            return true;
+        unregister_code16(new_code);
+        return false; // stop processing
     }
+}
 
-macros:
-    if (record->event.pressed) { // Macros
+static bool process_record_macros(uint16_t keycode, keyrecord_t *record) {
+    if (record->event.pressed) {
         switch (keycode) {
-        case M_EMAIL:
-            SEND_STRING("Felix Kuehling <Felix.Kuehling@amd.com>");
-            return false;
-        case M_XARGS:
-            SEND_STRING(" -print0 | xargs -0 grep ");
-            return false;
+        case M_EMAIL: SEND_STRING("Felix Kuehling <Felix.Kuehling@amd.com>"); return false;
+        case M_XARGS: SEND_STRING(" -print0 | xargs -0 grep "); return false;
         }
     }
+    return true;
+}
 
-    if (record->tap.count) {
-        uint16_t code16;
+static bool process_record_layer_lock(uint16_t keycode, keyrecord_t *record) {
+    if (!record->tap.count)
+        return true;
 
-        // Layer locking
-        switch(keycode) {
-        case MC_FNLK: // Fn-Lock/Unlock
-            if (record->event.pressed) {
-                layer_invert(L_FN_LOCKED);
-                layer_off(L_SYM_LOCKED);
-            }
-            return false; // doesn't send any keycode
-        case MD_SYLK: // Sym-Lock/Unlock
-            if (record->event.pressed) {
-                layer_invert(L_SYM_LOCKED);
-                layer_off(L_FN_LOCKED);
-            }
-            return false; // doesn't send any keycode
-        default:
-	    break; // fall through
+    switch(keycode) {
+    case MC_FNLK: // Fn-Lock/Unlock
+        if (record->event.pressed) {
+            layer_invert(L_FN_LOCKED);
+            layer_off(L_SYM_LOCKED);
         }
+        return false; // doesn't send any keycode
+    case MD_SYLK: // Sym-Lock/Unlock
+        if (record->event.pressed) {
+            layer_invert(L_SYM_LOCKED);
+            layer_off(L_FN_LOCKED);
+        }
+        return false; // doesn't send any keycode
+    default: return true;
+    }
+}
 
-        // Mod-tap with modified tap-action
-        if (IS_LAYER_ON(L_SYM) || IS_LAYER_ON(L_SYM_LOCKED)) {
-            switch (keycode) {
+static bool process_record_16bit_lt_mt(uint16_t keycode, keyrecord_t *record) {
+    uint16_t code16;
+
+    if (!record->tap.count)
+        return true;
+
+    if (IS_LAYER_ON(L_SYM) || IS_LAYER_ON(L_SYM_LOCKED)) {
+        switch (keycode) {
 #if defined(KOLIBRI_SOUTHPAW)
-            case LC_DLR:  code16 = KC_DLR; break;
+        case LC_DLR:  code16 = KC_DLR; break;
 #else
-            case LG_LCBR: code16 = KC_LCBR; break;
-            case LA_RCBR: code16 = KC_RCBR; break;
+        case LG_LCBR: code16 = KC_LCBR; break;
+        case LA_RCBR: code16 = KC_RCBR; break;
 #endif
 #if !defined(KOLIBRI_NUMPAD) || defined(KOLIBRI_SOUTHPAW)
 #   if defined(LAYOUT_KOLIBRI_34) || defined(KOLIBRI_SOUTHPAW)
-            case LA_LT:   code16 = KC_LT; break;
+        case LA_LT:   code16 = KC_LT; break;
 #   endif
-            case RG_GT:   code16 = KC_GT; break;
+        case RG_GT:   code16 = KC_GT; break;
 #endif
-            default: return true;
-            }
-        } else {
-            switch (keycode) {
-            case SY_UNDS: code16 = KC_UNDS; break;
-            default: return true;
-            }
+        default: return true;
         }
-        if (record->event.pressed) {
-            register_code16(code16);
-            clear_weak_mods();
-	} else
-            unregister_code16(code16);
-	return false;
+    } else {
+        switch (keycode) {
+        case SY_UNDS: code16 = KC_UNDS; break;
+        default: return true;
+        }
     }
+    if (record->event.pressed) {
+        register_code16(code16);
+        clear_weak_mods(); // Avoid modifying subsequent rolling key strokes
+    } else
+        unregister_code16(code16);
+    return false;
+}
 
-    return true;
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    return process_record_shifted_symbols(keycode, record) &&
+           process_record_macros(keycode, record) &&
+           process_record_layer_lock(keycode, record) &&
+           process_record_16bit_lt_mt(keycode, record);
 }
