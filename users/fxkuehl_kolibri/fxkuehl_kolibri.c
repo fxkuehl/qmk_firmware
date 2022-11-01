@@ -419,7 +419,7 @@ static bool process_record_layer_lock(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
-static bool process_record_16bit_lt_mt(uint16_t keycode, keyrecord_t *record) {
+static bool process_record_lt_mt_hacks(uint16_t keycode, keyrecord_t *record) {
     uint16_t code16;
 
     if (!record->tap.count)
@@ -439,6 +439,12 @@ static bool process_record_16bit_lt_mt(uint16_t keycode, keyrecord_t *record) {
 #   endif
         case RG_GT:   code16 = KC_GT; break;
 #endif
+        case FN_SCLN:
+            if (record->event.pressed && record->tap.count == 2) {
+                tap_code(KC_ENT);
+                return false;
+            }
+            // fall through
         default: return true;
         }
     } else {
@@ -459,5 +465,5 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return process_record_shifted_symbols(keycode, record) &&
            process_record_macros(keycode, record) &&
            process_record_layer_lock(keycode, record) &&
-           process_record_16bit_lt_mt(keycode, record);
+           process_record_lt_mt_hacks(keycode, record);
 }
