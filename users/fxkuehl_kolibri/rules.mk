@@ -1,5 +1,6 @@
-MOUSEKEY_ENABLE = yes       # Mouse keys
+MOUSEKEY_ENABLE = yes
+TAP_DANCE_ENABLE = yes
 
 DYNAMIC_TAPPING_TERM_ENABLE = yes
 
-INTROSPECTION_KEYMAP_C = fxkuehl_kolibri.c # keymaps
+INTROSPECTION_KEYMAP_C = fxkuehl_kolibri.c

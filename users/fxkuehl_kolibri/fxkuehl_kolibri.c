@@ -92,6 +92,113 @@ enum custom_keycodes {
   M_XARGS
 };
 
+// Tap dance
+enum {
+    TD_F1,
+    TD_F2,
+    TD_F3,
+    TD_F4,
+    // F5 is a mod-tap
+    // F6 is a mod-tap
+    TD_F7,
+    TD_F8,
+    TD_F9,
+    TD_F10,
+    // F11 is a mod-tap
+    // F12 is a mod-tap
+    TD_PSCR,
+    TD_SLCK,
+    TD_PAUS,
+};
+
+typedef struct {
+    uint16_t kc;
+} safe_key_t;
+
+static uint16_t last_safe_key = KC_NO;
+static bool last_safe_key_held = false;
+
+static void safe_key_finished(qk_tap_dance_state_t *state, void *user_data);
+static void safe_key_reset(qk_tap_dance_state_t *state, void *user_data);
+
+#define ACTION_TAP_DANCE_SAFE_KEY(kc) \
+    { .fn = {NULL, safe_key_finished, safe_key_reset}, .user_data = (void *)&((safe_key_t){kc}), }
+
+qk_tap_dance_action_t tap_dance_actions[] = {
+    [TD_F1]   = ACTION_TAP_DANCE_SAFE_KEY(KC_F1),
+    [TD_F2]   = ACTION_TAP_DANCE_SAFE_KEY(KC_F2),
+    [TD_F3]   = ACTION_TAP_DANCE_SAFE_KEY(KC_F3),
+    [TD_F4]   = ACTION_TAP_DANCE_SAFE_KEY(KC_F4),
+    [TD_F7]   = ACTION_TAP_DANCE_SAFE_KEY(KC_F7),
+    [TD_F8]   = ACTION_TAP_DANCE_SAFE_KEY(KC_F8),
+    [TD_F9]   = ACTION_TAP_DANCE_SAFE_KEY(KC_F9),
+    [TD_F10]  = ACTION_TAP_DANCE_SAFE_KEY(KC_F10),
+    [TD_PSCR] = ACTION_TAP_DANCE_SAFE_KEY(KC_PSCR),
+    [TD_SLCK] = ACTION_TAP_DANCE_SAFE_KEY(KC_SLCK),
+    [TD_PAUS] = ACTION_TAP_DANCE_SAFE_KEY(KC_PAUS),
+};
+
+#define container_of(ptr, container, member) (container *)((void *)(ptr) - offsetof(container, member))
+
+static void safe_key_finished(qk_tap_dance_state_t *state, void *user_data) {
+    safe_key_t *safe_key = (safe_key_t *)user_data;
+
+    if ((state->pressed && !state->interrupted) || state->count >= 2) {
+        qk_tap_dance_action_t *action = container_of(state, qk_tap_dance_action_t, state);
+        long index = action - tap_dance_actions;
+
+        if (index < 0 || index >= sizeof(tap_dance_actions)/sizeof(tap_dance_actions[0])) {
+            tap_code(KC_E);
+            return;
+        }
+
+        // Key is held without interruption once or tapped multiple times.
+        // Register it and let it be used without a tap-dance subsequently
+        // until any other key pressed.
+        register_code16(safe_key->kc);
+        last_safe_key = TD(index);
+        last_safe_key_held = true;
+    }
+}
+
+static void safe_key_reset(qk_tap_dance_state_t *state, void *user_data) {
+    safe_key_t *safe_key = (safe_key_t *)user_data;
+
+    if (last_safe_key_held) {
+        unregister_code16(safe_key->kc);
+        last_safe_key_held = false;
+    }
+}
+
+#define IS_LT_MT(kc) (((kc) >= QK_LAYER_TAP    && (kc) <= QK_LAYER_TAP_MAX) || \
+                      ((kc) >= QK_MOD_TAP      && (kc) <= QK_MOD_TAP_MAX  ) || \
+                      ((kc) >= QK_ONE_SHOT_MOD && (kc) <= QK_ONE_SHOT_MOD_MAX))
+
+static bool process_record_safe_keys(uint16_t keycode, keyrecord_t *record) {
+    if (keycode == last_safe_key && keycode != KC_NO) {
+        safe_key_t *safe_key = (safe_key_t *)tap_dance_actions[TD_INDEX(keycode)].user_data;
+
+        if (record->event.pressed) {
+            register_code16(safe_key->kc);
+            last_safe_key_held = true;
+        } else {
+            unregister_code16(safe_key->kc);
+            last_safe_key_held = false;
+        }
+        return false;
+    } else if (last_safe_key != KC_NO &&
+               (!IS_LT_MT(keycode) || record->tap.count)) {
+        if (last_safe_key_held) {
+            safe_key_t *safe_key = (safe_key_t *)tap_dance_actions[TD_INDEX(last_safe_key)].user_data;
+
+            unregister_code16(safe_key->kc);
+            last_safe_key_held = false;
+        }
+        last_safe_key = KC_NO;
+    }
+    return true;
+}
+
 // Hi-jack two unused 8-bit keycodes for the layer-(un)lock that can be used
 // in a Layer-Tap
 #define KC_FNLK KC_EXSEL
@@ -158,6 +265,7 @@ enum custom_keycodes {
 #endif
 
 // Nav+Fn layer
+#define SK(td)  TD(TD_##td)
 #define LC_F5   LCTL_T(KC_F5)
 #define LG_F6   LGUI_T(KC_F6)
 #define RG_F11  RGUI_T(KC_F11)
@@ -173,8 +281,8 @@ enum custom_keycodes {
 #   define LA_F7   LALT_T(KC_F7)
 #   define LA_F10  LALT_T(KC_F10)
 #else
-#   define LA_F7   KC_F7
-#   define LA_F10  KC_F10
+#   define LA_F7   SK(F7)
+#   define LA_F10  SK(F10)
 #endif
 
 // Pre-defined base layouts with slight adaptations that optimize the symbol
@@ -234,15 +342,15 @@ enum custom_keycodes {
 
 #ifdef KOLIBRI_NAV_ON_RIGHT
 #   define KEYMAP_FN(K35, K36) LAYOUT_KOLIBRI_36( \
-        KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_PSCR, KC_SLCK, KC_HOME, KC_UP,   KC_END,  KC_CALC, \
-        KC_ESC,  KC_INS,  KC_BSPC, KC_DEL,  KC_ENT,  KC_PGUP, KC_LEFT, KC_DOWN, KC_RGHT, KC_PAUS, \
-        LC_F5,   LG_F6,   LA_F7,   KC_F8,   KC_APP,  KC_PGDN, KC_F9,   LA_F10,  RG_F11,  RC_F12,  \
+        SK(F1),  SK(F2),  SK(F3),  SK(F4),  SK(PSCR),SK(SLCK),KC_HOME, KC_UP,   KC_END,  KC_CALC, \
+        KC_ESC,  KC_INS,  KC_BSPC, KC_DEL,  KC_ENT,  KC_PGUP, KC_LEFT, KC_DOWN, KC_RGHT, SK(PAUS),\
+        LC_F5,   LG_F6,   LA_F7,   SK(F8),  KC_APP,  KC_PGDN, SK(F9),  LA_F10,  RG_F11,  RC_F12,  \
                           _______, RS_CAPS, _______, K35,     K36,     _______)
 #else
 #   define KEYMAP_FN(K35, K36) LAYOUT_KOLIBRI_36( \
-        KC_CALC, KC_HOME, KC_UP,   KC_END,  KC_PSCR, KC_SLCK, KC_F1,   KC_F2,   KC_F3,   KC_F4,  \
-        KC_PAUS, KC_LEFT, KC_DOWN, KC_RGHT, KC_PGUP, KC_ENT,  KC_BSPC, KC_DEL,  KC_INS,  KC_ESC, \
-        LC_F5,   LG_F6,   LA_F7,   KC_F8,   KC_PGDN, KC_APP,  KC_F9,   LA_F10,  RG_F11,  RC_F12, \
+        KC_CALC, KC_HOME, KC_UP,   KC_END,  SK(PSCR),SK(SLCK),SK(F1),  SK(F2),  SK(F3),  SK(F4), \
+        SK(PAUS),KC_LEFT, KC_DOWN, KC_RGHT, KC_PGUP, KC_ENT,  KC_BSPC, KC_DEL,  KC_INS,  KC_ESC, \
+        LC_F5,   LG_F6,   LA_F7,   SK(F8),  KC_PGDN, KC_APP,  SK(F9),  LA_F10,  RG_F11,  RC_F12, \
                           _______, RS_CAPS, _______, K35,     K36,     _______)
 #endif
 
@@ -462,7 +570,8 @@ static bool process_record_lt_mt_hacks(uint16_t keycode, keyrecord_t *record) {
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    return process_record_shifted_symbols(keycode, record) &&
+    return process_record_safe_keys(keycode, record) &&
+           process_record_shifted_symbols(keycode, record) &&
            process_record_macros(keycode, record) &&
            process_record_layer_lock(keycode, record) &&
            process_record_lt_mt_hacks(keycode, record);
