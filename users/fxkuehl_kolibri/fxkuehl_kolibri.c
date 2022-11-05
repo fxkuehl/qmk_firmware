@@ -109,6 +109,7 @@ enum {
     TD_PSCR,
     TD_SLCK,
     TD_PAUS,
+    TD_QUOT,
 };
 
 #define SK(td)  TD(TD_##td)
@@ -126,6 +127,8 @@ static void safe_key_reset(qk_tap_dance_state_t *state, void *user_data);
 #define ACTION_TAP_DANCE_SAFE_KEY(kc) \
     { .fn = {NULL, safe_key_finished, safe_key_reset}, .user_data = (void *)&((safe_key_t){kc}), }
 
+static void quot_on_each_tap(qk_tap_dance_state_t *state, void *user_data);
+
 qk_tap_dance_action_t tap_dance_actions[] = {
     [TD_F1]   = ACTION_TAP_DANCE_SAFE_KEY(KC_F1),
     [TD_F2]   = ACTION_TAP_DANCE_SAFE_KEY(KC_F2),
@@ -138,6 +141,7 @@ qk_tap_dance_action_t tap_dance_actions[] = {
     [TD_PSCR] = ACTION_TAP_DANCE_SAFE_KEY(KC_PSCR),
     [TD_SLCK] = ACTION_TAP_DANCE_SAFE_KEY(KC_SLCK),
     [TD_PAUS] = ACTION_TAP_DANCE_SAFE_KEY(KC_PAUS),
+    [TD_QUOT] = ACTION_TAP_DANCE_FN_ADVANCED(quot_on_each_tap, NULL, NULL),
 };
 
 static void safe_key_finished(qk_tap_dance_state_t *state, void *user_data) {
@@ -200,6 +204,31 @@ static bool process_record_safe_keys(uint16_t keycode, keyrecord_t *record) {
     return true;
 }
 
+static void quot_on_each_tap(qk_tap_dance_state_t *state, void *user_data) {
+    int8_t mods = get_mods();
+
+    if (mods & ~MOD_MASK_SHIFT) // Don't do anything if non-shift mods are set
+        return;
+
+    if (state->count >= 3) // 3rd and subsequent tap insert a pair of quotes
+        tap_code(KC_QUOT);
+    if (state->count >= 2) { // 2nd and subsequent tap move the cursor left
+        if (mods) del_mods(mods);
+        tap_code(KC_LEFT);
+        if (mods) add_mods(mods);
+    }
+}
+static bool process_record_quot(uint16_t keycode, keyrecord_t *record) {
+    if (keycode == TD(TD_QUOT)) {
+        if (record->event.pressed)
+            register_code(KC_QUOT);
+        else
+            unregister_code(KC_QUOT);
+    }
+
+    return true;
+}
+
 // Hi-jack two unused 8-bit keycodes for the layer-(un)lock that can be used
 // in a Layer-Tap
 #define KC_FNLK KC_EXSEL
@@ -210,6 +239,7 @@ static bool process_record_safe_keys(uint16_t keycode, keyrecord_t *record) {
 // thumb key. 16-bit key codes need special handling in process_record_user.
 
 // Base layer
+#define MY_QUOT TD(TD_QUOT)
 #define LC_T(K) LCTL_T(K)
 #define LG_T(K) LGUI_T(K)
 #define RG_T(K) RGUI_T(K)
@@ -291,21 +321,21 @@ static bool process_record_safe_keys(uint16_t keycode, keyrecord_t *record) {
 // with @ #. ? is on a thumb key.
 #define KOLIBRI_BASE_QWERTY \
         KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    \
-        KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_QUOT, \
+        KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    MY_QUOT, \
         KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_GRV
 
 #define KOLIBRI_BASE_DVORAK \
-        KC_QUOT, KC_COMM, KC_DOT,  KC_P,    KC_Y,    KC_F,    KC_G,    KC_C,    KC_R,    KC_L,    \
+        MY_QUOT, KC_COMM, KC_DOT,  KC_P,    KC_Y,    KC_F,    KC_G,    KC_C,    KC_R,    KC_L,    \
         KC_A,    KC_O,    KC_E,    KC_U,    KC_I,    KC_D,    KC_H,    KC_T,    KC_N,    KC_S,    \
         KC_GRV,  KC_Q,    KC_J,    KC_K,    KC_X,    KC_B,    KC_M,    KC_W,    KC_V,    KC_Z
 
 #define KOLIBRI_BASE_COLEMAK \
-        KC_Q,    KC_W,    KC_F,    KC_P,    KC_G,    KC_J,    KC_L,    KC_U,    KC_Y,    KC_QUOT, \
+        KC_Q,    KC_W,    KC_F,    KC_P,    KC_G,    KC_J,    KC_L,    KC_U,    KC_Y,    MY_QUOT, \
         KC_A,    KC_R,    KC_S,    KC_T,    KC_D,    KC_H,    KC_N,    KC_E,    KC_I,    KC_O,    \
         KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_K,    KC_M,    KC_COMM, KC_DOT,  KC_GRV
 
 #define KOLIBRI_BASE_COLEMAK_DH \
-        KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,    KC_J,    KC_L,    KC_U,    KC_Y,    KC_QUOT, \
+        KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,    KC_J,    KC_L,    KC_U,    KC_Y,    MY_QUOT, \
         KC_A,    KC_R,    KC_S,    KC_T,    KC_G,    KC_M,    KC_N,    KC_E,    KC_I,    KC_O,    \
         KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,    KC_K,    KC_H,    KC_COMM, KC_DOT,  KC_GRV
 
@@ -571,6 +601,7 @@ static bool process_record_lt_mt_hacks(uint16_t keycode, keyrecord_t *record) {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return process_record_safe_keys(keycode, record) &&
+           process_record_quot(keycode, record) &&
            process_record_shifted_symbols(keycode, record) &&
            process_record_macros(keycode, record) &&
            process_record_layer_lock(keycode, record) &&
