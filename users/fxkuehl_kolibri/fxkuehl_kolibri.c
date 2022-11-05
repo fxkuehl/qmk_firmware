@@ -111,6 +111,8 @@ enum {
     TD_PAUS,
 };
 
+#define SK(td)  TD(TD_##td)
+
 typedef struct {
     uint16_t kc;
 } safe_key_t;
@@ -138,33 +140,23 @@ qk_tap_dance_action_t tap_dance_actions[] = {
     [TD_PAUS] = ACTION_TAP_DANCE_SAFE_KEY(KC_PAUS),
 };
 
-#define container_of(ptr, container, member) (container *)((void *)(ptr) - offsetof(container, member))
-
 static void safe_key_finished(qk_tap_dance_state_t *state, void *user_data) {
-    safe_key_t *safe_key = (safe_key_t *)user_data;
-
     if ((state->pressed && !state->interrupted) || state->count >= 2) {
-        qk_tap_dance_action_t *action = container_of(state, qk_tap_dance_action_t, state);
-        long index = action - tap_dance_actions;
-
-        if (index < 0 || index >= sizeof(tap_dance_actions)/sizeof(tap_dance_actions[0])) {
-            tap_code(KC_E);
-            return;
-        }
-
         // Key is held without interruption once or tapped multiple times.
         // Register it and let it be used without a tap-dance subsequently
         // until any other key pressed.
+        safe_key_t *safe_key = (safe_key_t *)user_data;
+
         register_code16(safe_key->kc);
-        last_safe_key = TD(index);
+        last_safe_key = safe_key->kc;
         last_safe_key_held = true;
     }
 }
 
 static void safe_key_reset(qk_tap_dance_state_t *state, void *user_data) {
-    safe_key_t *safe_key = (safe_key_t *)user_data;
-
     if (last_safe_key_held) {
+        safe_key_t *safe_key = (safe_key_t *)user_data;
+
         unregister_code16(safe_key->kc);
         last_safe_key_held = false;
     }
@@ -175,27 +167,36 @@ static void safe_key_reset(qk_tap_dance_state_t *state, void *user_data) {
                       ((kc) >= QK_ONE_SHOT_MOD && (kc) <= QK_ONE_SHOT_MOD_MAX))
 
 static bool process_record_safe_keys(uint16_t keycode, keyrecord_t *record) {
-    if (keycode == last_safe_key && keycode != KC_NO) {
-        safe_key_t *safe_key = (safe_key_t *)tap_dance_actions[TD_INDEX(keycode)].user_data;
+    if (last_safe_key == KC_NO)
+        return true;
 
-        if (record->event.pressed) {
-            register_code16(safe_key->kc);
-            last_safe_key_held = true;
-        } else {
-            unregister_code16(safe_key->kc);
-            last_safe_key_held = false;
+    if (keycode >= SK(F1) && keycode <= SK(PAUS)) {
+        safe_key_t *safe_key =
+            (safe_key_t *)tap_dance_actions[TD_INDEX(keycode)].user_data;
+
+        // Allow repeating the last safe key with a normal tap or hold
+        if (safe_key->kc == last_safe_key) {
+            if (record->event.pressed) {
+                register_code16(safe_key->kc);
+                last_safe_key_held = true;
+            } else {
+                reset_tap_dance(&tap_dance_actions[TD_INDEX(keycode)].state);
+            }
+            return false;
         }
-        return false;
-    } else if (last_safe_key != KC_NO &&
-               (!IS_LT_MT(keycode) || record->tap.count)) {
-        if (last_safe_key_held) {
-            safe_key_t *safe_key = (safe_key_t *)tap_dance_actions[TD_INDEX(last_safe_key)].user_data;
+    }
 
-            unregister_code16(safe_key->kc);
+    // Tapping anything other than the last safe key clears the memory of the
+    // last safe key. Holding/releasing layer-tap or mod-tap keys is OK.
+    if (!IS_LT_MT(keycode) || record->tap.count) {
+        // If the safe key is currently held, unregister before forgetting it.
+        if (last_safe_key_held) {
+            unregister_code16(last_safe_key);
             last_safe_key_held = false;
         }
         last_safe_key = KC_NO;
     }
+
     return true;
 }
 
@@ -265,7 +266,6 @@ static bool process_record_safe_keys(uint16_t keycode, keyrecord_t *record) {
 #endif
 
 // Nav+Fn layer
-#define SK(td)  TD(TD_##td)
 #define LC_F5   LCTL_T(KC_F5)
 #define LG_F6   LGUI_T(KC_F6)
 #define RG_F11  RGUI_T(KC_F11)
