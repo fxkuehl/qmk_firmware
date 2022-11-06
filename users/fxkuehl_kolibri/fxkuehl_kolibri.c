@@ -89,7 +89,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // Macro keys
 enum custom_keycodes {
   M_EMAIL = SAFE_RANGE,
-  M_XARGS
+  M_XARGS,
+  C_LR_PRN,
+  C_LR_BRC,
+  C_LR_CBR,
+  C_LT_GT,
+  C_COMMENT,
 };
 
 // Tap dance
@@ -391,12 +396,18 @@ static bool process_record_quot(uint16_t keycode, keyrecord_t *record) {
         KC_EQL,  KC_4,    KC_5,    KC_6,    KC_ASTR, KC_PIPE, KC_LBRC, KC_LCBR, KC_RCBR, KC_RBRC, \
         LC_DLR,  LG_1,    LA_2,    KC_3,    KC_PLUS, KC_EXLM, RA_MINS, LA_LT,   RG_GT,   RC_SLSH, \
                           _______, K33,     K34,     FN_SCLN, RA_0,    RA_DOT)
+const uint16_t PROGMEM lr_brc_combo[] = {KC_LBRC, KC_RBRC, COMBO_END};
+const uint16_t PROGMEM lr_cbr_combo[] = {KC_LCBR, KC_RCBR, COMBO_END};
+const uint16_t PROGMEM lt_gt_combo[]  = {LA_LT,   RG_GT,   COMBO_END};
 #   else
 #       define KEYMAP_SYM(K33, K34) LAYOUT_KOLIBRI_36( \
         KC_TILD, KC_LPRN, KC_RPRN, KC_DLR,  KC_PERC, KC_CIRC, KC_7,    KC_8,    KC_9,    KC_COLN, \
         KC_EXLM, KC_LT,   KC_EQL,  KC_GT,   KC_AMPR, KC_ASTR, KC_4,    KC_5,    KC_6,    KC_MINS, \
         LC_LBRC, LG_LCBR, LA_RCBR, RA_RBRC, KC_PIPE, KC_PLUS, KC_1,    LA_2,    RG_3,    RC_SLSH, \
                           _______, K33,     K34,     FN_SCLN, RA_0,    RA_DOT)
+const uint16_t PROGMEM lr_brc_combo[] = {LC_LBRC, RA_RBRC, COMBO_END};
+const uint16_t PROGMEM lr_cbr_combo[] = {LG_LCBR, LA_RCBR, COMBO_END};
+const uint16_t PROGMEM lt_gt_combo[]  = {KC_LT,   KC_GT,   COMBO_END};
 #   endif
 #else
 #   define KEYMAP_SYM(K33, K34) LAYOUT_KOLIBRI_36( \
@@ -404,6 +415,9 @@ static bool process_record_quot(uint16_t keycode, keyrecord_t *record) {
         KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    \
         LC_LBRC, LG_LCBR, LA_RCBR, RA_RBRC, KC_PIPE, KC_TILD, KC_MINS, LA_LT,   RG_GT,   RC_SLSH, \
                           _______, K33,     K34,     FN_SCLN, RA_EQL,  RA_DOT)
+const uint16_t PROGMEM lr_brc_combo[] = {LC_LBRC, RA_RBRC, COMBO_END};
+const uint16_t PROGMEM lr_cbr_combo[] = {LG_LCBR, LA_RCBR, COMBO_END};
+const uint16_t PROGMEM lt_gt_combo[]  = {LA_LT,   RG_GT,   COMBO_END};
 #endif
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -470,6 +484,28 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 #endif
 };
 
+enum combos {
+    LR_PRN,
+    LR_BRC,
+    LR_CBR,
+    LT_GT,
+    SLSH_ASTR,
+    NUM_COMBOS
+};
+uint16_t COMBO_LEN = NUM_COMBOS;
+
+const uint16_t PROGMEM  lr_prn_combo[] = {KC_LPRN, KC_RPRN, COMBO_END};
+const uint16_t PROGMEM comment_combo[] = {RC_SLSH, KC_ASTR, COMBO_END};
+/* other combos are defined conditionally for different Sym layer variants */
+
+combo_t key_combos[] = {
+  [LR_PRN]    = COMBO( lr_prn_combo, C_LR_PRN),
+  [LR_BRC]    = COMBO( lr_brc_combo, C_LR_BRC),
+  [LR_CBR]    = COMBO( lr_cbr_combo, C_LR_CBR),
+  [LT_GT]     = COMBO(  lt_gt_combo, C_LT_GT),
+  [SLSH_ASTR] = COMBO(comment_combo, C_COMMENT),
+};
+
 /* Prefer tap on all MTs except Shift. These are all the bottom-row mods and
  * AltGr. Other thumb keys (Shift and layers) prefer hold.
  */
@@ -531,6 +567,12 @@ static bool process_record_macros(uint16_t keycode, keyrecord_t *record) {
         switch (keycode) {
         case M_EMAIL: SEND_STRING("Felix Kuehling <Felix.Kuehling@amd.com>"); return false;
         case M_XARGS: SEND_STRING(" -print0 | xargs -0 grep "); return false;
+        case C_LR_PRN:  SEND_STRING("()" SS_TAP(X_LEFT)); return false;
+        case C_LR_BRC:  SEND_STRING("[]" SS_TAP(X_LEFT)); return false;
+        case C_LR_CBR:  SEND_STRING("{\n}" SS_TAP(X_UP) SS_TAP(X_END) "\n"); return false;
+        case C_LT_GT:   SEND_STRING("<>" SS_TAP(X_LEFT)); return false;
+        case C_COMMENT: SEND_STRING("/* */" SS_TAP(X_LEFT) SS_TAP(X_LEFT) SS_TAP(X_LEFT));
+                        return false;
         }
     }
     return true;
