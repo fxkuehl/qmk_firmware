@@ -97,143 +97,6 @@ enum custom_keycodes {
   C_COMMENT,
 };
 
-// Tap dance
-enum {
-    TD_F1,
-    TD_F2,
-    TD_F3,
-    TD_F4,
-    // F5 is a mod-tap
-    // F6 is a mod-tap
-    TD_F7,
-    TD_F8,
-    TD_F9,
-    TD_F10,
-    // F11 is a mod-tap
-    // F12 is a mod-tap
-    TD_PSCR,
-    TD_SLCK,
-    TD_PAUS,
-    TD_QUOT,
-};
-
-#define SK(td)  TD(TD_##td)
-
-typedef struct {
-    uint16_t kc;
-} safe_key_t;
-
-static uint16_t last_safe_key = KC_NO;
-static bool last_safe_key_held = false;
-
-static void safe_key_finished(qk_tap_dance_state_t *state, void *user_data);
-static void safe_key_reset(qk_tap_dance_state_t *state, void *user_data);
-
-#define ACTION_TAP_DANCE_SAFE_KEY(kc) \
-    { .fn = {NULL, safe_key_finished, safe_key_reset}, .user_data = (void *)&((safe_key_t){kc}), }
-
-static void quot_on_each_tap(qk_tap_dance_state_t *state, void *user_data);
-
-qk_tap_dance_action_t tap_dance_actions[] = {
-    [TD_F1]   = ACTION_TAP_DANCE_SAFE_KEY(KC_F1),
-    [TD_F2]   = ACTION_TAP_DANCE_SAFE_KEY(KC_F2),
-    [TD_F3]   = ACTION_TAP_DANCE_SAFE_KEY(KC_F3),
-    [TD_F4]   = ACTION_TAP_DANCE_SAFE_KEY(KC_F4),
-    [TD_F7]   = ACTION_TAP_DANCE_SAFE_KEY(KC_F7),
-    [TD_F8]   = ACTION_TAP_DANCE_SAFE_KEY(KC_F8),
-    [TD_F9]   = ACTION_TAP_DANCE_SAFE_KEY(KC_F9),
-    [TD_F10]  = ACTION_TAP_DANCE_SAFE_KEY(KC_F10),
-    [TD_PSCR] = ACTION_TAP_DANCE_SAFE_KEY(KC_PSCR),
-    [TD_SLCK] = ACTION_TAP_DANCE_SAFE_KEY(KC_SLCK),
-    [TD_PAUS] = ACTION_TAP_DANCE_SAFE_KEY(KC_PAUS),
-    [TD_QUOT] = ACTION_TAP_DANCE_FN_ADVANCED(quot_on_each_tap, NULL, NULL),
-};
-
-static void safe_key_finished(qk_tap_dance_state_t *state, void *user_data) {
-    if ((state->pressed && !state->interrupted) || state->count >= 2) {
-        // Key is held without interruption once or tapped multiple times.
-        // Register it and let it be used without a tap-dance subsequently
-        // until any other key pressed.
-        safe_key_t *safe_key = (safe_key_t *)user_data;
-
-        register_code16(safe_key->kc);
-        last_safe_key = safe_key->kc;
-        last_safe_key_held = true;
-    }
-}
-
-static void safe_key_reset(qk_tap_dance_state_t *state, void *user_data) {
-    if (last_safe_key_held) {
-        safe_key_t *safe_key = (safe_key_t *)user_data;
-
-        unregister_code16(safe_key->kc);
-        last_safe_key_held = false;
-    }
-}
-
-#define IS_LT_MT(kc) (((kc) >= QK_LAYER_TAP    && (kc) <= QK_LAYER_TAP_MAX) || \
-                      ((kc) >= QK_MOD_TAP      && (kc) <= QK_MOD_TAP_MAX  ) || \
-                      ((kc) >= QK_ONE_SHOT_MOD && (kc) <= QK_ONE_SHOT_MOD_MAX))
-
-static bool process_record_safe_keys(uint16_t keycode, keyrecord_t *record) {
-    if (last_safe_key == KC_NO)
-        return true;
-
-    if (keycode >= SK(F1) && keycode <= SK(PAUS)) {
-        safe_key_t *safe_key =
-            (safe_key_t *)tap_dance_actions[TD_INDEX(keycode)].user_data;
-
-        // Allow repeating the last safe key with a normal tap or hold
-        if (safe_key->kc == last_safe_key) {
-            if (record->event.pressed) {
-                register_code16(safe_key->kc);
-                last_safe_key_held = true;
-            } else {
-                reset_tap_dance(&tap_dance_actions[TD_INDEX(keycode)].state);
-            }
-            return false;
-        }
-    }
-
-    // Tapping anything other than the last safe key clears the memory of the
-    // last safe key. Holding/releasing layer-tap or mod-tap keys is OK.
-    if (!IS_LT_MT(keycode) || record->tap.count) {
-        // If the safe key is currently held, unregister before forgetting it.
-        if (last_safe_key_held) {
-            unregister_code16(last_safe_key);
-            last_safe_key_held = false;
-        }
-        last_safe_key = KC_NO;
-    }
-
-    return true;
-}
-
-static void quot_on_each_tap(qk_tap_dance_state_t *state, void *user_data) {
-    int8_t mods = get_mods();
-
-    if (mods & ~MOD_MASK_SHIFT) // Don't do anything if non-shift mods are set
-        return;
-
-    if (state->count >= 3) // 3rd and subsequent tap insert a pair of quotes
-        tap_code(KC_QUOT);
-    if (state->count >= 2) { // 2nd and subsequent tap move the cursor left
-        if (mods) del_mods(mods);
-        tap_code(KC_LEFT);
-        if (mods) add_mods(mods);
-    }
-}
-static bool process_record_quot(uint16_t keycode, keyrecord_t *record) {
-    if (keycode == TD(TD_QUOT)) {
-        if (record->event.pressed)
-            register_code(KC_QUOT);
-        else
-            unregister_code(KC_QUOT);
-    }
-
-    return true;
-}
-
 // Hi-jack two unused 8-bit keycodes for the layer-(un)lock that can be used
 // in a Layer-Tap
 #define KC_FNLK KC_EXSEL
@@ -319,6 +182,163 @@ static bool process_record_quot(uint16_t keycode, keyrecord_t *record) {
 #   define LA_F7   SK(F7)
 #   define LA_F10  SK(F10)
 #endif
+
+// Tap dance
+enum {
+    TD_F1,
+    TD_F2,
+    TD_F3,
+    TD_F4,
+    // F5 is a mod-tap
+    // F6 is a mod-tap
+    TD_F7,
+    TD_F8,
+    TD_F9,
+    TD_F10,
+    // F11 is a mod-tap
+    // F12 is a mod-tap
+    TD_PSCR,
+    TD_SLCK,
+    TD_PAUS,
+    TD_QUOT,
+};
+
+#define SK(td)  TD(TD_##td)
+
+typedef struct {
+    uint16_t kc;
+} safe_key_t;
+
+static uint16_t last_safe_key = KC_NO;
+static bool last_safe_key_held = false;
+
+static void safe_key_finished(qk_tap_dance_state_t *state, void *user_data);
+static void safe_key_reset(qk_tap_dance_state_t *state, void *user_data);
+
+#define ACTION_TAP_DANCE_SAFE_KEY(kc) \
+    { .fn = {NULL, safe_key_finished, safe_key_reset}, .user_data = (void *)&((safe_key_t){kc}), }
+
+static void quot_on_each_tap(qk_tap_dance_state_t *state, void *user_data);
+
+qk_tap_dance_action_t tap_dance_actions[] = {
+    [TD_F1]   = ACTION_TAP_DANCE_SAFE_KEY(KC_F1),
+    [TD_F2]   = ACTION_TAP_DANCE_SAFE_KEY(KC_F2),
+    [TD_F3]   = ACTION_TAP_DANCE_SAFE_KEY(KC_F3),
+    [TD_F4]   = ACTION_TAP_DANCE_SAFE_KEY(KC_F4),
+    [TD_F7]   = ACTION_TAP_DANCE_SAFE_KEY(KC_F7),
+    [TD_F8]   = ACTION_TAP_DANCE_SAFE_KEY(KC_F8),
+    [TD_F9]   = ACTION_TAP_DANCE_SAFE_KEY(KC_F9),
+    [TD_F10]  = ACTION_TAP_DANCE_SAFE_KEY(KC_F10),
+    [TD_PSCR] = ACTION_TAP_DANCE_SAFE_KEY(KC_PSCR),
+    [TD_SLCK] = ACTION_TAP_DANCE_SAFE_KEY(KC_SLCK),
+    [TD_PAUS] = ACTION_TAP_DANCE_SAFE_KEY(KC_PAUS),
+    [TD_QUOT] = ACTION_TAP_DANCE_FN_ADVANCED(quot_on_each_tap, NULL, NULL),
+};
+
+static void safe_key_finished(qk_tap_dance_state_t *state, void *user_data) {
+    if ((state->pressed && !state->interrupted) || state->count >= 2) {
+        // Key is held without interruption once or tapped multiple times.
+        // Register it and let it be used without a tap-dance subsequently
+        // until any other key pressed.
+        safe_key_t *safe_key = (safe_key_t *)user_data;
+
+        register_code16(safe_key->kc);
+        last_safe_key = safe_key->kc;
+        last_safe_key_held = true;
+    }
+}
+
+static void safe_key_reset(qk_tap_dance_state_t *state, void *user_data) {
+    if (last_safe_key_held) {
+        safe_key_t *safe_key = (safe_key_t *)user_data;
+
+        unregister_code16(safe_key->kc);
+        last_safe_key_held = false;
+    }
+}
+
+#define IS_LT_MT(kc) (((kc) >= QK_LAYER_TAP    && (kc) <= QK_LAYER_TAP_MAX) || \
+                      ((kc) >= QK_MOD_TAP      && (kc) <= QK_MOD_TAP_MAX  ) || \
+                      ((kc) >= QK_ONE_SHOT_MOD && (kc) <= QK_ONE_SHOT_MOD_MAX))
+
+static bool process_record_safe_keys(uint16_t keycode, keyrecord_t *record) {
+    bool ret = true;
+
+    if (last_safe_key != KC_NO && keycode >= SK(F1) && keycode <= SK(PAUS)) {
+        safe_key_t *safe_key =
+            (safe_key_t *)tap_dance_actions[TD_INDEX(keycode)].user_data;
+
+        // Allow repeating the last safe key with a normal tap or hold
+        if (safe_key->kc == last_safe_key) {
+            if (record->event.pressed) {
+                register_code16(safe_key->kc);
+                last_safe_key_held = true;
+            } else {
+                reset_tap_dance(&tap_dance_actions[TD_INDEX(keycode)].state);
+            }
+            return false;
+        }
+    } else if (record->tap.count) {
+        switch(keycode) { // Manually handle safe-keys with mod-taps
+            case LC_F5:
+            case LG_F6:
+#ifdef LAYOUT_KOLIBRI_34
+            case LA_F7:
+            case LA_F10:
+#endif
+            case RG_F11:
+            case RC_F12:
+                if (last_safe_key == (keycode & 0xff)) {
+                    last_safe_key_held = record->event.pressed;
+                    return true;
+                } else if (record->tap.count == 2) {
+                    last_safe_key = keycode & 0xff;
+                    last_safe_key_held = true;
+                    return true;
+                } else {
+                    ret = false; // fall through
+                }
+        }
+    }
+
+    // Tapping anything other than the last safe key clears the memory of the
+    // last safe key. Holding/releasing layer-tap or mod-tap keys is OK.
+    if (last_safe_key != KC_NO && (!IS_LT_MT(keycode) || record->tap.count)) {
+        // If the safe key is currently held, unregister before forgetting it.
+        if (last_safe_key_held) {
+            unregister_code16(last_safe_key);
+            last_safe_key_held = false;
+        }
+        last_safe_key = KC_NO;
+    }
+
+    return ret;
+}
+
+static void quot_on_each_tap(qk_tap_dance_state_t *state, void *user_data) {
+    int8_t mods = get_mods();
+
+    if (mods & ~MOD_MASK_SHIFT) // Don't do anything if non-shift mods are set
+        return;
+
+    if (state->count >= 3) // 3rd and subsequent tap insert a pair of quotes
+        tap_code(KC_QUOT);
+    if (state->count >= 2) { // 2nd and subsequent tap move the cursor left
+        if (mods) del_mods(mods);
+        tap_code(KC_LEFT);
+        if (mods) add_mods(mods);
+    }
+}
+static bool process_record_quot(uint16_t keycode, keyrecord_t *record) {
+    if (keycode == TD(TD_QUOT)) {
+        if (record->event.pressed)
+            register_code(KC_QUOT);
+        else
+            unregister_code(KC_QUOT);
+    }
+
+    return true;
+}
 
 // Pre-defined base layouts with slight adaptations that optimize the symbol
 // layer: < > ; : / are on the symbol layer. Quotes are more easily reachable
