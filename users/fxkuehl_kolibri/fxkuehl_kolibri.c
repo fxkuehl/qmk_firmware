@@ -640,8 +640,11 @@ static bool process_record_lt_mt_hacks(uint16_t keycode, keyrecord_t *record) {
         case RG_GT:   code16 = KC_GT; break;
 #endif
         case FN_SCLN:
-            if (record->event.pressed && record->tap.count == 2) {
-                tap_code(KC_ENT);
+            if (record->tap.count >= 2) {
+                if (record->event.pressed)
+                    register_code(KC_ENT);
+                else
+                    unregister_code(KC_ENT);
                 return false;
             }
             // fall through
