@@ -96,6 +96,7 @@ enum custom_keycodes {
   C_LR_CBR,
   C_LT_GT,
   C_COMMENT,
+  F_CLEAR,
   F_PERMI,
 };
 
@@ -502,7 +503,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         RESET,   DT_PRNT, DT_DOWN, DT_UP,   DEBUG,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
         XXXXXXX, XXXXXXX, F_PERMI, XXXXXXX, RGB_TOG, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
         RGB_HUI, RGB_SAI, RGB_VAI, RGB_SPI, RGB_MOD, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-                          XXXXXXX, KC_LSFT, XXXXXXX, _______, _______, XXXXXXX),
+                          XXXXXXX, KC_LSFT, F_CLEAR, _______, _______, XXXXXXX),
 
     [L_MEDIA] = LAYOUT_KOLIBRI_RAW_36(
         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, M_EMAIL, XXXXXXX, M_XARGS,
@@ -610,6 +611,13 @@ static bool process_record_macros(uint16_t keycode, keyrecord_t *record) {
                 SEND_STRING("permissive");
             else
                 SEND_STRING("strict");
+            return false;
+        case F_CLEAR: // Clears all keyboard state: locked layers and caps-lock
+            layer_off(L_FN_LOCKED);
+            layer_off(L_SYM_LOCKED);
+            layer_off(L_MOUSE);
+            if (host_keyboard_led_state().caps_lock)
+                tap_code(KC_CAPS);
             return false;
         }
     }
