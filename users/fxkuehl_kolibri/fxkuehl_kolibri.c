@@ -54,6 +54,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #       define KOLIBRI_SOUTHPAW
 #   endif
 #else
+#   ifdef LAYOUT_KOLIBRI_34
+#       define LAYOUT_KOLIBRI_RAW_34 LAYOUT_KOLIBRI_34
+#   else
+#       define LAYOUT_KOLIBRI_RAW_36 LAYOUT_KOLIBRI_36
+#   endif
 #   ifdef KOLIBRI_ONE_HANDED_NAV
 #       define KOLIBRI_NAV_ON_RIGHT
 #   endif
@@ -80,10 +85,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         K10,     K11,     K12,     K13,     K14,     K15,     K16,     K17,     K18,     K19, \
         K20,     K21,     K22,     K23,     K24,     K25,     K26,     K27,     K28,     K29, \
                                    K33,     K34,     K35,     K36)
-#endif
-
-#ifndef LAYOUT_KOLIBRI_RAW_36
-#   define LAYOUT_KOLIBRI_RAW_36 LAYOUT_KOLIBRI_36
 #endif
 
 // Macro keys
