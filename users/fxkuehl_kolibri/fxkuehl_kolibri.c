@@ -138,7 +138,7 @@ enum custom_keycodes {
 #define RC_SLSH RCTL_T(KC_SLSH)
 #define FN_SCLN LT(L_FN, KC_SCLN)
 #if defined(LAYOUT_KOLIBRI_LEFTY_34) || defined(LAYOUT_KOLIBRI_LEFTY_36)
-#   define MD_SYLK LT(L_MACRO, KC_SYLK)
+#   define MD_SYLK LT(L_CONFIG, KC_SYLK)
 #else
 #   define MD_SYLK LT(L_MEDIA, KC_SYLK)
 #endif
@@ -174,9 +174,9 @@ enum custom_keycodes {
 #define RS_CAPS RSFT_T(KC_CAPS)
 #define SY_MOUS LT(L_SYM, KC_MSLK)
 #if defined(LAYOUT_KOLIBRI_LEFTY_34) || defined(LAYOUT_KOLIBRI_LEFTY_36)
-#   define MC_FNLK LT(L_MEDIA, KC_FNLK)
+#   define CO_FNLK LT(L_MEDIA, KC_FNLK)
 #else
-#   define MC_FNLK LT(L_MACRO, KC_FNLK)
+#   define CO_FNLK LT(L_CONFIG, KC_FNLK)
 #endif
 #define OVF_TAB LT(L_BASE_OV_FN, KC_TAB)
 #ifdef LAYOUT_KOLIBRI_34
@@ -460,7 +460,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //
     // Hold inner + hold home key always enables the Macro layer
     // Hold inner + tap home key is the same key combo to Fn lock or unlock.
-    [L_BASE_OV_FN] = KEYMAP_BASE(KOLIBRI_BASE_LAYOUT, LS_BSLS, SY_UNDS, _______, MC_FNLK),
+    [L_BASE_OV_FN] = KEYMAP_BASE(KOLIBRI_BASE_LAYOUT, LS_BSLS, SY_UNDS, _______, CO_FNLK),
 
     // Locked Sym layer sits below the Fn layer:
     // - Inner key is Underscore/Base-Overlay
@@ -491,22 +491,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // Momentary Fn layer:
     // - Inner key is transparent (held by thumb to enable this layer)
     // - Home key (pressed by index finger) is Fn-lock/Media
-    [L_FN] = KEYMAP_FN(_______, MC_FNLK),
+    [L_FN] = KEYMAP_FN(_______, CO_FNLK),
 
     // Momentary Sym layer:
     // - Inner key is transparent (held by thumb to enable this layer)
     // - Home key (pressed by index finger) is Sym-lock/Macro
     [L_SYM] = KEYMAP_SYM(MD_SYLK, _______),
 
-    [L_MACRO] = LAYOUT_KOLIBRI_RAW_36(
-        RESET,   DT_PRNT, DT_DOWN, DT_UP,   F_PERMI, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-        XXXXXXX, XXXXXXX, M_XARGS, M_EMAIL, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+    [L_CONFIG] = LAYOUT_KOLIBRI_RAW_36(
+        RESET,   DT_PRNT, DT_DOWN, DT_UP,   DEBUG,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+        XXXXXXX, XXXXXXX, F_PERMI, XXXXXXX, RGB_TOG, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+        RGB_HUI, RGB_SAI, RGB_VAI, RGB_SPI, RGB_MOD, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
                           XXXXXXX, KC_LSFT, XXXXXXX, _______, _______, XXXXXXX),
 
     [L_MEDIA] = LAYOUT_KOLIBRI_RAW_36(
-        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, RGB_MOD, RGB_SPI, RGB_VAI, RGB_SAI, RGB_HUI,
-        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, RGB_TOG, KC_MPRV, KC_MPLY, KC_MNXT, KC_VOLU,
+        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, M_EMAIL, XXXXXXX, M_XARGS,
+        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_MPRV, KC_MPLY, KC_MNXT, KC_VOLU,
         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_MYCM, KC_MSEL, KC_MSTP, KC_MUTE, KC_VOLD,
                           XXXXXXX, _______, _______, XXXXXXX, KC_RSFT, XXXXXXX),
 };
@@ -621,7 +621,7 @@ static bool process_record_layer_lock(uint16_t keycode, keyrecord_t *record) {
         return true;
 
     switch(keycode) {
-    case MC_FNLK: // Fn-Lock/Unlock
+    case CO_FNLK: // Fn-Lock/Unlock
         if (record->event.pressed) {
             layer_invert(L_FN_LOCKED);
             layer_off(L_SYM_LOCKED);

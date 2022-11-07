@@ -30,7 +30,7 @@ enum layers {
 #endif
     L_FN,
     L_SYM,
-    L_MACRO,
+    L_CONFIG,
     L_MEDIA,
     L_NUM_LAYERS
 };
