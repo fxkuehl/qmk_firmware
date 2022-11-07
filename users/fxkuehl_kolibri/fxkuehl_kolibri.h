@@ -24,6 +24,7 @@ enum layers {
     L_BASE_OV_FN,
     L_SYM_LOCKED,
     L_BASE_OV_SYM,
+    L_BASE_OV_SHIFT,
 #ifdef MOUSEKEY_ENABLE
     L_MOUSE,
 #endif

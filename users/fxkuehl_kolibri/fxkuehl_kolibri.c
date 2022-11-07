@@ -462,10 +462,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     // Locked Sym layer sits below the Fn layer:
     // - Inner key is Underscore/Base-Overlay
-    // - Home key is Space/Shift (adds an extra Space key to use between numbers/symbols)
+    // - Home key enables a shifted base overlay so uppercase letters can be
+    //   inserted while the Sym layer is locked
     //
     // Base-Overlay temporarily restores a (slightly modified) base layer
-    [L_SYM_LOCKED] = KEYMAP_SYM(KC_SPC, OVS_TAB),
+    [L_SYM_LOCKED] = KEYMAP_SYM(LM(L_BASE_OV_SHIFT, MOD_LSFT), OVS_TAB),
 
     // Base-Overlay over the locked Sym layer:
     // - Inner key is transparent (held by thumb to enable this layer)
@@ -473,7 +474,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //
     // Hold inner + hold home key always enables the Media layer
     // Hold inner + tap home key is the same key combo to Sym lock or unlock
-    [L_BASE_OV_SYM] = KEYMAP_BASE(KOLIBRI_BASE_LAYOUT, MD_SYLK, _______, FN_TAB, RA_SPC),
+    [L_BASE_OV_SYM]   = KEYMAP_BASE(KOLIBRI_BASE_LAYOUT, MD_SYLK, _______, FN_TAB, RA_SPC),
+    [L_BASE_OV_SHIFT] = KEYMAP_BASE(KOLIBRI_BASE_LAYOUT, _______, _______, FN_TAB, RA_SPC),
 
 #ifdef MOUSEKEY_ENABLE
     // The mouse layer is under the Fn layer because it is toggled via Fn
