@@ -87,7 +87,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                    K33,     K34,     K35,     K36)
 #endif
 
-// Macro keys
+// Macro, combo and special function keys
 enum custom_keycodes {
   M_EMAIL = SAFE_RANGE,
   M_XARGS,
@@ -96,6 +96,7 @@ enum custom_keycodes {
   C_LR_CBR,
   C_LT_GT,
   C_COMMENT,
+  F_PERMI,
 };
 
 // Hi-jack some unused 8-bit keycodes for the layer-(un)lock that can be used
@@ -498,7 +499,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [L_SYM] = KEYMAP_SYM(MD_SYLK, _______),
 
     [L_MACRO] = LAYOUT_KOLIBRI_RAW_36(
-        RESET,   DT_PRNT, DT_DOWN, DT_UP,   DEBUG,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+        RESET,   DT_PRNT, DT_DOWN, DT_UP,   F_PERMI, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
         XXXXXXX, XXXXXXX, M_XARGS, M_EMAIL, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
                           XXXXXXX, KC_LSFT, XXXXXXX, _______, _______, XXXXXXX),
@@ -545,8 +546,9 @@ static bool prefer_tap(uint16_t keycode) {
 bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
     return !prefer_tap(keycode);
 }
+static bool permissive = true;
 bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
-    return prefer_tap(keycode);
+    return permissive && prefer_tap(keycode);
 }
 
 /* Replace some shifted symbols with different ones. Used to selectively move
@@ -602,6 +604,13 @@ static bool process_record_macros(uint16_t keycode, keyrecord_t *record) {
         case C_LT_GT:   SEND_STRING("<>" SS_TAP(X_LEFT)); return false;
         case C_COMMENT: SEND_STRING("/* */" SS_TAP(X_LEFT) SS_TAP(X_LEFT) SS_TAP(X_LEFT));
                         return false;
+	case F_PERMI:
+            permissive = !permissive;
+            if (permissive)
+                SEND_STRING("permissive");
+            else
+                SEND_STRING("strict");
+            return false;
         }
     }
     return true;
