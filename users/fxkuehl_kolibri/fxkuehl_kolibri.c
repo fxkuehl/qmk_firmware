@@ -531,12 +531,15 @@ combo_t key_combos[] = {
   [SLSH_ASTR] = COMBO(comment_combo, C_COMMENT),
 };
 
-/* Prefer tap on all MTs except Shift. These are all the bottom-row mods and
- * AltGr. Other thumb keys (Shift and layers) prefer hold.
+/* Prefer tap on all MTs except Shift and AltGr/Del. These are all the
+ * bottom-row mods and AltGr/Spc. Other thumb keys prefer hold.
  */
 static bool prefer_tap(uint16_t keycode) {
     return (keycode & 0xe000) == QK_MOD_TAP &&
-         (keycode & 0x0f00) != MOD_LSFT << 8;
+#ifndef LAYOUT_KOLIBRI_34
+           keycode != RA_DEL &&
+#endif
+           (keycode & 0x0f00) != MOD_LSFT << 8;
 }
 bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
     return !prefer_tap(keycode);
