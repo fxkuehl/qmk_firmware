@@ -24,12 +24,12 @@ enum layers {
     L_BASE_OV_FN,
     L_SYM_LOCKED,
     L_BASE_OV_SYM,
+#ifdef MOUSEKEY_ENABLE
+    L_MOUSE,
+#endif
     L_FN,
     L_SYM,
     L_MACRO,
     L_MEDIA,
-#ifdef MOUSEKEY_ENABLE
-    L_MOUSE,
-#endif
     L_NUM_LAYERS
 };

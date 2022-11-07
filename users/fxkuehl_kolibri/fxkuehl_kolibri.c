@@ -97,10 +97,11 @@ enum custom_keycodes {
   C_COMMENT,
 };
 
-// Hi-jack two unused 8-bit keycodes for the layer-(un)lock that can be used
+// Hi-jack some unused 8-bit keycodes for the layer-(un)lock that can be used
 // in a Layer-Tap
 #define KC_FNLK KC_EXSEL
 #define KC_SYLK KC_CRSEL
+#define KC_MSLK KC_CLEAR_AGAIN
 
 // Short cuts for mod-tap and layer-tap keys. On the 36-key version LALT moves
 // to the outer left thumb key as one-shot mod. RALT moves to the outer right
@@ -169,6 +170,7 @@ enum custom_keycodes {
 #define RG_F11  RGUI_T(KC_F11)
 #define RC_F12  RCTL_T(KC_F12)
 #define RS_CAPS RSFT_T(KC_CAPS)
+#define SY_MOUS LT(L_SYM, KC_MSLK)
 #if defined(LAYOUT_KOLIBRI_LEFTY_34) || defined(LAYOUT_KOLIBRI_LEFTY_36)
 #   define MC_FNLK LT(L_MEDIA, KC_FNLK)
 #else
@@ -400,13 +402,13 @@ static bool process_record_quot(uint16_t keycode, keyrecord_t *record) {
         SK(F1),  SK(F2),  SK(F3),  SK(F4),  SK(PSCR),SK(SLCK),KC_HOME, KC_UP,   KC_END,  KC_CALC, \
         KC_ESC,  KC_INS,  KC_BSPC, KC_DEL,  KC_ENT,  KC_PGUP, KC_LEFT, KC_DOWN, KC_RGHT, SK(PAUS),\
         LC_F5,   LG_F6,   LA_F7,   SK(F8),  KC_APP,  KC_PGDN, SK(F9),  LA_F10,  RG_F11,  RC_F12,  \
-                          _______, RS_CAPS, _______, K35,     K36,     _______)
+                          _______, RS_CAPS, SY_MOUS, K35,     K36,     _______)
 #else
 #   define KEYMAP_FN(K35, K36) LAYOUT_KOLIBRI_36( \
         KC_CALC, KC_HOME, KC_UP,   KC_END,  SK(PSCR),SK(SLCK),SK(F1),  SK(F2),  SK(F3),  SK(F4), \
         SK(PAUS),KC_LEFT, KC_DOWN, KC_RGHT, KC_PGUP, KC_ENT,  KC_BSPC, KC_DEL,  KC_INS,  KC_ESC, \
         LC_F5,   LG_F6,   LA_F7,   SK(F8),  KC_PGDN, KC_APP,  SK(F9),  LA_F10,  RG_F11,  RC_F12, \
-                          _______, RS_CAPS, _______, K35,     K36,     _______)
+                          _______, RS_CAPS, SY_MOUS, K35,     K36,     _______)
 #endif
 
 #ifdef KOLIBRI_NUMPAD
@@ -445,10 +447,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     // Locked Fn layer sits below the Sym layer:
     // - Inner key is Tab/Base-Overlay
-    // - Home key is Space/Mouse-layer
+    // - Home key is Space/AltGr
     //
     // Base-Overlay temporarily restores a (slightly modified) base layer
-    [L_FN_LOCKED] = KEYMAP_FN(OVF_TAB, MS_SPC),
+    [L_FN_LOCKED] = KEYMAP_FN(OVF_TAB, RA_SPC),
 
     // Base-Overlay over the locked Fn layer:
     // - Inner key is transparent (held by thumb to enable this layer)
@@ -473,6 +475,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // Hold inner + tap home key is the same key combo to Sym lock or unlock
     [L_BASE_OV_SYM] = KEYMAP_BASE(KOLIBRI_BASE_LAYOUT, MD_SYLK, _______, FN_TAB, RA_SPC),
 
+#ifdef MOUSEKEY_ENABLE
+    // The mouse layer is under the Fn layer because it is toggled via Fn
+    [L_MOUSE] = LAYOUT_KOLIBRI_36(
+        _______, KC_BTN4, KC_BTN5, _______, _______, _______, KC_WH_L, KC_MS_U, KC_WH_R, _______,
+        _______, KC_BTN2, KC_BTN3, KC_BTN1, _______, KC_WH_U, KC_MS_L, KC_MS_D, KC_MS_R, _______,
+        KC_LCTL, KC_LGUI, KC_LALT, KC_RALT, _______, KC_WH_D, KC_RALT, KC_LALT, KC_RGUI, KC_RCTL,
+                          _______, KC_LSFT, KC_ACL0, FN_TAB,  KC_ACL1, _______),
+#endif
+
     // Momentary Fn layer:
     // - Inner key is transparent (held by thumb to enable this layer)
     // - Home key (pressed by index finger) is Fn-lock/Media
@@ -494,14 +505,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, RGB_TOG, KC_MPRV, KC_MPLY, KC_MNXT, KC_VOLU,
         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_MYCM, KC_MSEL, KC_MSTP, KC_MUTE, KC_VOLD,
                           XXXXXXX, _______, _______, XXXXXXX, KC_RSFT, XXXXXXX),
-
-#ifdef MOUSEKEY_ENABLE
-    [L_MOUSE] = LAYOUT_KOLIBRI_36(
-        KC_BTN5, KC_WH_L, KC_WH_U, KC_WH_R, _______, _______, _______, KC_MS_U, _______, _______,
-        KC_BTN4, KC_BTN2, KC_WH_D, KC_BTN1, _______, _______, KC_MS_L, KC_MS_D, KC_MS_R, _______,
-        KC_LCTL, KC_LGUI, KC_LALT, KC_BTN3, _______, _______, _______, KC_LALT, KC_RGUI, KC_RCTL,
-                          _______, KC_LSFT, KC_ACL0, _______, _______, _______)
-#endif
 };
 
 enum combos {
@@ -607,11 +610,20 @@ static bool process_record_layer_lock(uint16_t keycode, keyrecord_t *record) {
         if (record->event.pressed) {
             layer_invert(L_FN_LOCKED);
             layer_off(L_SYM_LOCKED);
+            layer_off(L_MOUSE);
         }
         return false; // doesn't send any keycode
     case MD_SYLK: // Sym-Lock/Unlock
         if (record->event.pressed) {
             layer_invert(L_SYM_LOCKED);
+            layer_off(L_FN_LOCKED);
+            layer_off(L_MOUSE);
+        }
+        return false; // doesn't send any keycode
+    case SY_MOUS: // Mouse-Lock/Unlock
+        if (record->event.pressed) {
+            layer_invert(L_MOUSE);
+            layer_off(L_SYM_LOCKED);
             layer_off(L_FN_LOCKED);
         }
         return false; // doesn't send any keycode
