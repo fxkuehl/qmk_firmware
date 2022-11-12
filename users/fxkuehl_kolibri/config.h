@@ -18,6 +18,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #pragma once
 
 #define TAPPING_TERM 175
+// Workaround for random modifier behaviour on Ubuntu Wayland 22.04.
+#define TAP_CODE_DELAY 5
 
 // Immediate hold on other key press for thumb mod-taps (except space)
 #define HOLD_ON_OTHER_KEY_PRESS_PER_KEY

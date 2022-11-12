@@ -329,7 +329,7 @@ static void quot_on_each_tap(qk_tap_dance_state_t *state, void *user_data) {
     if (state->count >= 3) // 3rd and subsequent tap insert a pair of quotes
         tap_code(KC_QUOT);
     if (state->count >= 2) { // 2nd and subsequent tap move the cursor left
-        if (mods) del_mods(mods);
+        if (mods) {del_mods(mods); if (TAP_CODE_DELAY) wait_ms(TAP_CODE_DELAY);}
         tap_code(KC_LEFT);
         if (mods) add_mods(mods);
     }
@@ -694,6 +694,7 @@ static bool process_record_lt_mt_hacks(uint16_t keycode, keyrecord_t *record) {
     if (record->event.pressed) {
         register_code16(code16);
         clear_weak_mods(); // Avoid modifying subsequent rolling key strokes
+        if (TAP_CODE_DELAY) wait_ms(TAP_CODE_DELAY);
     } else
         unregister_code16(code16);
     return false;
