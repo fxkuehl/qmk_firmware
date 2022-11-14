@@ -102,9 +102,9 @@ enum custom_keycodes {
 
 // Hi-jack some unused 8-bit keycodes for the layer-(un)lock that can be used
 // in a Layer-Tap
-#define KC_FNLK KC_EXSEL
-#define KC_SYLK KC_CRSEL
-#define KC_MSLK KC_CLEAR_AGAIN
+//#define KC_FNLK KC_EXSEL
+//#define KC_SYLK KC_CRSEL
+//#define KC_MSLK KC_CLEAR_AGAIN
 
 // Short cuts for mod-tap and layer-tap keys. On the 36-key version LALT moves
 // to the outer left thumb key as one-shot mod. RALT moves to the outer right
@@ -139,13 +139,15 @@ enum custom_keycodes {
 #define RC_SLSH RCTL_T(KC_SLSH)
 #define FN_SCLN LT(L_FN, KC_SCLN)
 #if defined(LAYOUT_KOLIBRI_LEFTY_34) || defined(LAYOUT_KOLIBRI_LEFTY_36)
-#   define MD_SYLK LT(L_CONFIG, KC_SYLK)
+#   define MO_MEDI MO(L_CONFIG)
+//#   define MD_SYLK LT(L_CONFIG, KC_SYLK)
 #   define MD_BSLS LT(L_CONFIG, KC_BSLS)
 #else
-#   define MD_SYLK LT(L_MEDIA, KC_SYLK)
+#   define MO_MEDI MO(L_MEDIA)
+//#   define MD_SYLK LT(L_MEDIA, KC_SYLK)
 #   define MD_BSLS LT(L_MEDIA, KC_BSLS)
 #endif
-#define OVS_TAB LT(L_BASE_OV_SYM, KC_TAB)
+#define OVS_UNDS LT(L_BASE_OV_SYM, KC_UNDS) // 16-bit
 #ifdef LAYOUT_KOLIBRI_34
 #   define LA_RCBR LALT_T(KC_RCBR) // 16-bit
 #   define RA_RBRC RALT_T(KC_RBRC)
@@ -175,11 +177,15 @@ enum custom_keycodes {
 #define RG_F11  RGUI_T(KC_F11)
 #define RC_F12  RCTL_T(KC_F12)
 #define RS_CAPS RSFT_T(KC_CAPS)
-#define SY_MOUS LT(L_SYM, KC_MSLK)
+//#define SY_MOUS LT(L_SYM, KC_MSLK)
+#define MY_CAPS TD(TD_CAPS)
+#define MY_LOCK TD(TD_LOCK)
 #if defined(LAYOUT_KOLIBRI_LEFTY_34) || defined(LAYOUT_KOLIBRI_LEFTY_36)
-#   define CO_FNLK LT(L_MEDIA, KC_FNLK)
+#   define MO_CONF MO(L_MEDIA)
+//#   define CO_FNLK LT(L_MEDIA, KC_FNLK)
 #else
-#   define CO_FNLK LT(L_CONFIG, KC_FNLK)
+#   define MO_CONF MO(L_CONFIG)
+//#   define CO_FNLK LT(L_CONFIG, KC_FNLK)
 #endif
 #define OVF_TAB LT(L_BASE_OV_FN, KC_TAB)
 #ifdef LAYOUT_KOLIBRI_34
@@ -208,6 +214,8 @@ enum {
     TD_SLCK,
     TD_PAUS,
     TD_QUOT,
+    TD_CAPS,
+    TD_LOCK,
 };
 
 #define SK(td)  TD(TD_##td)
@@ -227,6 +235,12 @@ static void safe_key_reset(qk_tap_dance_state_t *state, void *user_data);
 
 static void quot_on_each_tap(qk_tap_dance_state_t *state, void *user_data);
 
+static void caps_finished(qk_tap_dance_state_t *state, void *user_data);
+static void caps_reset(qk_tap_dance_state_t *state, void *user_data);
+
+static void layer_lock_finished(qk_tap_dance_state_t *state, void *user_data);
+static void layer_lock_reset(qk_tap_dance_state_t *state, void *user_data);
+
 qk_tap_dance_action_t tap_dance_actions[] = {
     [TD_F1]   = ACTION_TAP_DANCE_SAFE_KEY(KC_F1),
     [TD_F2]   = ACTION_TAP_DANCE_SAFE_KEY(KC_F2),
@@ -240,6 +254,8 @@ qk_tap_dance_action_t tap_dance_actions[] = {
     [TD_SLCK] = ACTION_TAP_DANCE_SAFE_KEY(KC_SLCK),
     [TD_PAUS] = ACTION_TAP_DANCE_SAFE_KEY(KC_PAUS),
     [TD_QUOT] = ACTION_TAP_DANCE_FN_ADVANCED(quot_on_each_tap, NULL, NULL),
+    [TD_CAPS] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, caps_finished, caps_reset),
+    [TD_LOCK] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, layer_lock_finished, layer_lock_reset),
 };
 
 static void safe_key_finished(qk_tap_dance_state_t *state, void *user_data) {
@@ -347,6 +363,73 @@ static bool process_record_quot(uint16_t keycode, keyrecord_t *record) {
     return true;
 }
 
+static bool rsft_held;
+static void caps_finished(qk_tap_dance_state_t *state, void *user_data) {
+    bool caps_locked = host_keyboard_led_state().caps_lock;
+
+    if (caps_locked)
+        tap_code(KC_CAPS);
+
+    switch(state->count) {
+    case 1:
+        if (state->pressed) {
+            register_code(KC_RSFT);
+            rsft_held = true;
+        } else if (!caps_locked) {
+            // Always use LSFT for OSM to avoid turning LALT OSM into RALT
+            set_oneshot_mods(MOD_LSFT);
+        }
+        break;
+#if defined(CAPS_WORD_ENABLE)
+#   define CAPS_LOCK_TAPS 3
+    case 2: caps_word_on(); break;
+#else
+#   define CAPS_LOCK_TAPS 2
+#endif
+    case CAPS_LOCK_TAPS: register_code(KC_CAPS); break;
+    }
+}
+static void caps_reset(qk_tap_dance_state_t *state, void *user_data) {
+    if (rsft_held) {
+        unregister_code(KC_RSFT);
+        rsft_held = false;
+    } else if (state->count == CAPS_LOCK_TAPS) {
+        if (TAP_CODE_DELAY) wait_ms(TAP_CODE_DELAY);
+        unregister_code(KC_CAPS);
+    }
+}
+
+static void disable_layer_locks(void) {
+#if defined(CAPS_WORD_ENABLE)
+    caps_word_off();
+#endif
+    layer_off(L_FN_LOCKED);
+    layer_off(L_SYM_LOCKED);
+    layer_off(L_MOUSE);
+    if (host_keyboard_led_state().caps_lock)
+        tap_code(KC_CAPS);
+}
+bool sym_held;
+static void layer_lock_finished(qk_tap_dance_state_t *state, void *user_data) {
+    disable_layer_locks();
+    switch(state->count) {
+    case 1:
+        if (state->pressed) {
+            layer_on(L_SYM);
+            sym_held = true;
+        }
+        break;
+    case 2: layer_on(L_SYM_LOCKED); break;
+    case 3: layer_on(L_FN_LOCKED); break;
+    }
+}
+static void layer_lock_reset(qk_tap_dance_state_t *state, void *user_data) {
+    if (sym_held) {
+        layer_off(L_SYM);
+        sym_held = false;
+    }
+}
+
 // Pre-defined base layouts with slight adaptations that optimize the symbol
 // layer: < > ; : / are on the symbol layer. Quotes are more easily reachable
 // on the base layer on QWERTY and Colemak-based layouts. < > are replaced
@@ -407,13 +490,13 @@ static bool process_record_quot(uint16_t keycode, keyrecord_t *record) {
         SK(F1),  SK(F2),  SK(F3),  SK(F4),  SK(PSCR),SK(SLCK),KC_HOME, KC_UP,   KC_END,  KC_CALC, \
         KC_ESC,  KC_INS,  KC_BSPC, KC_DEL,  KC_ENT,  KC_PGUP, KC_LEFT, KC_DOWN, KC_RGHT, SK(PAUS),\
         LC_F5,   LG_F6,   LA_F7,   SK(F8),  KC_APP,  KC_PGDN, SK(F9),  LA_F10,  RG_F11,  RC_F12,  \
-                          _______, RS_CAPS, SY_MOUS, K35,     K36,     _______)
+                          _______, MY_CAPS, MY_LOCK, K35,     K36,     _______)
 #else
 #   define KEYMAP_FN(K35, K36) LAYOUT_KOLIBRI_36( \
         KC_CALC, KC_HOME, KC_UP,   KC_END,  SK(PSCR),SK(SLCK),SK(F1),  SK(F2),  SK(F3),  SK(F4), \
         SK(PAUS),KC_LEFT, KC_DOWN, KC_RGHT, KC_PGUP, KC_ENT,  KC_BSPC, KC_DEL,  KC_INS,  KC_ESC, \
         LC_F5,   LG_F6,   LA_F7,   SK(F8),  KC_PGDN, KC_APP,  SK(F9),  LA_F10,  RG_F11,  RC_F12, \
-                          _______, RS_CAPS, SY_MOUS, K35,     K36,     _______)
+                          _______, MY_CAPS, MY_LOCK, K35,     K36,     _______)
 #endif
 
 #ifdef KOLIBRI_NUMPAD
@@ -464,7 +547,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //
     // Hold inner + hold home key always enables the Macro layer
     // Hold inner + tap home key is the same key combo to Fn lock or unlock.
-    [L_BASE_OV_FN] = KEYMAP_BASE(KOLIBRI_BASE_LAYOUT, LS_BSLS, SY_UNDS, _______, CO_FNLK),
+    //[L_BASE_OV_FN] = KEYMAP_BASE(KOLIBRI_BASE_LAYOUT, LS_BSLS, SY_UNDS, _______, CO_FNLK),
+    [L_BASE_OV_FN] = KEYMAP_BASE(KOLIBRI_BASE_LAYOUT, MY_CAPS, MY_LOCK, _______, MO_CONF),
 
     // Locked Sym layer sits below the Fn layer:
     // - Inner key is Underscore/Base-Overlay
@@ -472,7 +556,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //   inserted while the Sym layer is locked
     //
     // Base-Overlay temporarily restores a (slightly modified) base layer
-    [L_SYM_LOCKED] = KEYMAP_SYM(LM(L_BASE_OV_SHIFT, MOD_LSFT), OVS_TAB),
+    [L_SYM_LOCKED] = KEYMAP_SYM(LM(L_BASE_OV_SHIFT, MOD_LSFT), OVS_UNDS),
 
     // Base-Overlay over the locked Sym layer:
     // - Inner key is transparent (held by thumb to enable this layer)
@@ -480,7 +564,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //
     // Hold inner + hold home key always enables the Media layer
     // Hold inner + tap home key is the same key combo to Sym lock or unlock
-    [L_BASE_OV_SYM]   = KEYMAP_BASE(KOLIBRI_BASE_LAYOUT, MD_SYLK, _______, FN_TAB, RA_SPC),
+    [L_BASE_OV_SYM]   = KEYMAP_BASE(KOLIBRI_BASE_LAYOUT, MO_MEDI, _______, FN_TAB, RA_SPC),
     [L_BASE_OV_SHIFT] = KEYMAP_BASE(KOLIBRI_BASE_LAYOUT, _______, _______, FN_TAB, RA_SPC),
 
 #ifdef MOUSEKEY_ENABLE
@@ -495,7 +579,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // Momentary Fn layer:
     // - Inner key is transparent (held by thumb to enable this layer)
     // - Home key (pressed by index finger) is Fn-lock/Media
-    [L_FN] = KEYMAP_FN(_______, CO_FNLK),
+    [L_FN] = KEYMAP_FN(_______, MO_CONF),
 
     // Momentary Sym layer:
     // - Inner key is transparent (held by thumb to enable this layer)
@@ -635,6 +719,7 @@ static bool process_record_layer_lock(uint16_t keycode, keyrecord_t *record) {
         return true;
 
     switch(keycode) {
+        /*
     case CO_FNLK: // Fn-Lock/Unlock
         if (record->event.pressed) {
             layer_invert(L_FN_LOCKED);
@@ -656,6 +741,7 @@ static bool process_record_layer_lock(uint16_t keycode, keyrecord_t *record) {
             layer_off(L_FN_LOCKED);
         }
         return false; // doesn't send any keycode
+        */
     default: return true;
     }
 }
@@ -668,6 +754,7 @@ static bool process_record_lt_mt_hacks(uint16_t keycode, keyrecord_t *record) {
 
     if (IS_LAYER_ON(L_SYM) || IS_LAYER_ON(L_SYM_LOCKED)) {
         switch (keycode) {
+        case OVS_UNDS:code16 = KC_UNDS; break;
 #if defined(KOLIBRI_SOUTHPAW)
         case LC_DLR:  code16 = KC_DLR; break;
 #else
