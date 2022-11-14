@@ -140,8 +140,10 @@ enum custom_keycodes {
 #define FN_SCLN LT(L_FN, KC_SCLN)
 #if defined(LAYOUT_KOLIBRI_LEFTY_34) || defined(LAYOUT_KOLIBRI_LEFTY_36)
 #   define MD_SYLK LT(L_CONFIG, KC_SYLK)
+#   define MD_BSLS LT(L_CONFIG, KC_BSLS)
 #else
 #   define MD_SYLK LT(L_MEDIA, KC_SYLK)
+#   define MD_BSLS LT(L_MEDIA, KC_BSLS)
 #endif
 #define OVS_TAB LT(L_BASE_OV_SYM, KC_TAB)
 #ifdef LAYOUT_KOLIBRI_34
@@ -446,7 +448,8 @@ const uint16_t PROGMEM lt_gt_combo[]  = {LA_LT,   RG_GT,   COMBO_END};
 #endif
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    [L_BASE] = KEYMAP_BASE(KOLIBRI_BASE_LAYOUT, LS_BSLS, SY_UNDS, FN_TAB, RA_SPC),
+    //[L_BASE] = KEYMAP_BASE(KOLIBRI_BASE_LAYOUT, LS_BSLS, SY_UNDS, FN_TAB, RA_SPC),
+    [L_BASE] = KEYMAP_BASE(KOLIBRI_BASE_LAYOUT, OSM(MOD_LSFT), OSL(L_SYM), FN_TAB, RA_SPC),
 
     // Locked Fn layer sits below the Sym layer:
     // - Inner key is Tab/Base-Overlay
@@ -497,7 +500,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // Momentary Sym layer:
     // - Inner key is transparent (held by thumb to enable this layer)
     // - Home key (pressed by index finger) is Sym-lock/Macro
-    [L_SYM] = KEYMAP_SYM(MD_SYLK, _______),
+    //[L_SYM] = KEYMAP_SYM(MD_SYLK, _______),
+    [L_SYM] = KEYMAP_SYM(MD_BSLS, KC_UNDS),
 
     [L_CONFIG] = LAYOUT_KOLIBRI_RAW_36(
         RESET,   DT_PRNT, DT_DOWN, DT_UP,   DEBUG,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
@@ -560,12 +564,14 @@ static bool process_record_shifted_symbols(uint16_t keycode, keyrecord_t *record
     // released first.
     static uint16_t comm_release, dot_release, grv_release;
     uint16_t new_code = 0;
+    uint8_t mods;
 
     // Ignore Sym-layer where the shifted symbols moved to
-    if (IS_LAYER_ON(L_SYM))
+    if (IS_LAYER_ON(L_SYM) || get_oneshot_layer() == L_SYM)
         return true;
 
-    if ((get_mods() & MOD_MASK_SHIFT) && record->event.pressed) { // Shifted key press
+    mods = get_mods() | get_oneshot_mods();
+    if ((mods & MOD_MASK_SHIFT) && record->event.pressed) { // Shifted key press
         switch (keycode & 0xff) {
         case KC_COMM: new_code = comm_release = (keycode & 0xff00) | KC_2;    break; // '@'
         case KC_DOT:  new_code =  dot_release = (keycode & 0xff00) | KC_3;    break; // '#'
@@ -583,9 +589,9 @@ static bool process_record_shifted_symbols(uint16_t keycode, keyrecord_t *record
         return true; // continue processing normally
     } else { // Key release
         switch (keycode & 0xff) {
-        case KC_COMM: new_code = comm_release; break;
-        case KC_DOT:  new_code =  dot_release; break;
-        case KC_GRV:  new_code =  grv_release; break;
+        case KC_COMM: new_code = comm_release; comm_release = 0; break;
+        case KC_DOT:  new_code =  dot_release;  dot_release = 0; break;
+        case KC_GRV:  new_code =  grv_release;  grv_release = 0; break;
         }
         if (!new_code)
             return true;
