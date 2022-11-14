@@ -821,6 +821,7 @@ void process_action(keyrecord_t *record, action_t action) {
      */
     if (do_release_oneshot && !(get_oneshot_layer_state() & ONESHOT_PRESSED)) {
         record->event.pressed = false;
+        if (TAP_CODE_DELAY) wait_ms(TAP_CODE_DELAY);
         layer_on(get_oneshot_layer());
         process_record(record);
         layer_off(get_oneshot_layer());
