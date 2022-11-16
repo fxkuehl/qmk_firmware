@@ -405,7 +405,9 @@ static void disable_layer_locks(void) {
 #endif
     layer_off(L_FN_LOCKED);
     layer_off(L_SYM_LOCKED);
+#if defined(MOUSEKEY_ENABLE)
     layer_off(L_MOUSE);
+#endif
     if (host_keyboard_led_state().caps_lock)
         tap_code(KC_CAPS);
 }
@@ -705,7 +707,9 @@ static bool process_record_macros(uint16_t keycode, keyrecord_t *record) {
         case F_CLEAR: // Clears all keyboard state: locked layers and caps-lock
             layer_off(L_FN_LOCKED);
             layer_off(L_SYM_LOCKED);
+#if defined(MOUSEKEY_ENABLE)
             layer_off(L_MOUSE);
+#endif
             if (host_keyboard_led_state().caps_lock)
                 tap_code(KC_CAPS);
             return false;
