@@ -195,6 +195,8 @@ enum custom_keycodes {
 #   define LA_F7   SK(F7)
 #   define LA_F10  SK(F10)
 #endif
+#define TO_FNLK TO(L_FN_LOCKED)
+#define TG_FNLK TG(L_FN_LOCKED)
 
 // Tap dance
 enum {
@@ -365,35 +367,31 @@ static bool process_record_quot(uint16_t keycode, keyrecord_t *record) {
 
 static bool rsft_held;
 static void caps_finished(qk_tap_dance_state_t *state, void *user_data) {
-    bool caps_locked = host_keyboard_led_state().caps_lock;
-
-    if (caps_locked)
-        tap_code(KC_CAPS);
-
     switch(state->count) {
     case 1:
         if (state->pressed) {
+            // Holding Fn+Shift gives a right-Shift, in case anyone needs it
             register_code(KC_RSFT);
             rsft_held = true;
-        } else if (!caps_locked) {
-            // Always use LSFT for OSM to avoid turning LALT OSM into RALT
+        } else {
+#if defined(CAPS_WORD_ENABLE)
+            // Tapping Fn+Shift turns on caps-word if that feature is enabled
+            caps_word_on();
+#else
+            // Otherwise it's just another OSM, using left-Shift to avoid
+            // turning LALT OSM into RALT
             set_oneshot_mods(MOD_LSFT);
+#endif
         }
         break;
-#if defined(CAPS_WORD_ENABLE)
-#   define CAPS_LOCK_TAPS 3
-    case 2: caps_word_on(); break;
-#else
-#   define CAPS_LOCK_TAPS 2
-#endif
-    case CAPS_LOCK_TAPS: register_code(KC_CAPS); break;
+    case 2: register_code(KC_CAPS); break;
     }
 }
 static void caps_reset(qk_tap_dance_state_t *state, void *user_data) {
     if (rsft_held) {
         unregister_code(KC_RSFT);
         rsft_held = false;
-    } else if (state->count == CAPS_LOCK_TAPS) {
+    } else if (state->count == 2) {
         if (TAP_CODE_DELAY) wait_ms(TAP_CODE_DELAY);
         unregister_code(KC_CAPS);
     }
@@ -482,21 +480,21 @@ static void layer_lock_reset(qk_tap_dance_state_t *state, void *user_data) {
 // right and left respectively. If mousekeys are enabled, AltGr on the locked
 // Nav+FN layer is repurposed as mouse layer-tap.
 #ifdef MOUSEKEY_ENABLE
-#define MS_SPC LT(L_MOUSE, KC_SPC)
+#define TO_MOUS TO(L_MOUSE)
 #else
-#define MS_SPC KC_TRNS
+#define TO_MOUS KC_CALC
 #endif
 
 #ifdef KOLIBRI_NAV_ON_RIGHT
-#   define KEYMAP_FN(K35, K36) LAYOUT_KOLIBRI_36( \
-        SK(F1),  SK(F2),  SK(F3),  SK(F4),  SK(PSCR),SK(SLCK),KC_HOME, KC_UP,   KC_END,  KC_CALC, \
-        KC_ESC,  KC_INS,  KC_BSPC, KC_DEL,  KC_ENT,  KC_PGUP, KC_LEFT, KC_DOWN, KC_RGHT, SK(PAUS),\
+#   define KEYMAP_FN(K35, K36, FNLK) LAYOUT_KOLIBRI_36( \
+        SK(F1),  SK(F2),  SK(F3),  SK(F4),  SK(PSCR),SK(SLCK),KC_HOME, KC_UP,   KC_END,  TO_MOUS, \
+        KC_ESC,  KC_INS,  KC_BSPC, KC_DEL,  KC_ENT,  KC_PGUP, KC_LEFT, KC_DOWN, KC_RGHT, FNLK,    \
         LC_F5,   LG_F6,   LA_F7,   SK(F8),  KC_APP,  KC_PGDN, SK(F9),  LA_F10,  RG_F11,  RC_F12,  \
                           _______, MY_CAPS, MY_LOCK, K35,     K36,     _______)
 #else
-#   define KEYMAP_FN(K35, K36) LAYOUT_KOLIBRI_36( \
-        KC_CALC, KC_HOME, KC_UP,   KC_END,  SK(PSCR),SK(SLCK),SK(F1),  SK(F2),  SK(F3),  SK(F4), \
-        SK(PAUS),KC_LEFT, KC_DOWN, KC_RGHT, KC_PGUP, KC_ENT,  KC_BSPC, KC_DEL,  KC_INS,  KC_ESC, \
+#   define KEYMAP_FN(K35, K36, FNLK) LAYOUT_KOLIBRI_36( \
+        TO_MOUS, KC_HOME, KC_UP,   KC_END,  SK(PSCR),SK(SLCK),SK(F1),  SK(F2),  SK(F3),  SK(F4), \
+        FNLK,    KC_LEFT, KC_DOWN, KC_RGHT, KC_PGUP, KC_ENT,  KC_BSPC, KC_DEL,  KC_INS,  KC_ESC, \
         LC_F5,   LG_F6,   LA_F7,   SK(F8),  KC_PGDN, KC_APP,  SK(F9),  LA_F10,  RG_F11,  RC_F12, \
                           _______, MY_CAPS, MY_LOCK, K35,     K36,     _______)
 #endif
@@ -539,9 +537,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // Locked Fn layer sits below the Sym layer:
     // - Inner key is Tab/Base-Overlay
     // - Home key is Space/AltGr
+    // - FnLk key disables locked Fn layer
     //
     // Base-Overlay temporarily restores a (slightly modified) base layer
-    [L_FN_LOCKED] = KEYMAP_FN(OVF_TAB, RA_SPC),
+    [L_FN_LOCKED] = KEYMAP_FN(OVF_TAB, RA_SPC, TG_FNLK),
 
     // Base-Overlay over the locked Fn layer:
     // - Inner key is transparent (held by thumb to enable this layer)
@@ -581,7 +580,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // Momentary Fn layer:
     // - Inner key is transparent (held by thumb to enable this layer)
     // - Home key (pressed by index finger) is Fn-lock/Media
-    [L_FN] = KEYMAP_FN(_______, MO_CONF),
+    // - FnLk key moves to FnLk layer, disabling other locked layers
+    [L_FN] = KEYMAP_FN(_______, MO_CONF, TO_FNLK),
 
     // Momentary Sym layer:
     // - Inner key is transparent (held by thumb to enable this layer)
@@ -596,8 +596,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                           XXXXXXX, KC_LSFT, F_CLEAR, _______, _______, XXXXXXX),
 
     [L_MEDIA] = LAYOUT_KOLIBRI_RAW_36(
-        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, M_EMAIL, XXXXXXX, M_XARGS,
-        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_MPRV, KC_MPLY, KC_MNXT, KC_VOLU,
+        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, M_XARGS, M_EMAIL, XXXXXXX, KC_PAUS,
+        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_CALC, KC_MPRV, KC_MPLY, KC_MNXT, KC_VOLU,
         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_MYCM, KC_MSEL, KC_MSTP, KC_MUTE, KC_VOLD,
                           XXXXXXX, _______, _______, XXXXXXX, KC_RSFT, XXXXXXX),
 };
