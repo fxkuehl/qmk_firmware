@@ -5,7 +5,7 @@
 A unibody ergo keyboard using hexagonal key caps, placing the hands close together and rotating them 30°. The hex grid naturally results in aggressive column stagger that is close enough to anatomically reasonable (with aggressive pinky and index finger stagger and slightly exaggerated ring finger stagger). Existing 3x5+3 layouts with 36 keys should be adaptable for this keyboard.
 
 * Keyboard Maintainer: [Felix Kuehling](https://github.com/fxkuehl)
-* Hardware Supported: [Mantis v0.1](https://github.com/fxkuehl/mantis)
+* Hardware Supported: [Mantis v0.2](https://github.com/fxkuehl/mantis)
 * Hardware Availability: N/A
 
 Make example for this keyboard (after setting up your build environment):
