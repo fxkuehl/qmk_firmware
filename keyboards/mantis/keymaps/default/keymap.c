@@ -103,3 +103,14 @@ LCTL_T(KC_LBRC),KC_LCBR,KC_RCBR,KC_RBRC,KC_PIPE,         KC_CIRC,KC_PLUS,KC_LT, 
     // └───────┴───────┴───────┴───────┴───────┘        └───────┴───────┴───────┴───────┴───────┘
     )
 };
+
+/* Prefer tap on fingers, hold on thumbs */
+static bool prefer_tap(keyrecord_t *record) {
+    return record->event.key.row < 3;
+}
+bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
+    return !prefer_tap(record);
+}
+bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
+    return prefer_tap(record);
+}
