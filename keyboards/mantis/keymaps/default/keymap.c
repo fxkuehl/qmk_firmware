@@ -1,5 +1,8 @@
 #include QMK_KEYBOARD_H
 
+// Uncomment one of the following layout options if you're not using QWERTY
+//#define MANTIS_COLEMAK_DH
+
 /* Finger assignment:
  * ┌─────┬─────┬─────┬─────┐             ┌─────┬─────┬─────┬─────┐
  * │  p  │  p  │  R  │  M  │             │  M  │  R  │  p  │  p  │
@@ -15,6 +18,22 @@
  *             └─────┺━━┯━━┹──┬──┘ └──┬──┺━━┯━━┹─────┘        R - Ring finger
  *                      │  T  │       │  T  │                 p - Pinky finger
  *                      └─────┘       └─────┘
+ *
+ * Base Layer (based on QWERTY):
+ * ┌─────┬─────┬─────┬─────┐             ┌─────┬─────┬─────┬─────┐
+ * │  Z  │  Q  │  W  │  E  │             │  I  │  O  │  P  │ '"' │
+ * └──┲━━┷━━┳━━┷━━┳━━┷━━┱──┴──┐       ┌──┴──┲━━┷━━┳━━┷━━┳━━┷━━┱──┘
+ *    ┃  A  ┃  S  ┃  D  ┃  R  │       │  U  ┃  K  ┃  L  ┃  M  ┃
+ * ┌──┺━━┯━━┻━━┯━━┻━━┳━━┻━━┱──┴──┐ ┌──┴──┲━━┻━━┳━━┻━━┯━━┻━━┯━━┹──┐
+ * │  B  │  X  │  C  ┃  F  ┃  T  │ │  Y  ┃  J  ┃  ,< │  .> │  /? │
+ * └─Ctl─┴──┬──┴──┬──┺━━┯━━┹──┬──┘ └──┬──┺━━┯━━┹──┬──┴──┬──┴─Ctl─┘
+ *          │ Gui │  V  │  G  │       │  H  │  N  │ App │
+ *          └─────┴─────┴─────┘       └─────┴─────┴─Gui─┘     ┌─────┐
+ *             ┌─────┲━━━━━┱─────┐ ┌─────┲━━━━━┱─────┐        │ Tap │
+ *             │ Alt ┃ Bsp ┃  _  │ │Enter┃     ┃ Del │        └─Hold┘
+ *             └1shot┺Shift┹──┬──┘ └──┬──┺━━┯━━┹AltGr┘
+ *                      │  ;  │       │ Tab │
+ *                      └─Sym─┘       └──Fn─┘
  *
  * Base Layer (based on Colemak-DH):
  * ┌─────┬─────┬─────┬─────┐             ┌─────┬─────┬─────┬─────┐
@@ -77,6 +96,7 @@
 #define SY_CALC LT(1,KC_CALC)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
+#ifdef MANTIS_COLEMAK_DH
     [0] = LAYOUT_all(
     // ┌───────┬───────┬───────┬───────┬───────┐       ┌───────┬───────┬───────┬───────┬───────┐
         KC_X,   KC_Q,   KC_W,   KC_F,   KC_P,           KC_L,   KC_U,   KC_Y,   KC_J,   KC_QUOT,
@@ -88,6 +108,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LGUI,OS_LALT,SH_BSPC,SY_SCLN,KC_UNDS,        KC_ENT, FN_TAB, KC_SPC, AGR_DEL,RG_APP
     // └───────┴───────┴───────┴───────┴───────┘       └───────┴───────┴───────┴───────┴───────┘
     ),
+#else // Fallback to QWERTY if no better layout is specified
+    [0] = LAYOUT_all(
+    // ┌───────┬───────┬───────┬───────┬───────┐       ┌───────┬───────┬───────┬───────┬───────┐
+        KC_Z,   KC_Q,   KC_W,   KC_E,   KC_R,           KC_U,   KC_I,   KC_O,   KC_P,   KC_QUOT,
+    // └───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───╥───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┘
+            KC_A,   KC_S,   KC_D,   KC_F,   KC_T,   KC_Y,   KC_J,   KC_K,   KC_L,   KC_M,
+    // ┌───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───╨───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┐
+ LCTL_T(KC_B),  KC_X,   KC_C,   KC_V,   KC_G,           KC_H,   KC_N,   KC_COMM,KC_DOT, RCTL_T(KC_SLSH),
+    // ╞═══════╪═══════╪═══════╪═══════╪═══════╡       ╞═══════╪═══════╪═══════╪═══════╪═══════╡
+        KC_LGUI,OS_LALT,SH_BSPC,SY_SCLN,KC_UNDS,        KC_ENT, FN_TAB, KC_SPC, AGR_DEL,RG_APP
+    // └───────┴───────┴───────┴───────┴───────┘       └───────┴───────┴───────┴───────┴───────┘
+    ),
+#endif
     [1] = LAYOUT_all(
     // ┌───────┬───────┬───────┬───────┬───────┐       ┌───────┬───────┬───────┬───────┬───────┐
         KC_TILD,KC_EXLM,KC_AT,  KC_HASH,KC_DLR,         KC_AMPR,KC_ASTR,KC_LPRN,KC_RPRN,KC_COLN,
@@ -124,21 +157,6 @@ bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
 }
 
 /* Alternative layer ideas
- *
- *
- * Base Layer (based on QWERTY)
- * ┌─────┬─────┬─────┬─────┬─────┐       ┌─────┬─────┬─────┬─────┬─────┐
- * │  Z  │  Q  │  W  │  E  │  R  │       │  U  │  I  │  O  │  P  │  J  │
- * └──┬──┴──┬──┴──┬──┴──┬──┴──┬──┴──┐ ┌──┴──┬──┴──┬──┴──┬──┴──┬──┴──┬──┘
- *    │  A  │  S  │  D  │  F  │  T  │ │  Y  │  H  │  K  │  L  │ "'" │
- * ┌──┴──┬──┴──┬──┴──┬──┴──┬──┴──┬──┘ └──┬──┴──┬──┴──┬──┴──┬──┴──┬──┴──┐
- * │  V  │  X  │  C  │  G  │  B  │       │  N  │  M  │  ,< │  .> │  /? │
- * └─Ctl─┴──┬──┴──┬──┴─────┴─────┘       └─────┴─────┴──┬──┴──┬──┴─Ctl─┘
- *          │ Gui ├─────┬─────┬─────┐ ┌─────┬─────┬─────┤ Gui │
- *          └─────┤ Alt │Shift│  _  │ │Enter│     │ Del ├─────┘
- *                └1shot┴──┬──┴──┬──┘ └──┬──┴──┬──┴AltGr┘
- *                         │  ;  │       │ Tab │
- *                         └─Sym─┘       └──Fn─┘
  *
  * Symbol Layer (num pad, .= duplicated):
  * ┌─────┬─────┬─────┬─────┬─────┐       ┌─────┬─────┬─────┬─────┬─────┐
