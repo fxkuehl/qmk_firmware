@@ -86,12 +86,12 @@
 
 #define OS_LALT OSM(MOD_LALT)
 #define SH_BSPC LSFT_T(KC_BSPC)
-#define SY_SCLN LT(1,KC_SCLN)
+#define SY_MINS LT(1,KC_MINS)
 #define RG_APP  RGUI_T(KC_APP)
 #define FN_TAB  LT(2,KC_TAB)
 #define AGR_DEL RALT_T(KC_DEL)
 #define AGR_GRV RALT_T(KC_GRV)
-#define FN_BSLS LT(2,KC_BSLS)
+#define FN_DOT  LT(2,KC_DOT)
 #define SH_CAPS RSFT_T(KC_CAPS)
 #define SY_CALC LT(1,KC_CALC)
 
@@ -105,7 +105,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // ┌───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───╨───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┐
  LCTL_T(KC_Z),  KC_V,   KC_C,   KC_D,   KC_B,           KC_K,   KC_H,   KC_COMM,KC_DOT, RCTL_T(KC_SLSH),
     // ╞═══════╪═══════╪═══════╪═══════╪═══════╡       ╞═══════╪═══════╪═══════╪═══════╪═══════╡
-        KC_LGUI,OS_LALT,SH_BSPC,SY_SCLN,KC_UNDS,        KC_ENT, FN_TAB, KC_SPC, AGR_DEL,RG_APP
+        KC_LGUI,OS_LALT,SH_BSPC,SY_MINS,KC_UNDS,        KC_ENT, FN_TAB, KC_SPC, AGR_DEL,RG_APP
     // └───────┴───────┴───────┴───────┴───────┘       └───────┴───────┴───────┴───────┴───────┘
     ),
 #else // Fallback to QWERTY if no better layout is specified
@@ -117,19 +117,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // ┌───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───╨───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┐
  LCTL_T(KC_B),  KC_X,   KC_C,   KC_V,   KC_G,           KC_H,   KC_N,   KC_COMM,KC_DOT, RCTL_T(KC_SLSH),
     // ╞═══════╪═══════╪═══════╪═══════╪═══════╡       ╞═══════╪═══════╪═══════╪═══════╪═══════╡
-        KC_LGUI,OS_LALT,SH_BSPC,SY_SCLN,KC_UNDS,        KC_ENT, FN_TAB, KC_SPC, AGR_DEL,RG_APP
+        KC_LGUI,OS_LALT,SH_BSPC,SY_MINS,KC_UNDS,        KC_ENT, FN_TAB, KC_SPC, AGR_DEL,RG_APP
     // └───────┴───────┴───────┴───────┴───────┘       └───────┴───────┴───────┴───────┴───────┘
     ),
 #endif
     [1] = LAYOUT_all(
     // ┌───────┬───────┬───────┬───────┬───────┐       ┌───────┬───────┬───────┬───────┬───────┐
-        KC_TILD,KC_EXLM,KC_AT,  KC_HASH,KC_DLR,         KC_AMPR,KC_ASTR,KC_LPRN,KC_RPRN,KC_COLN,
+        KC_TILD,KC_EXLM,KC_LT,  KC_GT,  KC_DLR,         KC_AMPR,KC_ASTR,KC_LPRN,KC_RPRN,KC_PIPE,
     // └───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───╥───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┘
             KC_1,   KC_2,   KC_3,   KC_4,   KC_PERC, KC_CIRC,KC_7,   KC_8,   KC_9,   KC_0,
     // ┌───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───╨───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┐
-LCTL_T(KC_LBRC),KC_LCBR,KC_RCBR,KC_RBRC,KC_5,           KC_6,   KC_PLUS,KC_LT,  KC_GT,  RCTL_T(KC_EQL),
+LCTL_T(KC_LBRC),KC_LCBR,KC_RCBR,KC_RBRC,KC_5,           KC_6,   KC_PLUS,KC_MINS,KC_COLN,RCTL_T(KC_BSLS),
     // ╞═══════╪═══════╪═══════╪═══════╪═══════╡       ╞═══════╪═══════╪═══════╪═══════╪═══════╡
-        _______,_______,_______,_______,_______,        KC_PIPE,FN_BSLS,KC_MINS,AGR_GRV,_______
+        _______,_______,_______,_______,_______,        KC_SCLN,FN_DOT, KC_EQL, AGR_GRV,_______
     // └───────┴───────┴───────┴───────┴───────┘       └───────┴───────┴───────┴───────┴───────┘
     ),
     [2] = LAYOUT_all(
@@ -155,6 +155,27 @@ bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
 bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
     return prefer_tap(record);
 }
+
+/* Key overrides for @ and # on the base layer */
+#define ko_make_basic_no_suppress(trig_mods, trig_key, repl_key) {	\
+	.trigger_mods = (trig_mods),					\
+	.layers = ~0,							\
+	.suppressed_mods = 0,						\
+	.options = ko_options_default,					\
+	.negative_mod_mask = 0,						\
+	.custom_action = NULL,						\
+	.context = NULL,						\
+	.trigger = (trig_key),						\
+	.replacement = (repl_key),					\
+	.enabled = NULL							\
+}
+const key_override_t   at_key_override = ko_make_basic_no_suppress(MOD_MASK_SHIFT, KC_COMM, KC_2);
+const key_override_t hash_key_override = ko_make_basic_no_suppress(MOD_MASK_SHIFT, KC_DOT,  KC_3);
+const key_override_t **key_overrides = (const key_override_t *[]){
+    &at_key_override,
+    &hash_key_override,
+    NULL
+};
 
 /* Alternative layer ideas
  *
