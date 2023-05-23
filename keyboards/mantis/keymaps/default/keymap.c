@@ -25,14 +25,14 @@
  * └──┲━━┷━━┳━━┷━━┳━━┷━━┱──┴──┐       ┌──┴──┲━━┷━━┳━━┷━━┳━━┷━━┱──┘
  *    ┃  A  ┃  S  ┃  D  ┃  R  │       │  U  ┃  K  ┃  L  ┃  M  ┃
  * ┌──┺━━┯━━┻━━┯━━┻━━┳━━┻━━┱──┴──┐ ┌──┴──┲━━┻━━┳━━┻━━┯━━┻━━┯━━┹──┐
- * │  B  │  X  │  C  ┃  F  ┃  T  │ │  Y  ┃  J  ┃  ,< │  .> │  /? │
+ * │  B  │  X  │  C  ┃  F  ┃  T  │ │  Y  ┃  J  ┃  ,@ │  .# │  \? │
  * └─Ctl─┴──┬──┴──┬──┺━━┯━━┹──┬──┘ └──┬──┺━━┯━━┹──┬──┴──┬──┴─Ctl─┘
  *          │ Gui │  V  │  G  │       │  H  │  N  │ App │
  *          └─────┴─────┴─────┘       └─────┴─────┴─Gui─┘     ┌─────┐
  *             ┌─────┲━━━━━┱─────┐ ┌─────┲━━━━━┱─────┐        │ Tap │
  *             │ Alt ┃ Bsp ┃  _  │ │Enter┃     ┃ Del │        └─Hold┘
  *             └1shot┺Shift┹──┬──┘ └──┬──┺━━┯━━┹AltGr┘
- *                      │  ;  │       │ Tab │
+ *                      │  -  │       │ Tab │
  *                      └─Sym─┘       └──Fn─┘
  *
  * Base Layer (based on Colemak-DH):
@@ -41,30 +41,30 @@
  * └──┲━━┷━━┳━━┷━━┳━━┷━━┱──┴──┐       ┌──┴──┲━━┷━━┳━━┷━━┳━━┷━━┱──┘
  *    ┃  A  ┃  R  ┃  S  ┃  P  │       │  L  ┃  E  ┃  I  ┃  O  ┃
  * ┌──┺━━┯━━┻━━┯━━┻━━┳━━┻━━┱──┴──┐ ┌──┴──┲━━┻━━┳━━┻━━┯━━┻━━┯━━┹──┐
- * │  Z  │  V  │  C  ┃  T  ┃  G  │ │  M  ┃  N  ┃  ,< │  .> │  /? │
+ * │  Z  │  V  │  C  ┃  T  ┃  G  │ │  M  ┃  N  ┃  ,@ │  .# │  \? │
  * └─Ctl─┴──┬──┴──┬──┺━━┯━━┹──┬──┘ └──┬──┺━━┯━━┹──┬──┴──┬──┴─Ctl─┘
  *          │ Gui │  D  │  B  │       │  K  │  H  │ App │
  *          └─────┴─────┴─────┘       └─────┴─────┴─Gui─┘     ┌─────┐
  *             ┌─────┲━━━━━┱─────┐ ┌─────┲━━━━━┱─────┐        │ Tap │
  *             │ Alt ┃ Bsp ┃  _  │ │Enter┃     ┃ Del │        └─Hold┘
  *             └1shot┺Shift┹──┬──┘ └──┬──┺━━┯━━┹AltGr┘
- *                      │  ;  │       │ Tab │
+ *                      │  -  │       │ Tab │
  *                      └─Sym─┘       └──Fn─┘
  *
  * Symbol Layer:
  * ┌─────┬─────┬─────┬─────┐             ┌─────┬─────┬─────┬─────┐
- * │  ~  │  !  │  @  │  #  │             │  *  │  (  │  )  │  :  │
+ * │  ~  │  !  │  <  │  >  │             │  (  │  )  │  |  │  :  │
  * └──┲━━┷━━┳━━┷━━┳━━┷━━┱──┴──┐       ┌──┴──┲━━┷━━┳━━┷━━┳━━┷━━┱──┘
  *    ┃  1  ┃  2  ┃  3  ┃  $  │       │  &  ┃  8  ┃  9  ┃  0  ┃
  * ┌──┺━━┯━━┻━━┯━━┻━━┳━━┻━━┱──┴──┐ ┌──┴──┲━━┻━━┳━━┻━━┯━━┻━━┯━━┹──┐
- * │  [  │  {  │  }  ┃  4  ┃  %  │ │  ^  ┃  7  ┃  <  │  >  │  =  │
+ * │  [  │  {  │  }  ┃  4  ┃  %  │ │  ^  ┃  7  ┃  -  │  *  │  /  │
  * └─Ctl─┴──┬──┴──┬──┺━━┯━━┹──┬──┘ └──┬──┺━━┯━━┹──┬──┴──┬──┴─Ctl─┘
  *          │ Gui │  ]  │  5  │       │  6  │  +  │ App │
  *          └─────┴─────┴─────┘       └─────┴─────┴─Gui─┘
  *             ┌─────┲━━━━━┱─────┐ ┌─────┲━━━━━┱─────┐
- *             │ ... ┃ ... ┃ ... │ │  |  ┃  -  ┃  `  │
+ *             │ ... ┃ ... ┃ ... │ │  ;  ┃  =  ┃  `  │
  *             └─────┺━━┯━━┹──┬──┘ └──┬──┺━━┯━━┹AltGr┘
- *                      │[Sym]│       │  \  │
+ *                      │[Sym]│       │  .  │
  *                      └─────┘       └──Fn─┘
  *
  * Function layer:
@@ -103,7 +103,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // └───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───╥───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┘
             KC_A,   KC_R,   KC_S,   KC_T,   KC_G,   KC_M,   KC_N,   KC_E,   KC_I,   KC_O,
     // ┌───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───╨───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┐
- LCTL_T(KC_Z),  KC_V,   KC_C,   KC_D,   KC_B,           KC_K,   KC_H,   KC_COMM,KC_DOT, RCTL_T(KC_SLSH),
+ LCTL_T(KC_Z),  KC_V,   KC_C,   KC_D,   KC_B,           KC_K,   KC_H,   KC_COMM,KC_DOT, RCTL_T(KC_BSLS),
     // ╞═══════╪═══════╪═══════╪═══════╪═══════╡       ╞═══════╪═══════╪═══════╪═══════╪═══════╡
         KC_LGUI,OS_LALT,SH_BSPC,SY_MINS,KC_UNDS,        KC_ENT, FN_TAB, KC_SPC, AGR_DEL,RG_APP
     // └───────┴───────┴───────┴───────┴───────┘       └───────┴───────┴───────┴───────┴───────┘
@@ -115,7 +115,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // └───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───╥───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┘
             KC_A,   KC_S,   KC_D,   KC_F,   KC_T,   KC_Y,   KC_J,   KC_K,   KC_L,   KC_M,
     // ┌───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───╨───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┐
- LCTL_T(KC_B),  KC_X,   KC_C,   KC_V,   KC_G,           KC_H,   KC_N,   KC_COMM,KC_DOT, RCTL_T(KC_SLSH),
+ LCTL_T(KC_B),  KC_X,   KC_C,   KC_V,   KC_G,           KC_H,   KC_N,   KC_COMM,KC_DOT, RCTL_T(KC_BSLS),
     // ╞═══════╪═══════╪═══════╪═══════╪═══════╡       ╞═══════╪═══════╪═══════╪═══════╪═══════╡
         KC_LGUI,OS_LALT,SH_BSPC,SY_MINS,KC_UNDS,        KC_ENT, FN_TAB, KC_SPC, AGR_DEL,RG_APP
     // └───────┴───────┴───────┴───────┴───────┘       └───────┴───────┴───────┴───────┴───────┘
@@ -123,11 +123,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 #endif
     [1] = LAYOUT_all(
     // ┌───────┬───────┬───────┬───────┬───────┐       ┌───────┬───────┬───────┬───────┬───────┐
-        KC_TILD,KC_EXLM,KC_LT,  KC_GT,  KC_DLR,         KC_AMPR,KC_ASTR,KC_LPRN,KC_RPRN,KC_PIPE,
+        KC_TILD,KC_EXLM,KC_LT,  KC_GT,  KC_DLR,         KC_AMPR,KC_LPRN,KC_RPRN,KC_PIPE,KC_COLN,
     // └───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───╥───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┘
             KC_1,   KC_2,   KC_3,   KC_4,   KC_PERC, KC_CIRC,KC_7,   KC_8,   KC_9,   KC_0,
     // ┌───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───╨───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┐
-LCTL_T(KC_LBRC),KC_LCBR,KC_RCBR,KC_RBRC,KC_5,           KC_6,   KC_PLUS,KC_MINS,KC_COLN,RCTL_T(KC_BSLS),
+LCTL_T(KC_LBRC),KC_LCBR,KC_RCBR,KC_RBRC,KC_5,           KC_6,   KC_PLUS,KC_MINS,KC_ASTR,RCTL_T(KC_SLSH),
     // ╞═══════╪═══════╪═══════╪═══════╪═══════╡       ╞═══════╪═══════╪═══════╪═══════╪═══════╡
         _______,_______,_______,_______,_______,        KC_SCLN,FN_DOT, KC_EQL, AGR_GRV,_______
     // └───────┴───────┴───────┴───────┴───────┘       └───────┴───────┴───────┴───────┴───────┘
@@ -171,9 +171,11 @@ bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
 }
 const key_override_t   at_key_override = ko_make_basic_no_suppress(MOD_MASK_SHIFT, KC_COMM, KC_2);
 const key_override_t hash_key_override = ko_make_basic_no_suppress(MOD_MASK_SHIFT, KC_DOT,  KC_3);
+const key_override_t ques_key_override = ko_make_basic_no_suppress(MOD_MASK_SHIFT, RCTL_T(KC_BSLS), RCTL_T(KC_SLSH));
 const key_override_t **key_overrides = (const key_override_t *[]){
     &at_key_override,
     &hash_key_override,
+    &ques_key_override,
     NULL
 };
 
