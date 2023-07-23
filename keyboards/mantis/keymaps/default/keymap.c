@@ -174,7 +174,7 @@ bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
 }
 const key_override_t   at_key_override = ko_make_basic_no_suppress(MOD_MASK_SHIFT, KC_COMM, KC_2);
 const key_override_t hash_key_override = ko_make_basic_no_suppress(MOD_MASK_SHIFT, KC_DOT,  KC_3);
-const key_override_t ques_key_override = ko_make_basic_no_suppress(MOD_MASK_SHIFT, RCTL_T(KC_BSLS), RCTL_T(KC_SLSH));
+const key_override_t ques_key_override = ko_make_basic_no_suppress(MOD_MASK_SHIFT, RCTL_T(KC_BSLS),KC_SLSH);
 const key_override_t **key_overrides = (const key_override_t *[]){
     &at_key_override,
     &hash_key_override,
