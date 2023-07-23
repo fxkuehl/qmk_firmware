@@ -1,8 +1,5 @@
 #include QMK_KEYBOARD_H
 
-// Uncomment one of the following layout options if you're not using QWERTY
-//#define MANTIS_COLEMAK_DH
-
 /* Finger assignment:
  * ┌─────┬─────┬─────┬─────┐             ┌─────┬─────┬─────┬─────┐
  * │  p  │  p  │  R  │  M  │             │  M  │  R  │  p  │  p  │
@@ -73,7 +70,7 @@
  * └──┲━━┷━━┳━━┷━━┳━━┷━━┱──┴──┐       ┌──┴──┲━━┷━━┳━━┷━━┳━━┷━━┱──┘
  *    ┃ Esc ┃ Ins ┃ Bsp ┃  F5 │       │  F8 ┃  Up ┃Right┃ End ┃
  * ┌──┺━━┯━━┻━━┯━━┻━━┳━━┻━━┱──┴──┐ ┌──┴──┲━━┻━━┳━━┻━━┯━━┻━━┯━━┹──┐
- * │ Undo│ Cut │ Copy┃ Del ┃  F6 │ │  F7 ┃ Left┃ Down│ PgDn│ Mute│
+ * │ Undo│Colmk│QWERT┃ Del ┃  F6 │ │  F7 ┃ Left┃ Down│ PgDn│ Mute│
  * └─Ctl─┴──┬──┴──┬──┺━━┯━━┹──┬──┘ └──┬──┺━━┯━━┹──┬──┴──┬──┴─Ctl─┘
  *          │ Gui │Paste│PrScr│       │ Home│ PgUp│ App │
  *          └─────┴─────┴─────┘       └─────┴─────┴─Gui─┘
@@ -84,20 +81,28 @@
  *                      └─Sym─┘       └─────┘
  */
 
+enum MantisLayers {
+	LAYER_qwerty = 0,
+	LAYER_colemak,
+	LAYER_sym,
+	LAYER_fn
+};
+
 #define OS_LALT OSM(MOD_LALT)
 #define SH_BSPC LSFT_T(KC_BSPC)
-#define SY_MINS LT(1,KC_MINS)
+#define SY_MINS LT(LAYER_sym,KC_MINS)
 #define RG_APP  RGUI_T(KC_APP)
-#define FN_TAB  LT(2,KC_TAB)
+#define FN_TAB  LT(LAYER_fn,KC_TAB)
 #define AGR_DEL RALT_T(KC_DEL)
 #define AGR_GRV RALT_T(KC_GRV)
-#define FN_DOT  LT(2,KC_DOT)
+#define FN_DOT  LT(LAYER_fn,KC_DOT)
 #define SH_CAPS RSFT_T(KC_CAPS)
-#define SY_CALC LT(1,KC_CALC)
+#define SY_CALC LT(LAYER_sym,KC_CALC)
+#define DF_QWER DF(LAYER_qwerty)
+#define DF_COLM DF(LAYER_colemak)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-#ifdef MANTIS_COLEMAK_DH
-    [0] = LAYOUT_all(
+    [LAYER_colemak] = LAYOUT_all(
     // ┌───────┬───────┬───────┬───────┬───────┐       ┌───────┬───────┬───────┬───────┬───────┐
         KC_X,   KC_Q,   KC_W,   KC_F,   KC_P,           KC_L,   KC_U,   KC_Y,   KC_J,   KC_QUOT,
     // └───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───╥───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┘
@@ -108,8 +113,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LGUI,OS_LALT,SH_BSPC,SY_MINS,KC_UNDS,        KC_ENT, FN_TAB, KC_SPC, AGR_DEL,RG_APP
     // └───────┴───────┴───────┴───────┴───────┘       └───────┴───────┴───────┴───────┴───────┘
     ),
-#else // Fallback to QWERTY if no better layout is specified
-    [0] = LAYOUT_all(
+    [LAYER_qwerty] = LAYOUT_all(
     // ┌───────┬───────┬───────┬───────┬───────┐       ┌───────┬───────┬───────┬───────┬───────┐
         KC_Z,   KC_Q,   KC_W,   KC_E,   KC_R,           KC_U,   KC_I,   KC_O,   KC_P,   KC_QUOT,
     // └───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───╥───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┘
@@ -120,8 +124,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LGUI,OS_LALT,SH_BSPC,SY_MINS,KC_UNDS,        KC_ENT, FN_TAB, KC_SPC, AGR_DEL,RG_APP
     // └───────┴───────┴───────┴───────┴───────┘       └───────┴───────┴───────┴───────┴───────┘
     ),
-#endif
-    [1] = LAYOUT_all(
+    [LAYER_sym] = LAYOUT_all(
     // ┌───────┬───────┬───────┬───────┬───────┐       ┌───────┬───────┬───────┬───────┬───────┐
         KC_TILD,KC_EXLM,KC_LT,  KC_GT,  KC_DLR,         KC_AMPR,KC_LPRN,KC_RPRN,KC_PIPE,KC_COLN,
     // └───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───╥───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┘
@@ -132,13 +135,13 @@ LCTL_T(KC_LBRC),KC_LCBR,KC_RCBR,KC_RBRC,KC_5,           KC_6,   KC_PLUS,KC_MINS,
         _______,_______,_______,_______,_______,        KC_SCLN,FN_DOT, KC_EQL, AGR_GRV,_______
     // └───────┴───────┴───────┴───────┴───────┘       └───────┴───────┴───────┴───────┴───────┘
     ),
-    [2] = LAYOUT_all(
+    [LAYER_fn] = LAYOUT_all(
     // ┌───────┬───────┬───────┬───────┬───────┐       ┌───────┬───────┬───────┬───────┬───────┐
         KC_F1,  KC_F2,  KC_F3,  KC_F4,  KC_F5,          KC_F8,  KC_F9,  KC_F10, KC_F11, KC_F12,
     // └───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───╥───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┘
             KC_ESC, KC_INS, KC_BSPC,KC_DEL, KC_F6,   KC_F7,  KC_LEFT,KC_UP,  KC_RGHT,KC_END,
     // ┌───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───╨───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┐
-LCTL_T(KC_UNDO),KC_CUT, KC_COPY,KC_PSTE,KC_PSCR,        KC_HOME,KC_PGUP,KC_DOWN,KC_PGDN,RCTL_T(KC_MUTE),
+LCTL_T(KC_UNDO),DF_QWER,DF_COLM,KC_PSTE,KC_PSCR,        KC_HOME,KC_PGUP,KC_DOWN,KC_PGDN,RCTL_T(KC_MUTE),
     // ╞═══════╪═══════╪═══════╪═══════╪═══════╡       ╞═══════╪═══════╪═══════╪═══════╪═══════╡
         _______,KC_LALT,SH_CAPS,SY_CALC,KC_ENT,         _______,_______,_______,_______,_______
     // └───────┴───────┴───────┴───────┴───────┘       └───────┴───────┴───────┴───────┴───────┘
