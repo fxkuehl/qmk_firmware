@@ -423,6 +423,18 @@ bool process_key_override(const uint16_t keycode, const keyrecord_t *const recor
         }
     }
 
+    // Don't override mod-tap or layer-tap keys that are being held
+#ifndef NO_ACTION_TAPPING
+    switch (keycode) {
+#    ifndef NO_ACTION_LAYER
+        case QK_LAYER_TAP ... QK_LAYER_TAP_MAX:
+#    endif
+        case QK_MOD_TAP ... QK_MOD_TAP_MAX:
+            if (record->tap.count == 0)
+                return true;
+    }
+#endif
+
     if (!enabled) {
         return true;
     }
