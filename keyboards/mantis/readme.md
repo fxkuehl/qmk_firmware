@@ -1,11 +1,11 @@
-# mantis
+# Mantis
 
-![mantis](https://github.com/fxkuehl/mantis/raw/main/assets/photo.jpg)
+![mantis](https://github.com/fxkuehl/mantis/blob/main/assets/v0.3-photos/01-mantis-rgb-top.jpg?raw=true)
 
-A unibody ergo keyboard using hexagonal key caps, placing the hands close together and rotating them 30°. The hex grid naturally results in aggressive column stagger that is close enough to anatomically reasonable (with aggressive pinky and index finger stagger and slightly exaggerated ring finger stagger). Existing 3x5+3 layouts with 36 keys should be adaptable for this keyboard.
+A 40-key unibody split ergo keyboard using custom hexagonal key caps, placing the hands close together and rotating them 30°. The hex grid naturally results in aggressive column stagger that is close enough to anatomically reasonable (with aggressive pinky and index finger stagger). The raised center PCB, sculpted key caps and switches rotated differently per row result in approximation of two key wells tented at 15°. Existing 3x5+3 layouts with 36 keys should be adaptable for this keyboard.
 
 * Keyboard Maintainer: [Felix Kuehling](https://github.com/fxkuehl)
-* Hardware Supported: [Mantis v0.2](https://github.com/fxkuehl/mantis)
+* Hardware Supported: [Mantis v0.3](https://github.com/fxkuehl/mantis)
 * Hardware Availability: N/A
 
 Make example for this keyboard (after setting up your build environment):
