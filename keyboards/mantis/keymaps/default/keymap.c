@@ -57,7 +57,7 @@
  * │  [  │  {  │  }  ┃  4  ┃  %  │ │  ^  ┃  7  ┃  -  │  *  │  /  │
  * └─Ctl─┴──┬──┴──┬──┺━━┯━━┹──┬──┘ └──┬──┺━━┯━━┹──┬──┴──┬──┴─Ctl─┘
  *          │ Gui │  ]  │  5  │       │  6  │  +  │ App │
- *          └─────┴─────┴─────┘       └─────┴─────┴─Gui─┘
+ *          └─────┴AltGr┴─────┘       └─────┴─────┴─Gui─┘
  *             ┌─────┲━━━━━┱─────┐ ┌─────┲━━━━━┱─────┐
  *             │ ... ┃ ... ┃ ... │ │  ;  ┃  =  ┃  `  │
  *             └─────┺━━┯━━┹──┬──┘ └──┬──┺━━┯━━┹AltGr┘
@@ -70,14 +70,14 @@
  * └──┲━━┷━━┳━━┷━━┳━━┷━━┱──┴──┐       ┌──┴──┲━━┷━━┳━━┷━━┳━━┷━━┱──┘
  *    ┃ Esc ┃ Ins ┃ Bsp ┃  F5 │       │  F8 ┃  Up ┃Right┃ End ┃
  * ┌──┺━━┯━━┻━━┯━━┻━━┳━━┻━━┱──┴──┐ ┌──┴──┲━━┻━━┳━━┻━━┯━━┻━━┯━━┹──┐
- * │ Undo│Colmk│rgMod┃ Del ┃  F6 │ │  F7 ┃ Left┃ Down│ PgDn│ Mute│
+ * │Scrol│Colmk│rgMod┃ Del ┃  F6 │ │  F7 ┃ Left┃ Down│ PgDn│ Caps│
  * └─Ctl─┴──┬──┴──┬──┺━━┯━━┹──┬──┘ └──┬──┺━━┯━━┹──┬──┴──┬──┴─Ctl─┘
  *          │ Gui │rgSpd│PrScr│       │ Home│ PgUp│ App │
  *          └─────┴─────┴─────┘       └─────┴─────┴─Gui─┘
  *             ┌─────┲━━━━━┱─────┐ ┌─────┲━━━━━┱─────┐
- *             │ Alt ┃ Caps┃Enter│ │rgHue┃rgSat┃rgVal│
+ *             │ Alt ┃     ┃Enter│ │rgHue┃rgSat┃rgVal│
  *             └─────┺Shift┹──┬──┘ └──┬──┺━━┯━━┹─────┘
- *                      │ Calc│       │ [Fn]│
+ *                      │ Tab │       │ [Fn]│
  *                      └─Sym─┘       └─────┘
  */
 
@@ -95,9 +95,11 @@ enum MantisLayers {
 #define FN_TAB  LT(LAYER_fn,KC_TAB)
 #define AGR_DEL RALT_T(KC_DEL)
 #define AGR_GRV RALT_T(KC_GRV)
+#define AGR_RBR RALT_T(KC_RBRC)
 #define FN_DOT  LT(LAYER_fn,KC_DOT)
-#define SH_CAPS RSFT_T(KC_CAPS)
-#define SY_CALC LT(LAYER_sym,KC_CALC)
+#define RG_CALC RGUI_T(KC_CALC)
+#define SH_SPC  RSFT_T(KC_SPC)
+#define SY_TAB  LT(LAYER_sym,KC_TAB)
 #define TG_COLM TG(LAYER_colemak)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -129,7 +131,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // └───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───╥───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┘
             KC_1,   KC_2,   KC_3,   KC_4,   KC_PERC, KC_CIRC,KC_7,   KC_8,   KC_9,   KC_0,
     // ┌───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───╨───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┐
-LCTL_T(KC_LBRC),KC_LCBR,KC_RCBR,KC_RBRC,KC_5,           KC_6,   KC_PLUS,KC_MINS,KC_ASTR,RCTL_T(KC_SLSH),
+LCTL_T(KC_LBRC),KC_LCBR,KC_RCBR,AGR_RBR,KC_5,           KC_6,   KC_PLUS,KC_MINS,KC_ASTR,RCTL_T(KC_SLSH),
     // ╞═══════╪═══════╪═══════╪═══════╪═══════╡       ╞═══════╪═══════╪═══════╪═══════╪═══════╡
         _______,_______,_______,_______,_______,        KC_SCLN,FN_DOT, KC_EQL, AGR_GRV,_______
     // └───────┴───────┴───────┴───────┴───────┘       └───────┴───────┴───────┴───────┴───────┘
@@ -140,9 +142,9 @@ LCTL_T(KC_LBRC),KC_LCBR,KC_RCBR,KC_RBRC,KC_5,           KC_6,   KC_PLUS,KC_MINS,
     // └───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───╥───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┘
             KC_ESC, KC_INS, KC_BSPC,KC_DEL, KC_F6,   KC_F7,  KC_LEFT,KC_UP,  KC_RGHT,KC_END,
     // ┌───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───╨───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┐
-LCTL_T(KC_UNDO),TG_COLM,RGB_MOD,RGB_SPI,KC_PSCR,        KC_HOME,KC_PGUP,KC_DOWN,KC_PGDN,RCTL_T(KC_MUTE),
+LCTL_T(KC_SCRL),TG_COLM,RGB_MOD,RGB_SPI,KC_PSCR,        KC_HOME,KC_PGUP,KC_DOWN,KC_PGDN,RCTL_T(KC_CAPS),
     // ╞═══════╪═══════╪═══════╪═══════╪═══════╡       ╞═══════╪═══════╪═══════╪═══════╪═══════╡
-        _______,KC_LALT,SH_CAPS,SY_CALC,KC_ENT,         RGB_HUI,_______,RGB_SAI,RGB_VAI,_______
+        _______,KC_LALT,SH_SPC, SY_TAB, KC_ENT,         RGB_HUI,_______,RGB_SAI,RGB_VAI,_______
     // └───────┴───────┴───────┴───────┴───────┘       └───────┴───────┴───────┴───────┴───────┘
     )
 };

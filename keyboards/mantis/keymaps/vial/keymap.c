@@ -57,7 +57,7 @@
  * │  [  │  {  │  }  ┃  4  ┃  %  │ │  ^  ┃  7  ┃  -  │  *  │  \  │
  * └─Ctl─┴──┬──┴──┬──┺━━┯━━┹──┬──┘ └──┬──┺━━┯━━┹──┬──┴──┬──┴─Ctl─┘
  *          │ Gui │  ]  │  5  │       │  6  │  +  │ App │
- *          └─────┴─────┴─────┘       └─────┴─────┴─Gui─┘
+ *          └─────┴AltGr┴─────┘       └─────┴─────┴─Gui─┘
  *             ┌─────┲━━━━━┱─────┐ ┌─────┲━━━━━┱─────┐
  *             │ ... ┃ ... ┃ ... │ │  ;  ┃  =  ┃  `  │
  *             └─────┺━━┯━━┹──┬──┘ └──┬──┺━━┯━━┹AltGr┘
@@ -70,7 +70,7 @@
  * └──┲━━┷━━┳━━┷━━┳━━┷━━┱──┴──┐       ┌──┴──┲━━┷━━┳━━┷━━┳━━┷━━┱──┘
  *    ┃ Esc ┃ Ins ┃ Bsp ┃  F5 │       │  F8 ┃  Up ┃Right┃ End ┃
  * ┌──┺━━┯━━┻━━┯━━┻━━┳━━┻━━┱──┴──┐ ┌──┴──┲━━┻━━┳━━┻━━┯━━┻━━┯━━┹──┐
- * │ Scrl│Colmk│rgMod┃ Del ┃  F6 │ │  F7 ┃ Left┃ Down│ PgDn│ Caps│
+ * │Scrol│Colmk│rgMod┃ Del ┃  F6 │ │  F7 ┃ Left┃ Down│ PgDn│ Caps│
  * └─Ctl─┴──┬──┴──┬──┺━━┯━━┹──┬──┘ └──┬──┺━━┯━━┹──┬──┴──┬──┴─Ctl─┘
  *          │ Gui │rgSpd│PrScr│       │ Home│ PgUp│ App │
  *          └─────┴─────┴─────┘       └─────┴─────┴─Gui─┘
@@ -97,6 +97,7 @@ enum MantisLayers {
 #define AGR_GRV RALT_T(KC_GRV)
 #define AGR_RBR RALT_T(KC_RBRC)
 #define FN_DOT  LT(LAYER_fn,KC_DOT)
+#define RG_CALC RGUI_T(KC_CALC)
 #define SH_SPC  RSFT_T(KC_SPC)
 #define SY_TAB  LT(LAYER_sym,KC_TAB)
 #define TG_COLM TG(LAYER_colemak)
@@ -132,7 +133,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // ┌───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───╨───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┐
 LCTL_T(KC_LBRC),KC_LCBR,KC_RCBR,AGR_RBR,KC_5,           KC_6,   KC_PLUS,KC_MINS,KC_ASTR,RCTL_T(KC_BSLS),
     // ╞═══════╪═══════╪═══════╪═══════╪═══════╡       ╞═══════╪═══════╪═══════╪═══════╪═══════╡
-        _______,_______,_______,_______,_______,        KC_SCLN,FN_DOT, KC_EQL, AGR_GRV,_______
+        _______,_______,_______,_______,_______,        KC_SCLN,FN_DOT, KC_EQL, AGR_GRV,RG_CALC
     // └───────┴───────┴───────┴───────┴───────┘       └───────┴───────┴───────┴───────┴───────┘
     ),
     [LAYER_fn] = LAYOUT_all(
