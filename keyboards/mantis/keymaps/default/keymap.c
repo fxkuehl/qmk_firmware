@@ -18,13 +18,13 @@
  *
  * Base Layer (based on QWERTY):
  * ┌─────┬─────┬─────┬─────┐             ┌─────┬─────┬─────┬─────┐
- * │  B  │  Q  │  W  │  E  │             │  I  │  O  │  P  │ '"' │
+ * │  J  │  Q  │  W  │  E  │             │  I  │  O  │  P  │ '"' │
  * └──┲━━┷━━┳━━┷━━┳━━┷━━┱──┴──┐       ┌──┴──┲━━┷━━┳━━┷━━┳━━┷━━┱──┘
- *    ┃  A  ┃  S  ┃  D  ┃  R  │       │  U  ┃  K  ┃  L  ┃  M  ┃
+ *    ┃  A  ┃  S  ┃  D  ┃  R  │       │  U  ┃  K  ┃  L  ┃  B  ┃
  * ┌──┺━━┯━━┻━━┯━━┻━━┳━━┻━━┱──┴──┐ ┌──┴──┲━━┻━━┳━━┻━━┯━━┻━━┯━━┹──┐
- * │  Z  │  X  │  C  ┃  F  ┃  T  │ │  Y  ┃  J  ┃  ,@ │  .# │  \? │
+ * │  Z  │  X  │  C  ┃  F  ┃  T  │ │  Y  ┃  N  ┃  ,@ │  .# │  \? │
  * └─Ctl─┴──┬──┴──┬──┺━━┯━━┹──┬──┘ └──┬──┺━━┯━━┹──┬──┴──┬──┴─Ctl─┘
- *          │ Gui │  V  │  G  │       │  H  │  N  │ App │
+ *          │ Gui │  V  │  G  │       │  H  │  M  │ App │
  *          └─────┴─────┴─────┘       └─────┴─────┴─Gui─┘     ┌─────┐
  *             ┌─────┲━━━━━┱─────┐ ┌─────┲━━━━━┱─────┐        │ Tap │
  *             │ Alt ┃ Bsp ┃  _  │ │Enter┃     ┃ Del │        └─Hold┘
@@ -105,11 +105,11 @@ enum MantisLayers {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [LAYER_qwerty] = LAYOUT_all(
     // ┌───────┬───────┬───────┬───────┬───────┐       ┌───────┬───────┬───────┬───────┬───────┐
-        KC_B,   KC_Q,   KC_W,   KC_E,   KC_R,           KC_U,   KC_I,   KC_O,   KC_P,   KC_QUOT,
+        KC_J,   KC_Q,   KC_W,   KC_E,   KC_R,           KC_U,   KC_I,   KC_O,   KC_P,   KC_QUOT,
     // └───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───╥───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┘
-            KC_A,   KC_S,   KC_D,   KC_F,   KC_T,   KC_Y,   KC_J,   KC_K,   KC_L,   KC_M,
+            KC_A,   KC_S,   KC_D,   KC_F,   KC_T,   KC_Y,   KC_N,   KC_K,   KC_L,   KC_B,
     // ┌───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───╨───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┐
- LCTL_T(KC_Z),  KC_X,   KC_C,   KC_V,   KC_G,           KC_H,   KC_N,   KC_COMM,KC_DOT, RCTL_T(KC_BSLS),
+ LCTL_T(KC_Z),  KC_X,   KC_C,   KC_V,   KC_G,           KC_H,   KC_M,   KC_COMM,KC_DOT, RCTL_T(KC_BSLS),
     // ╞═══════╪═══════╪═══════╪═══════╪═══════╡       ╞═══════╪═══════╪═══════╪═══════╪═══════╡
         KC_LGUI,OS_LALT,SH_BSPC,SY_MINS,KC_UNDS,        KC_ENT, FN_TAB, KC_SPC, AGR_DEL,RG_APP
     // └───────┴───────┴───────┴───────┴───────┘       └───────┴───────┴───────┴───────┴───────┘
