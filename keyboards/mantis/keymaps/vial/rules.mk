@@ -7,5 +7,7 @@ VIALRGB_ENABLE = yes
 # Also not enabling QMK settings because I want my own custom per-key
 # tap-hold configuration
 LTO_ENABLE = yes
-MOUSEKEY_ENABLE = no
 QMK_SETTINGS = no
+ifeq (a$(strip $(CONVERT_TO)), a)
+    MOUSEKEY_ENABLE = no
+endif
