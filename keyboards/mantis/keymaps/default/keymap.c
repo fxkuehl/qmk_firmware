@@ -70,7 +70,7 @@
  * └──┲━━┷━━┳━━┷━━┳━━┷━━┱──┴──┐       ┌──┴──┲━━┷━━┳━━┷━━┳━━┷━━┱──┘
  *    ┃ Esc ┃ Ins ┃ Bsp ┃  F5 │       │  F8 ┃  Up ┃Right┃ End ┃
  * ┌──┺━━┯━━┻━━┯━━┻━━┳━━┻━━┱──┴──┐ ┌──┴──┲━━┻━━┳━━┻━━┯━━┻━━┯━━┹──┐
- * │Scrol│Colmk│rgMod┃ Del ┃  F6 │ │  F7 ┃ Left┃ Down│ PgDn│ Caps│
+ * │ Caps│Colmk│rgMod┃ Del ┃  F6 │ │  F7 ┃ Left┃ Down│ PgDn│Scrol│
  * └─Ctl─┴──┬──┴──┬──┺━━┯━━┹──┬──┘ └──┬──┺━━┯━━┹──┬──┴──┬──┴─Ctl─┘
  *          │ Gui │rgSpd│PrScr│       │ Home│ PgUp│ App │
  *          └─────┴─────┴─────┘       └─────┴─────┴─Gui─┘
@@ -142,7 +142,7 @@ LCTL_T(KC_LBRC),KC_LCBR,KC_RCBR,AGR_RBR,KC_5,           KC_6,   KC_PLUS,KC_MINS,
     // └───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───╥───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┘
             KC_ESC, KC_INS, KC_BSPC,KC_DEL, KC_F6,   KC_F7,  KC_LEFT,KC_UP,  KC_RGHT,KC_END,
     // ┌───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───╨───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┐
-LCTL_T(KC_SCRL),TG_COLM,RGB_MOD,RGB_SPI,KC_PSCR,        KC_HOME,KC_PGUP,KC_DOWN,KC_PGDN,RCTL_T(KC_CAPS),
+LCTL_T(KC_CAPS),TG_COLM,RGB_MOD,RGB_SPI,KC_PSCR,        KC_HOME,KC_PGUP,KC_DOWN,KC_PGDN,RCTL_T(KC_SCRL),
     // ╞═══════╪═══════╪═══════╪═══════╪═══════╡       ╞═══════╪═══════╪═══════╪═══════╪═══════╡
         _______,KC_LALT,SH_SPC, SY_TAB, KC_ENT,         RGB_HUI,_______,RGB_SAI,RGB_VAI,_______
     // └───────┴───────┴───────┴───────┴───────┘       └───────┴───────┴───────┴───────┴───────┘
