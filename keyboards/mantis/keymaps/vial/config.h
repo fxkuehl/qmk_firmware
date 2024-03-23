@@ -1,8 +1,8 @@
 #pragma once
 
 #define VIAL_KEYBOARD_UID {0xA9, 0xDE, 0x76, 0xF1, 0x89, 0x3A, 0x7E, 0xF1}
-#define VIAL_UNLOCK_COMBO_ROWS { 3, 2 }
-#define VIAL_UNLOCK_COMBO_COLS { 0, 0 }
+#define VIAL_UNLOCK_COMBO_ROWS { 0, 2 }
+#define VIAL_UNLOCK_COMBO_COLS { 3, 3 }
 
 // Immediate hold on other key press for thumb mod-taps (already enabled for VIAL)
 #define HOLD_ON_OTHER_KEY_PRESS_PER_KEY
