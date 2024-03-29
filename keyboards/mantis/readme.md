@@ -1,6 +1,6 @@
 # Mantis
 
-![mantis](https://github.com/fxkuehl/mantis/blob/main/assets/v0.3-photos/01-mantis-rgb-top.jpg?raw=true)
+![mantis](https://raw.githubusercontent.com/fxkuehl/mantis/main/assets/build-guide/banner.jpg)
 
 A 40-key unibody split ergo keyboard using custom hexagonal key caps, placing the hands close together and rotating them 30°. The hex grid naturally results in aggressive column stagger and 30° hand rotation. The raised center PCB, sculpted key caps and switches rotated differently per row result in approximation of two key wells tented at 15°. Existing 3x5+3 layouts with 36 keys should be adaptable for this keyboard.
 
