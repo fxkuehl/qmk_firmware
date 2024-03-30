@@ -16,6 +16,9 @@ jobs:
     name: Check Vial UIDs
     runs-on: ubuntu-latest
 
+    # protect against those who develop with their fork on master
+    if: github.repository == 'vial-kb/vial-qmk'
+
     steps:
     - name: (actions) Checkout Vial repo
       uses: actions/checkout@v3
@@ -31,6 +34,9 @@ jobs:
     container: ghcr.io/qmk/qmk_cli
     env:
       KEYMAP: default
+
+    # protect against those who develop with their fork on master
+    if: github.repository == 'vial-kb/vial-qmk'
 
     steps:
     - name: (actions) Checkout Vial repo
@@ -69,6 +75,9 @@ jobs:
     container: ghcr.io/qmk/qmk_cli
     env:
       KEYMAP: vial
+
+    # protect against those who develop with their fork on master
+    if: github.repository == 'vial-kb/vial-qmk'
 
     steps:
     - name: (actions) Checkout Vial repo
