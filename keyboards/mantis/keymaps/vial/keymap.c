@@ -1,3 +1,6 @@
+// Copyright 2024 Felix Kuehling (@fxkuehl)
+// SPDX-License-Identifier: GPL-2.0-or-later
+
 #include QMK_KEYBOARD_H
 
 /* Finger assignment:
@@ -16,7 +19,7 @@
  *                      │  T  │       │  T  │                 p - Pinky finger
  *                      └─────┘       └─────┘
  *
- * Base Layer (based on QWERTY):
+ * Alpha Layer (based on QWERTY):
  * ┌─────┬─────┬─────┬─────┐             ┌─────┬─────┬─────┬─────┐
  * │  J  │  Q  │  W  │  E  │             │  I  │  O  │  P  │ '"' │
  * └──┲━━┷━━┳━━┷━━┳━━┷━━┱──┴──┐       ┌──┴──┲━━┷━━┳━━┷━━┳━━┷━━┱──┘
@@ -32,20 +35,36 @@
  *                      │  -  │       │ Tab │
  *                      └─Sym─┘       └──Fn─┘
  *
- * Base Layer (based on Colemak-DH):
+ * Alpha Layer (based on Colemak-DH):
  * ┌─────┬─────┬─────┬─────┐             ┌─────┬─────┬─────┬─────┐
- * │  X  │  Q  │  W  │  F  │             │  U  │  Y  │  J  │ '"' │
+ * │  X  │  Q  │  W  │  F  │             │  U  │  Y  │  /? │ '"' │
  * └──┲━━┷━━┳━━┷━━┳━━┷━━┱──┴──┐       ┌──┴──┲━━┷━━┳━━┷━━┳━━┷━━┱──┘
  *    ┃  A  ┃  R  ┃  S  ┃  P  │       │  L  ┃  E  ┃  I  ┃  O  ┃
  * ┌──┺━━┯━━┻━━┯━━┻━━┳━━┻━━┱──┴──┐ ┌──┴──┲━━┻━━┳━━┻━━┯━━┻━━┯━━┹──┐
- * │  Z  │  V  │  C  ┃  T  ┃  G  │ │  M  ┃  N  ┃  ,< │  .> │  /? │
+ * │  Z  │  V  │  C  ┃  T  ┃  B  │ │  M  ┃  N  ┃  ,< │  J  │  .> │
  * └─Ctl─┴──┬──┴──┬──┺━━┯━━┹──┬──┘ └──┬──┺━━┯━━┹──┬──┴──┬──┴─Ctl─┘
- *          │ Gui │  D  │  B  │       │  K  │  H  │ App │
- *          └─────┴─────┴─────┘       └─────┴─────┴─Gui─┘     ┌─────┐
- *             ┌─────┲━━━━━┱─────┐ ┌─────┲━━━━━┱─────┐        │ Tap │
- *             │ Alt ┃ Bsp ┃  _  │ │Enter┃     ┃ Del │        └─Hold┘
+ *          │ Gui │  D  │  G  │       │  K  │  H  │ App │
+ *          └─────┴─────┴─────┘       └─────┴─────┴─Gui─┘
+ *             ┌─────┲━━━━━┱─────┐ ┌─────┲━━━━━┱─────┐
+ *             │ Alt ┃ Bsp ┃  _  │ │Enter┃     ┃ Del │
  *             └1shot┺Shift┹──┬──┘ └──┬──┺━━┯━━┹AltGr┘
  *                      │  -  │       │ Tab │
+ *                      └─Sym─┘       └──Fn─┘
+ *
+ * Sticky Num-Pad and editing layer:
+ * ┌─────┬─────┬─────┬─────┐             ┌─────┬─────┬─────┬─────┐
+ * │NumLk│  /  │  7  │  8  │             │ Next│ Vol-│ Vol+│ Mute│
+ * └──┲━━┷━━┳━━┷━━┳━━┷━━┱──┴──┐       ┌──┴──┲━━┷━━┳━━┷━━┳━━┷━━┱──┘
+ *    ┃  *  ┃  4  ┃  5  ┃  9  │       │ Prev┃  Up ┃Right┃ End ┃
+ * ┌──┺━━┯━━┻━━┯━━┻━━┳━━┻━━┱──┴──┐ ┌──┴──┲━━┻━━┳━━┻━━┯━━┻━━┯━━┹──┐
+ * │  0  │  1  │  2  ┃  6  ┃  -  │ │ Play┃ Left┃ Down│ PgDn│ Calc│
+ * └─Ctl─┴──┬──┴──┬──┺━━┯━━┹──┬──┘ └──┬──┺━━┯━━┹──┬──┴──┬──┴─Ctl─┘
+ *          │  .  │  3  │  +  │       │ Home│ PgUp│My PC│
+ *          └─Gui─┴─────┴─────┘       └─────┴─────┴─Gui─┘
+ *             ┌─────┲━━━━━┱─────┐ ┌─────┲━━━━━┱─────┐
+ *             │  ,  ┃ Bsp ┃  _  │ │Enter┃     ┃ Del │
+ *             └─Alt─┺Shift┹──┬──┘ └──┬──┺━━┯━━┹AltGr┘
+ *                      │  =  │       │ Tab │
  *                      └─Sym─┘       └──Fn─┘
  *
  * Symbol Layer:
@@ -82,8 +101,8 @@
  */
 
 enum MantisLayers {
-	LAYER_qwerty = 0,
-	LAYER_colemak,
+	LAYER_alpha = 0,
+	LAYER_sticky,
 	LAYER_sym,
 	LAYER_fn
 };
@@ -94,16 +113,20 @@ enum MantisLayers {
 #define RG_APP  RGUI_T(KC_APP)
 #define FN_TAB  LT(LAYER_fn,KC_TAB)
 #define AGR_DEL RALT_T(KC_DEL)
+#define LG_PDOT LGUI_T(KC_PDOT)
+#define LA_COMM LALT_T(KC_COMM)
+#define SY_PEQL LT(LAYER_sym,KC_PEQL)
+#define RG_MYCM RGUI_T(KC_MYCM)
 #define AGR_GRV RALT_T(KC_GRV)
 #define AGR_RBR RALT_T(KC_RBRC)
 #define FN_DOT  LT(LAYER_fn,KC_DOT)
-#define RG_CALC RGUI_T(KC_CALC)
 #define SH_SPC  RSFT_T(KC_SPC)
 #define SY_TAB  LT(LAYER_sym,KC_TAB)
-#define TG_COLM TG(LAYER_colemak)
+#define TG_STKY TG(LAYER_sticky)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    [LAYER_qwerty] = LAYOUT_all(
+#ifndef MANTIS_COLEMAK
+    [LAYER_alpha] = LAYOUT_all(
     // ┌───────┬───────┬───────┬───────┬───────┐       ┌───────┬───────┬───────┬───────┬───────┐
         KC_J,   KC_Q,   KC_W,   KC_E,   KC_R,           KC_U,   KC_I,   KC_O,   KC_P,   KC_QUOT,
     // └───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───╥───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┘
@@ -114,15 +137,28 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LGUI,OS_LALT,SH_BSPC,SY_MINS,KC_UNDS,        KC_ENT, FN_TAB, KC_SPC, AGR_DEL,RG_APP
     // └───────┴───────┴───────┴───────┴───────┘       └───────┴───────┴───────┴───────┴───────┘
     ),
-    [LAYER_colemak] = LAYOUT_all(
+#else
+    [LAYER_alpha] = LAYOUT_all(
     // ┌───────┬───────┬───────┬───────┬───────┐       ┌───────┬───────┬───────┬───────┬───────┐
-        KC_X,   KC_Q,   KC_W,   KC_F,   KC_P,           KC_L,   KC_U,   KC_Y,   KC_J,   KC_QUOT,
+        KC_X,   KC_Q,   KC_W,   KC_F,   KC_P,           KC_L,   KC_U,   KC_Y,   KC_SLSH,KC_QUOT,
     // └───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───╥───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┘
-            KC_A,   KC_R,   KC_S,   KC_T,   KC_G,   KC_M,   KC_N,   KC_E,   KC_I,   KC_O,
+            KC_A,   KC_R,   KC_S,   KC_T,   KC_B,   KC_M,   KC_N,   KC_E,   KC_I,   KC_O,
     // ┌───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───╨───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┐
- LCTL_T(KC_Z),  KC_V,   KC_C,   KC_D,   KC_B,           KC_K,   KC_H,   KC_COMM,KC_DOT, RCTL_T(KC_SLSH),
+ LCTL_T(KC_Z),  KC_V,   KC_C,   KC_D,   KC_G,           KC_K,   KC_H,   KC_COMM,KC_J,   RCTL_T(KC_DOT),
     // ╞═══════╪═══════╪═══════╪═══════╪═══════╡       ╞═══════╪═══════╪═══════╪═══════╪═══════╡
         KC_LGUI,OS_LALT,SH_BSPC,SY_MINS,KC_UNDS,        KC_ENT, FN_TAB, KC_SPC, AGR_DEL,RG_APP
+    // └───────┴───────┴───────┴───────┴───────┘       └───────┴───────┴───────┴───────┴───────┘
+    ),
+#endif
+    [LAYER_sticky] = LAYOUT_all(
+    // ┌───────┬───────┬───────┬───────┬───────┐       ┌───────┬───────┬───────┬───────┬───────┐
+        KC_NUM, KC_PSLS,KC_P7,  KC_P8,  KC_P9,          KC_MPRV,KC_MNXT,KC_VOLD,KC_VOLU,KC_MUTE,
+    // └───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───╥───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┘
+            KC_PAST,KC_P4,  KC_P5,  KC_P6,  KC_PMNS, KC_MPLY,KC_LEFT,KC_UP,  KC_RGHT,KC_END,
+    // ┌───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───╨───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┐
+LCTL_T(KC_P0),  KC_P1,  KC_P2,  KC_P3,  KC_PPLS,        KC_HOME,KC_PGUP,KC_DOWN,KC_PGDN,RCTL_T(KC_CALC),
+    // ╞═══════╪═══════╪═══════╪═══════╪═══════╡       ╞═══════╪═══════╪═══════╪═══════╪═══════╡
+        LG_PDOT,LA_COMM,_______,SY_PEQL,_______,        KC_PENT,_______,_______,_______,RG_MYCM
     // └───────┴───────┴───────┴───────┴───────┘       └───────┴───────┴───────┴───────┴───────┘
     ),
     [LAYER_sym] = LAYOUT_all(
@@ -133,7 +169,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // ┌───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───╨───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┐
 LCTL_T(KC_LBRC),KC_LCBR,KC_RCBR,AGR_RBR,KC_5,           KC_6,   KC_PLUS,KC_MINS,KC_ASTR,RCTL_T(KC_BSLS),
     // ╞═══════╪═══════╪═══════╪═══════╪═══════╡       ╞═══════╪═══════╪═══════╪═══════╪═══════╡
-        _______,_______,_______,_______,_______,        KC_SCLN,FN_DOT, KC_EQL, AGR_GRV,RG_CALC
+        _______,_______,_______,_______,_______,        KC_SCLN,FN_DOT, KC_EQL, AGR_GRV,_______
     // └───────┴───────┴───────┴───────┴───────┘       └───────┴───────┴───────┴───────┴───────┘
     ),
     [LAYER_fn] = LAYOUT_all(
@@ -142,7 +178,7 @@ LCTL_T(KC_LBRC),KC_LCBR,KC_RCBR,AGR_RBR,KC_5,           KC_6,   KC_PLUS,KC_MINS,
     // └───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───╥───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┘
             KC_ESC, KC_INS, KC_BSPC,KC_DEL, KC_F6,   KC_F7,  KC_LEFT,KC_UP,  KC_RGHT,KC_END,
     // ┌───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───╨───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┐
-LCTL_T(KC_CAPS),TG_COLM,RGB_MOD,RGB_SPI,KC_PSCR,        KC_HOME,KC_PGUP,KC_DOWN,KC_PGDN,RCTL_T(KC_SCRL),
+LCTL_T(KC_CAPS),TG_STKY,RGB_MOD,RGB_SPI,KC_PSCR,        KC_HOME,KC_PGUP,KC_DOWN,KC_PGDN,RCTL_T(KC_SCRL),
     // ╞═══════╪═══════╪═══════╪═══════╪═══════╡       ╞═══════╪═══════╪═══════╪═══════╪═══════╡
         _______,KC_LALT,SH_SPC, SY_TAB, KC_ENT,         RGB_HUI,_______,RGB_SAI,RGB_VAI,_______
     // └───────┴───────┴───────┴───────┴───────┘       └───────┴───────┴───────┴───────┴───────┘
@@ -159,20 +195,3 @@ bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
 bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
     return prefer_tap(record);
 }
-
-/* Alternative layer ideas
- *
- * Symbol Layer (num pad, .= duplicated):
- * ┌─────┬─────┬─────┬─────┬─────┐       ┌─────┬─────┬─────┬─────┬─────┐
- * │  ^  │  ~  │  @  │  #  │  $  │       │  7  │  8  │  9  │  :  │  `  │
- * └──┬──┴──┬──┴──┬──┴──┬──┴──┬──┴──┐ ┌──┴──┬──┴──┬──┴──┬──┴──┬──┴──┬──┘
- *    │  !  │  (  │  =  │  )  │  &  │ │  *  │  4  │  5  │  6  │  -  │
- * ┌──┴──┬──┴──┬──┴──┬──┴──┬──┴──┬──┘ └──┬──┴──┬──┴──┬──┴──┬──┴──┬──┴──┐
- * │  [  │  {  │  }  │  ]  │  |  │       │  +  │  1  │  2  │  3  │  \  │
- * └─Ctl─┴──┬──┴──┬──┴─────┴─────┘       └─────┴─────┴──┬──┴──┬──┴─Ctl─┘
- *          │ Gui ├─────┬─────┬─────┐ ┌─────┬─────┬─────┤ Gui │
- *          └─────┤ ... │ ... │ ... │ │  %  │  0  │  .  ├─────┘
- *                └─────┴──┬──┴──┬──┘ └──┬──┴──┬──┴AltGr┘
- *                         │ ... │       │  ;  │
- *                         └─────┘       └──Fn─┘
- */
