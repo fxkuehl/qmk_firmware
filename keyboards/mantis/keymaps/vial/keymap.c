@@ -57,12 +57,12 @@
  * └──┲━━┷━━┳━━┷━━┳━━┷━━┱──┴──┐       ┌──┴──┲━━┷━━┳━━┷━━┳━━┷━━┱──┘
  *    ┃  *  ┃  4  ┃  5  ┃  9  │       │ Prev┃  Up ┃Right┃ End ┃
  * ┌──┺━━┯━━┻━━┯━━┻━━┳━━┻━━┱──┴──┐ ┌──┴──┲━━┻━━┳━━┻━━┯━━┻━━┯━━┹──┐
- * │  0  │  1  │  2  ┃  6  ┃  -  │ │ Play┃ Left┃ Down│ PgDn│ Calc│
+ * │  .  │  1  │  2  ┃  6  ┃  -  │ │ Play┃ Left┃ Down│ PgDn│ Calc│
  * └─Ctl─┴──┬──┴──┬──┺━━┯━━┹──┬──┘ └──┬──┺━━┯━━┹──┬──┴──┬──┴─Ctl─┘
- *          │  .  │  3  │  +  │       │ Home│ PgUp│My PC│
+ *          │  ,  │  3  │  +  │       │ Home│ PgUp│My PC│
  *          └─Gui─┴─────┴─────┘       └─────┴─────┴─Gui─┘
  *             ┌─────┲━━━━━┱─────┐ ┌─────┲━━━━━┱─────┐
- *             │  ,  ┃ Bsp ┃  _  │ │Enter┃     ┃ Del │
+ *             │  0  ┃ Bsp ┃  _  │ │Enter┃     ┃ Del │
  *             └─Alt─┺Shift┹──┬──┘ └──┬──┺━━┯━━┹AltGr┘
  *                      │  =  │       │ Tab │
  *                      └─Sym─┘       └──Fn─┘
@@ -110,13 +110,10 @@ enum MantisLayers {
 #define OS_LALT OSM(MOD_LALT)
 #define SH_BSPC LSFT_T(KC_BSPC)
 #define SY_MINS LT(LAYER_sym,KC_MINS)
-#define RG_APP  RGUI_T(KC_APP)
 #define FN_TAB  LT(LAYER_fn,KC_TAB)
 #define AGR_DEL RALT_T(KC_DEL)
-#define LG_PDOT LGUI_T(KC_PDOT)
-#define LA_COMM LALT_T(KC_COMM)
+#define LA_P0   LALT_T(KC_P0)
 #define SY_PEQL LT(LAYER_sym,KC_PEQL)
-#define RG_MYCM RGUI_T(KC_MYCM)
 #define AGR_GRV RALT_T(KC_GRV)
 #define AGR_RBR RALT_T(KC_RBRC)
 #define FN_DOT  LT(LAYER_fn,KC_DOT)
@@ -134,7 +131,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // ┌───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───╨───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┐
  LCTL_T(KC_Z),  KC_X,   KC_C,   KC_V,   KC_G,           KC_H,   KC_M,   KC_COMM,KC_DOT, RCTL_T(KC_SLSH),
     // ╞═══════╪═══════╪═══════╪═══════╪═══════╡       ╞═══════╪═══════╪═══════╪═══════╪═══════╡
-        KC_LGUI,OS_LALT,SH_BSPC,SY_MINS,KC_UNDS,        KC_ENT, FN_TAB, KC_SPC, AGR_DEL,RG_APP
+        KC_LGUI,OS_LALT,SH_BSPC,SY_MINS,KC_UNDS,        KC_ENT, FN_TAB, KC_SPC, AGR_DEL,RGUI_T(KC_APP)
     // └───────┴───────┴───────┴───────┴───────┘       └───────┴───────┴───────┴───────┴───────┘
     ),
 #else
@@ -146,7 +143,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // ┌───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───╨───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┐
  LCTL_T(KC_Z),  KC_V,   KC_C,   KC_D,   KC_G,           KC_K,   KC_H,   KC_COMM,KC_J,   RCTL_T(KC_DOT),
     // ╞═══════╪═══════╪═══════╪═══════╪═══════╡       ╞═══════╪═══════╪═══════╪═══════╪═══════╡
-        KC_LGUI,OS_LALT,SH_BSPC,SY_MINS,KC_UNDS,        KC_ENT, FN_TAB, KC_SPC, AGR_DEL,RG_APP
+        KC_LGUI,OS_LALT,SH_BSPC,SY_MINS,KC_UNDS,        KC_ENT, FN_TAB, KC_SPC, AGR_DEL,RGUI_T(KC_APP)
     // └───────┴───────┴───────┴───────┴───────┘       └───────┴───────┴───────┴───────┴───────┘
     ),
 #endif
@@ -156,9 +153,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // └───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───╥───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┘
             KC_PAST,KC_P4,  KC_P5,  KC_P6,  KC_PMNS, KC_MPLY,KC_LEFT,KC_UP,  KC_RGHT,KC_END,
     // ┌───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───╨───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┐
-LCTL_T(KC_P0),  KC_P1,  KC_P2,  KC_P3,  KC_PPLS,        KC_HOME,KC_PGUP,KC_DOWN,KC_PGDN,RCTL_T(KC_CALC),
+LCTL_T(KC_PDOT),KC_P1,  KC_P2,  KC_P3,  KC_PPLS,        KC_HOME,KC_PGUP,KC_DOWN,KC_PGDN,RCTL_T(KC_CALC),
     // ╞═══════╪═══════╪═══════╪═══════╪═══════╡       ╞═══════╪═══════╪═══════╪═══════╪═══════╡
-        LG_PDOT,LA_COMM,_______,SY_PEQL,_______,        KC_PENT,_______,_______,_______,RG_MYCM
+LGUI_T(KC_COMM),LA_P0,  _______,SY_PEQL,_______,        KC_PENT,_______,_______,_______,RGUI_T(KC_MYCM)
     // └───────┴───────┴───────┴───────┴───────┘       └───────┴───────┴───────┴───────┴───────┘
     ),
     [LAYER_sym] = LAYOUT_all(
