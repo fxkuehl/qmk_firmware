@@ -27,7 +27,7 @@ bool rgb_matrix_indicators_advanced_kb(uint8_t led_min, uint8_t led_max) {
             if (index < led_min || index >= led_max)
                 continue;
 
-            bool arrow = false, edit = false, num = false, numpad = false;
+            bool arrow = false, edit = false, num = false, numpad = false, kc_num = false;
 
             if (layer) {
                 uint16_t kc = keymap_key_to_keycode(layer, (keypos_t){col,row});
@@ -43,21 +43,25 @@ bool rgb_matrix_indicators_advanced_kb(uint8_t led_min, uint8_t led_max) {
                 else if (kc >= KC_1 && kc <= KC_0)
                     num = true;
                 else if (kc == KC_NUM)
-                    numpad = true;
-                else if (num_lock && kc >= KC_KP_1 && kc <= KC_KP_0)
+                    kc_num = true;
+                else if (kc >= KC_KP_1 && kc <= KC_KP_0)
                     numpad = true;
             }
 
-            if (arrow || edit || (numpad && !num_lock))
-                rgb_matrix_set_color(index, RGB_SCALED(0xff, 0x20, 0x00));
-            else if (num || (numpad && num_lock))
-                rgb_matrix_set_color(index, RGB_SCALED(0x40, 0xff, 0x00));
+            if (arrow || edit)
+                rgb_matrix_set_color(index, RGB_SCALED(0x80, 0x00, 0x04));
+            else if (num)
+                rgb_matrix_set_color(index, RGB_SCALED(0x20, 0x80, 0x00));
+            else if ((numpad && num_lock) || kc_num)
+                rgb_matrix_set_color(index, RGB_SCALED(0x00, 0x20, 0x80));
+	    else if (numpad && !num_lock)
+                rgb_matrix_set_color(index, RGB_SCALED(0x10, 0x00, 0x02));
             else if (caps_lock && (
                         row == 0 ||
                        (row == 3 && (col == 0 || col == 9))
                        )
                     )
-                rgb_matrix_set_color(index, RGB_SCALED(0x30, 0x80, 0xff));
+                rgb_matrix_set_color(index, RGB_SCALED(0x40, 0x80, 0xff));
         }
     }
 
