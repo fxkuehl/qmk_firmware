@@ -53,13 +53,13 @@
  *
  * Sticky Num-Pad and editing layer:
  * ┌─────┬─────┬─────┬─────┐             ┌─────┬─────┬─────┬─────┐
- * │NumLk│  /  │  7  │  8  │             │ Next│ Vol-│ Vol+│ Mute│
+ * │NumLk│  /  │  7  │  8  │             │rgSat│rgVal│rgSpd│rgTog│
  * └──┲━━┷━━┳━━┷━━┳━━┷━━┱──┴──┐       ┌──┴──┲━━┷━━┳━━┷━━┳━━┷━━┱──┘
- *    ┃  *  ┃  4  ┃  5  ┃  9  │       │ Prev┃  Up ┃Right┃ End ┃
+ *    ┃  *  ┃  4  ┃  5  ┃  9  │       │rgHue┃  Up ┃Right┃ End ┃
  * ┌──┺━━┯━━┻━━┯━━┻━━┳━━┻━━┱──┴──┐ ┌──┴──┲━━┻━━┳━━┻━━┯━━┻━━┯━━┹──┐
- * │  .  │  1  │  2  ┃  6  ┃  -  │ │ Play┃ Left┃ Down│ PgDn│ Calc│
+ * │  .  │  1  │  2  ┃  6  ┃  -  │ │rgMod┃ Left┃ Down│ PgDn│ScrLk│
  * └─Ctl─┴──┬──┴──┬──┺━━┯━━┹──┬──┘ └──┬──┺━━┯━━┹──┬──┴──┬──┴─Ctl─┘
- *          │  ,  │  3  │  +  │       │ Home│ PgUp│My PC│
+ *          │  ,  │  3  │  +  │       │ Home│ PgUp│ Calc│
  *          └─Gui─┴─────┴─────┘       └─────┴─────┴─Gui─┘
  *             ┌─────┲━━━━━┱─────┐ ┌─────┲━━━━━┱─────┐
  *             │  0  ┃ Bsp ┃  _  │ │Enter┃     ┃ Del │
@@ -75,10 +75,10 @@
  * ┌──┺━━┯━━┻━━┯━━┻━━┳━━┻━━┱──┴──┐ ┌──┴──┲━━┻━━┳━━┻━━┯━━┻━━┯━━┹──┐
  * │  [  │  {  │  }  ┃  4  ┃  %  │ │  ^  ┃  7  ┃  -  │  *  │  \  │
  * └─Ctl─┴──┬──┴──┬──┺━━┯━━┹──┬──┘ └──┬──┺━━┯━━┹──┬──┴──┬──┴─Ctl─┘
- *          │ Gui │  ]  │  5  │       │  6  │  +  │ App │
+ *          │ Gui │  ]  │  5  │       │  6  │  +  │My PC│
  *          └─────┴AltGr┴─────┘       └─────┴─────┴─Gui─┘
  *             ┌─────┲━━━━━┱─────┐ ┌─────┲━━━━━┱─────┐
- *             │ ... ┃ ... ┃ ... │ │  ;  ┃  =  ┃  `  │
+ *             │  M0 ┃  M1 ┃  M2 │ │  ;  ┃  =  ┃  `  │
  *             └─────┺━━┯━━┹──┬──┘ └──┬──┺━━┯━━┹AltGr┘
  *                      │[Sym]│       │  .  │
  *                      └─────┘       └──Fn─┘
@@ -89,12 +89,12 @@
  * └──┲━━┷━━┳━━┷━━┳━━┷━━┱──┴──┐       ┌──┴──┲━━┷━━┳━━┷━━┳━━┷━━┱──┘
  *    ┃ Esc ┃ Ins ┃ Bsp ┃  F5 │       │  F8 ┃  Up ┃Right┃ End ┃
  * ┌──┺━━┯━━┻━━┯━━┻━━┳━━┻━━┱──┴──┐ ┌──┴──┲━━┻━━┳━━┻━━┯━━┻━━┯━━┹──┐
- * │ Caps│Colmk│rgMod┃ Del ┃  F6 │ │  F7 ┃ Left┃ Down│ PgDn│Scrol│
+ * │ Caps│Colmk│ Vol+┃ Del ┃  F6 │ │  F7 ┃ Left┃ Down│ PgDn│ScrLk│
  * └─Ctl─┴──┬──┴──┬──┺━━┯━━┹──┬──┘ └──┬──┺━━┯━━┹──┬──┴──┬──┴─Ctl─┘
- *          │ Gui │rgSpd│PrScr│       │ Home│ PgUp│ App │
- *          └─────┴─────┴─────┘       └─────┴─────┴─Gui─┘
+ *          │ Vol-│ Mute│PrScr│       │ Home│ PgUp│Media│
+ *          └─Gui─┴─────┴─────┘       └─────┴─────┴─Gui─┘
  *             ┌─────┲━━━━━┱─────┐ ┌─────┲━━━━━┱─────┐
- *             │ Alt ┃     ┃Enter│ │rgHue┃rgSat┃rgVal│
+ *             │ Alt ┃     ┃Enter│ │ Prev┃ Play┃ Next│
  *             └─────┺Shift┹──┬──┘ └──┬──┺━━┯━━┹─────┘
  *                      │ Tab │       │ [Fn]│
  *                      └─Sym─┘       └─────┘
@@ -149,13 +149,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 #endif
     [LAYER_sticky] = LAYOUT_all(
     // ┌───────┬───────┬───────┬───────┬───────┐       ┌───────┬───────┬───────┬───────┬───────┐
-        KC_NUM, KC_PSLS,KC_P7,  KC_P8,  KC_P9,          KC_MPRV,KC_MNXT,KC_VOLD,KC_VOLU,KC_MUTE,
+        KC_NUM, KC_PSLS,KC_P7,  KC_P8,  KC_P9,          RGB_HUI,RGB_SAI,RGB_VAI,RGB_SPI,RGB_TOG,
     // └───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───╥───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┘
-            KC_PAST,KC_P4,  KC_P5,  KC_P6,  KC_PMNS, KC_MPLY,KC_LEFT,KC_UP,  KC_RGHT,KC_END,
+            KC_PAST,KC_P4,  KC_P5,  KC_P6,  KC_PMNS,RGB_MOD,KC_LEFT,KC_UP,  KC_RGHT,KC_END,
     // ┌───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───╨───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┐
-LCTL_T(KC_PDOT),KC_P1,  KC_P2,  KC_P3,  KC_PPLS,        KC_HOME,KC_PGUP,KC_DOWN,KC_PGDN,RCTL_T(KC_CALC),
+LCTL_T(KC_PDOT),KC_P1,  KC_P2,  KC_P3,  KC_PPLS,        KC_HOME,KC_PGUP,KC_DOWN,KC_PGDN,RCTL_T(KC_SCRL),
     // ╞═══════╪═══════╪═══════╪═══════╪═══════╡       ╞═══════╪═══════╪═══════╪═══════╪═══════╡
-LGUI_T(KC_COMM),LA_P0,  _______,SY_PEQL,_______,        KC_PENT,_______,_______,_______,RGUI_T(KC_MYCM)
+LGUI_T(KC_COMM),LA_P0,  _______,SY_PEQL,_______,        KC_PENT,_______,_______,_______,RGUI_T(KC_CALC)
     // └───────┴───────┴───────┴───────┴───────┘       └───────┴───────┴───────┴───────┴───────┘
     ),
     [LAYER_sym] = LAYOUT_all(
@@ -166,7 +166,7 @@ LGUI_T(KC_COMM),LA_P0,  _______,SY_PEQL,_______,        KC_PENT,_______,_______,
     // ┌───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───╨───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┐
 LCTL_T(KC_LBRC),KC_LCBR,KC_RCBR,AGR_RBR,KC_5,           KC_6,   KC_PLUS,KC_MINS,KC_ASTR,RCTL_T(KC_BSLS),
     // ╞═══════╪═══════╪═══════╪═══════╪═══════╡       ╞═══════╪═══════╪═══════╪═══════╪═══════╡
-        _______,_______,_______,_______,_______,        KC_SCLN,FN_DOT, KC_EQL, AGR_GRV,_______
+        _______,MC_0   ,MC_1   ,MC_2   ,_______,        KC_SCLN,FN_DOT, KC_EQL, AGR_GRV,RGUI_T(KC_MYCM)
     // └───────┴───────┴───────┴───────┴───────┘       └───────┴───────┴───────┴───────┴───────┘
     ),
     [LAYER_fn] = LAYOUT_all(
@@ -175,9 +175,9 @@ LCTL_T(KC_LBRC),KC_LCBR,KC_RCBR,AGR_RBR,KC_5,           KC_6,   KC_PLUS,KC_MINS,
     // └───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───╥───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┘
             KC_ESC, KC_INS, KC_BSPC,KC_DEL, KC_F6,   KC_F7,  KC_LEFT,KC_UP,  KC_RGHT,KC_END,
     // ┌───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───╨───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┐
-LCTL_T(KC_CAPS),TG_STKY,RGB_MOD,RGB_SPI,KC_PSCR,        KC_HOME,KC_PGUP,KC_DOWN,KC_PGDN,RCTL_T(KC_SCRL),
+LCTL_T(KC_CAPS),TG_STKY,KC_VOLU,KC_MUTE,KC_PSCR,        KC_HOME,KC_PGUP,KC_DOWN,KC_PGDN,RCTL_T(KC_SCRL),
     // ╞═══════╪═══════╪═══════╪═══════╪═══════╡       ╞═══════╪═══════╪═══════╪═══════╪═══════╡
-        _______,KC_LALT,SH_SPC, SY_TAB, KC_ENT,         RGB_HUI,_______,RGB_SAI,RGB_VAI,_______
+LGUI_T(KC_VOLD),KC_LALT,SH_SPC, SY_TAB, KC_ENT,         KC_MPRV,_______,KC_MPLY,KC_MNXT,RGUI_T(KC_MSEL)
     // └───────┴───────┴───────┴───────┴───────┘       └───────┴───────┴───────┴───────┴───────┘
     )
 };

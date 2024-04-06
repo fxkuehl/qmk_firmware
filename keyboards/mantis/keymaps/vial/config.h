@@ -1,6 +1,6 @@
 #pragma once
 
-#define MANTIS_COLEMAK
+//#define MANTIS_COLEMAK
 
 #define VIAL_KEYBOARD_UID {0xA9, 0xDE, 0x76, 0xF1, 0x89, 0x3A, 0x7E, 0xF1}
 #define VIAL_UNLOCK_COMBO_ROWS { 0, 2 }
