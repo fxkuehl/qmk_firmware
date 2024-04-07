@@ -183,12 +183,17 @@ LGUI_T(KC_VOLD),KC_LALT,SH_SPC, SY_TAB, KC_ENT,         KC_MPRV,_______,KC_MPLY,
 };
 
 /* Prefer tap on fingers, hold on thumbs */
-static bool prefer_tap(keyrecord_t *record) {
-    return record->event.key.row < 3;
+static bool prefer_hold(uint16_t keycode, keyrecord_t *record) {
+    if (record->event.key.row < 2 || (uint8_t)(keycode & 0xff) == KC_SPACE)
+        return false;
+    else if (record->event.key.row == 2)
+        return record->event.key.col >= 4 && record->event.key.col <= 5;
+    else
+        return record->event.key.col >= 2 && record->event.key.col <= 7;
 }
 bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
-    return !prefer_tap(record);
+    return prefer_hold(keycode, record);
 }
 bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
-    return prefer_tap(record);
+    return !prefer_hold(keycode, record);
 }
