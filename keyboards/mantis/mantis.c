@@ -3,12 +3,6 @@
 
 #include "quantum.h"
 
-// Cap indicators to the configured max brightness
-#define RGB_SCALED(r, g, b) \
-    (uint8_t)((uint16_t)(r) * RGB_MATRIX_MAXIMUM_BRIGHTNESS / 0xff), \
-    (uint8_t)((uint16_t)(g) * RGB_MATRIX_MAXIMUM_BRIGHTNESS / 0xff), \
-    (uint8_t)((uint16_t)(b) * RGB_MATRIX_MAXIMUM_BRIGHTNESS / 0xff)
-
 bool rgb_matrix_indicators_advanced_kb(uint8_t led_min, uint8_t led_max) {
     if (!rgb_matrix_indicators_advanced_user(led_min, led_max))
         return false;
@@ -27,41 +21,54 @@ bool rgb_matrix_indicators_advanced_kb(uint8_t led_min, uint8_t led_max) {
             if (index < led_min || index >= led_max)
                 continue;
 
-            bool arrow = false, edit = false, num = false, numpad = false, kc_num = false;
+            HSV hsv;
+            hsv.s = 255;
+            hsv.v = RGB_MATRIX_MAXIMUM_BRIGHTNESS / 3 * 2;
 
-            if (layer) {
-                uint16_t kc = keymap_key_to_keycode(layer, (keypos_t){col,row});
+            uint16_t kc = layer ?
+                keymap_key_to_keycode(layer, (keypos_t){col,row}) : 0;
 
-                if (kc >= QK_MOD_TAP && kc <= QK_LAYER_TAP_MAX)
-                    kc &= 0xff;
+            if (kc >= QK_MOD_TAP && kc <= QK_LAYER_TAP_MAX)
+                kc &= 0xff;
 
-                if (kc >= KC_RIGHT && kc <= KC_UP)
-                    arrow = true;
-                else if (kc == KC_ESC  || kc == KC_INS ||
-                         kc == KC_BSPC || kc == KC_DEL)
-                    edit = true;
-                else if (kc >= KC_1 && kc <= KC_0)
-                    num = true;
-                else if (kc == KC_NUM)
-                    kc_num = true;
-                else if (kc >= KC_KP_1 && kc <= KC_KP_0)
-                    numpad = true;
+            switch (kc) {
+            case KC_RIGHT ... KC_UP:
+            case KC_ESC:
+            case KC_INS:
+            case KC_BSPC:
+            case KC_DEL:
+                hsv.h = 252;
+                break;
+            case KC_1 ... KC_0:
+                hsv.h = 80;
+                break;
+            case KC_KP_1 ... KC_KP_0:
+                if (!num_lock) {
+                    hsv.h = 252, hsv.v >>= 1;
+                    break;
+                }
+                // fall through
+            case KC_NUM:
+                hsv.h = 155;
+                break;
+            case RGB_TOG ... RGB_SPD:
+                hsv = rgb_matrix_get_hsv();
+                hsv.h += (((kc + 3) >> 1) % 6) * 85 >> 1;
+                uint8_t inc = (kc + !!(get_mods() & MOD_LSFT)) & 1;
+                hsv.v >>= 1 - inc;
+                break;
+            default:
+                if (caps_lock && (row == 0 ||
+                            (row == 3 && (col == 0 || col == 9))
+                            ))
+                    hsv.h = 160, hsv.s = 128,
+                        hsv.v = RGB_MATRIX_MAXIMUM_BRIGHTNESS;
+                else
+                    continue;
             }
 
-            if (arrow || edit)
-                rgb_matrix_set_color(index, RGB_SCALED(0x80, 0x00, 0x04));
-            else if (num)
-                rgb_matrix_set_color(index, RGB_SCALED(0x20, 0x80, 0x00));
-            else if ((numpad && num_lock) || kc_num)
-                rgb_matrix_set_color(index, RGB_SCALED(0x00, 0x20, 0x80));
-	    else if (numpad && !num_lock)
-                rgb_matrix_set_color(index, RGB_SCALED(0x10, 0x00, 0x02));
-            else if (caps_lock && (
-                        row == 0 ||
-                       (row == 3 && (col == 0 || col == 9))
-                       )
-                    )
-                rgb_matrix_set_color(index, RGB_SCALED(0x40, 0x80, 0xff));
+            RGB rgb = hsv_to_rgb(hsv);
+            rgb_matrix_set_color(index, rgb.r, rgb.g, rgb.b);
         }
     }
 
