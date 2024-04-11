@@ -14,7 +14,22 @@
 #    define RGB_MATRIX_LED_FLUSH_LIMIT 16
 #    define RGB_MATRIX_TIMEOUT 60000
 
-#define RGB_MATRIX_MAXIMUM_BRIGHTNESS 100
+// At full brightness, 40 SK6812MINI-E would draw 1.6A. That's more than the
+// 500mA that USB 2 provides and might blow a fuse in the controller.
+// Up to about 1/4 maximum brightness should be safe with 400mA.
+//
+// Brightness 128 in the CIE1931_CURVE table is 48, about 18% of 255. With 40
+// LEDs that would draw 288mA, plenty of margin.
+//
+// One could reduce the margin further with max brightness 140, being 63 in
+// the CIE table, about 25% of 255, 400mA with 40 LEDs.
+#ifdef USE_CIE1931_CURVE
+//#define RGB_MATRIX_MAXIMUM_BRIGHTNESS 128
+#define RGB_MATRIX_MAXIMUM_BRIGHTNESS 140
+#else
+//#define RGB_MATRIX_MAXIMUM_BRIGHTNESS 48
+#define RGB_MATRIX_MAXIMUM_BRIGHTNESS 63
+#endif
 #define RGB_MATRIX_DEFAULT_HUE 50
 #define RGB_MATRIX_DEFAULT_SPD 127
 
