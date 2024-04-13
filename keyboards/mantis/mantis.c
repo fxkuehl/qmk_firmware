@@ -10,6 +10,7 @@ bool rgb_matrix_indicators_advanced_kb(uint8_t led_min, uint8_t led_max) {
     const bool caps_lock = host_keyboard_led_state().caps_lock;
     const bool num_lock = host_keyboard_led_state().num_lock;
     const uint8_t layer = get_highest_layer(layer_state);
+    HSV matrix_hsv = rgb_matrix_get_hsv();
 
     if (!caps_lock && !layer)
         return false;
@@ -23,7 +24,7 @@ bool rgb_matrix_indicators_advanced_kb(uint8_t led_min, uint8_t led_max) {
 
             HSV hsv;
             hsv.s = 255;
-            hsv.v = RGB_MATRIX_MAXIMUM_BRIGHTNESS / 3 * 2;
+            hsv.v = matrix_hsv.v;
 
             uint16_t kc = layer ?
                 keymap_key_to_keycode(layer, (keypos_t){col,row}) : 0;
@@ -44,7 +45,8 @@ bool rgb_matrix_indicators_advanced_kb(uint8_t led_min, uint8_t led_max) {
                 break;
             case KC_KP_1 ... KC_KP_0:
                 if (!num_lock) {
-                    hsv.h = 252, hsv.v >>= 1;
+                    hsv.h = 252;
+                    hsv.v >>= 1;
                     break;
                 }
                 // fall through
@@ -52,8 +54,8 @@ bool rgb_matrix_indicators_advanced_kb(uint8_t led_min, uint8_t led_max) {
                 hsv.h = 155;
                 break;
             case RGB_TOG ... RGB_SPD:
-                hsv = rgb_matrix_get_hsv();
-                hsv.h += (((kc + 3) >> 1) % 6) * 85 >> 1;
+                hsv.h = matrix_hsv.h + ((((kc + 3) >> 1) % 6) * 85 >> 1);
+                hsv.s = matrix_hsv.s;
                 uint8_t inc = (kc + !!(get_mods() & MOD_LSFT)) & 1;
                 hsv.v >>= 1 - inc;
                 break;
