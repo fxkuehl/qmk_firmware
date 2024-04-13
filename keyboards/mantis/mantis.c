@@ -46,12 +46,12 @@ bool rgb_matrix_indicators_advanced_kb(uint8_t led_min, uint8_t led_max) {
             case KC_KP_1 ... KC_KP_0:
                 if (!num_lock) {
                     hsv.h = 252;
-                    hsv.v >>= 1;
+                    hsv.v >>= 2;
                     break;
                 }
                 // fall through
             case KC_NUM:
-                hsv.h = 155;
+                hsv.h = 149;
                 break;
             case RGB_TOG ... RGB_SPD:
                 hsv.h = matrix_hsv.h + ((((kc + 3) >> 1) % 6) * 85 >> 1);
@@ -63,7 +63,7 @@ bool rgb_matrix_indicators_advanced_kb(uint8_t led_min, uint8_t led_max) {
                 if (caps_lock && (row == 0 ||
                             (row == 3 && (col == 0 || col == 9))
                             ))
-                    hsv.h = 160, hsv.s = 128,
+                    hsv.h = matrix_hsv.h+128, hsv.s >>= 1,
                         hsv.v = RGB_MATRIX_MAXIMUM_BRIGHTNESS;
                 else
                     continue;

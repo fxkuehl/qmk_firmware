@@ -30,8 +30,9 @@
 //#define RGB_MATRIX_MAXIMUM_BRIGHTNESS 48
 #define RGB_MATRIX_MAXIMUM_BRIGHTNESS 63
 #endif
-#define RGB_MATRIX_DEFAULT_HUE 50
-#define RGB_MATRIX_DEFAULT_SPD 127
+#define RGB_MATRIX_DEFAULT_HUE 176
+#define RGB_MATRIX_DEFAULT_SAT 192
+#define RGB_MATRIX_DEFAULT_SPD 96
 
 // RGB Matrix Animation modes. Explicitly enabled
 // For full list of effects, see:
