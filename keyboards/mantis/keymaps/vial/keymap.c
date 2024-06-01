@@ -98,14 +98,39 @@
  *             └─────┺Shift┹──┬──┘ └──┬──┺━━┯━━┹─────┘
  *                      │ Tab │       │ [Fn]│
  *                      └─Sym─┘       └─────┘
+ *
+ * Mouse layer:
+ * ┌─────┬─────┬─────┬─────┐             ┌─────┬─────┬─────┬─────┐
+ * │     │     │     │     │             │ Btn3│     │     │     │
+ * └──┲━━┷━━┳━━┷━━┳━━┷━━┱──┴──┐       ┌──┴──┲━━┷━━┳━━┷━━┳━━┷━━┱──┘
+ *    ┃     ┃ M-L ┃ M-U ┃     │       │     ┃ W-U ┃ Btn2┃ Btn4┃
+ * ┌──┺━━┯━━┻━━┯━━┻━━┳━━┻━━┱──┴──┐ ┌──┴──┲━━┻━━┳━━┻━━┯━━┻━━┯━━┹──┐
+ * │ Ctl │     │ M-D ┃ M-R ┃     │ │     ┃ Btn1┃ W-D │ W-R │ Ctl │
+ * └─────┴──┬──┴──┬──┺━━┯━━┹──┬──┘ └──┬──┺━━┯━━┹──┬──┴──┬──┴─────┘
+ *          │ Gui │     │     │       │ Btn5│ W-L │ Gui │
+ *          └─────┴─────┴─────┘       └─────┴─────┴─────┘
+ *             ┌─────┲━━━━━┱─────┐ ┌─────┲━━━━━┱─────┐
+ *             │ Alt ┃Shift┃ Acl1│ │ ... ┃[Mou]┃ ... │
+ *             └─────┺━━┯━━┹──┬──┘ └──┬──┺━━┯━━┹─────┘
+ *                      │ Acl0│       │ ... │
+ *                      └─────┘       └─────┘
  */
 
 enum MantisLayers {
 	LAYER_alpha = 0,
 	LAYER_sticky,
 	LAYER_sym,
-	LAYER_fn
+	LAYER_fn,
+#ifdef MOUSEKEY_ENABLE
+	LAYER_mouse,
+#endif
 };
+
+#ifdef MOUSEKEY_ENABLE
+#define MS_SPC  LT(LAYER_mouse,KC_SPC)
+#else
+#define MS_SPC  KC_SPC
+#endif
 
 #define OS_LALT OSM(MOD_LALT)
 #define SH_BSPC LSFT_T(KC_BSPC)
@@ -131,7 +156,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // ┌───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───╨───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┐
  LCTL_T(KC_Z),  KC_X,   KC_C,   KC_V,   KC_G,           KC_H,   KC_M,   KC_COMM,KC_DOT, RCTL_T(KC_SLSH),
     // ╞═══════╪═══════╪═══════╪═══════╪═══════╡       ╞═══════╪═══════╪═══════╪═══════╪═══════╡
-        KC_LGUI,OS_LALT,SH_BSPC,SY_MINS,KC_UNDS,        KC_ENT, FN_TAB, KC_SPC, AGR_DEL,RGUI_T(KC_APP)
+        KC_LGUI,OS_LALT,SH_BSPC,SY_MINS,KC_UNDS,        KC_ENT, FN_TAB, MS_SPC, AGR_DEL,RGUI_T(KC_APP)
     // └───────┴───────┴───────┴───────┴───────┘       └───────┴───────┴───────┴───────┴───────┘
     ),
 #else
@@ -143,7 +168,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // ┌───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───╨───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┐
  LCTL_T(KC_Z),  KC_V,   KC_C,   KC_D,   KC_G,           KC_K,   KC_H,   KC_COMM,KC_DOT, RCTL_T(KC_SLSH),
     // ╞═══════╪═══════╪═══════╪═══════╪═══════╡       ╞═══════╪═══════╪═══════╪═══════╪═══════╡
-        KC_LGUI,OS_LALT,SH_BSPC,SY_MINS,KC_UNDS,        KC_ENT, FN_TAB, KC_SPC, AGR_DEL,RGUI_T(KC_APP)
+        KC_LGUI,OS_LALT,SH_BSPC,SY_MINS,KC_UNDS,        KC_ENT, FN_TAB, MS_SPC, AGR_DEL,RGUI_T(KC_APP)
     // └───────┴───────┴───────┴───────┴───────┘       └───────┴───────┴───────┴───────┴───────┘
     ),
 #endif
@@ -179,7 +204,20 @@ LCTL_T(KC_CAPS),TG_STKY,KC_VOLU,KC_MUTE,KC_PSCR,        KC_HOME,KC_PGUP,KC_DOWN,
     // ╞═══════╪═══════╪═══════╪═══════╪═══════╡       ╞═══════╪═══════╪═══════╪═══════╪═══════╡
 LGUI_T(KC_VOLD),KC_LALT,SH_SPC, SY_TAB, KC_ENT,         KC_MPRV,_______,KC_MPLY,KC_MNXT,RGUI_T(KC_MSEL)
     // └───────┴───────┴───────┴───────┴───────┘       └───────┴───────┴───────┴───────┴───────┘
-    )
+    ),
+#ifdef MOUSEKEY_ENABLE
+    [LAYER_mouse] = LAYOUT_all(
+    // ┌───────┬───────┬───────┬───────┬───────┐       ┌───────┬───────┬───────┬───────┬───────┐
+        XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,        XXXXXXX,KC_BTN3,XXXXXXX,XXXXXXX,XXXXXXX,
+    // └───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───╥───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┘
+            XXXXXXX,KC_MS_L,KC_MS_U,KC_MS_R,XXXXXXX,KC_BTN5,KC_BTN1,KC_WH_U,KC_BTN2,KC_BTN4,
+    // ┌───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───╨───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┐
+        KC_LCTL,XXXXXXX,KC_MS_D,XXXXXXX,XXXXXXX,        KC_HOME,KC_WH_L,KC_WH_D,KC_WH_R,KC_RCTL,
+    // ╞═══════╪═══════╪═══════╪═══════╪═══════╡       ╞═══════╪═══════╪═══════╪═══════╪═══════╡
+        KC_LGUI,KC_LALT,KC_LSFT,KC_ACL0,KC_ACL1,        XXXXXXX,XXXXXXX,_______,XXXXXXX,KC_RGUI
+    // └───────┴───────┴───────┴───────┴───────┘       └───────┴───────┴───────┴───────┴───────┘
+    ),
+#endif
 };
 
 /* Prefer tap on fingers, hold on thumbs */
