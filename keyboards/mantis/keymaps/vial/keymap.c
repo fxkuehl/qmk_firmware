@@ -89,7 +89,7 @@
  * └──┲━━┷━━┳━━┷━━┳━━┷━━┱──┴──┐       ┌──┴──┲━━┷━━┳━━┷━━┳━━┷━━┱──┘
  *    ┃ Esc ┃ Ins ┃ Bsp ┃  F5 │       │  F8 ┃  Up ┃Right┃ End ┃
  * ┌──┺━━┯━━┻━━┯━━┻━━┳━━┻━━┱──┴──┐ ┌──┴──┲━━┻━━┳━━┻━━┯━━┻━━┯━━┹──┐
- * │ Caps│Colmk│ Vol+┃ Del ┃  F6 │ │  F7 ┃ Left┃ Down│ PgDn│ScrLk│
+ * │ Caps│Stick│ Vol+┃ Del ┃  F6 │ │  F7 ┃ Left┃ Down│ PgDn│ScrLk│
  * └─Ctl─┴──┬──┴──┬──┺━━┯━━┹──┬──┘ └──┬──┺━━┯━━┹──┬──┴──┬──┴─Ctl─┘
  *          │ Vol-│ Mute│PrScr│       │ Home│ PgUp│Media│
  *          └─Gui─┴─────┴─────┘       └─────┴─────┴─Gui─┘
@@ -160,9 +160,9 @@ LGUI_T(KC_COMM),LA_P0,  _______,SY_PEQL,_______,        KC_PENT,_______,_______,
     ),
     [LAYER_sym] = LAYOUT_all(
     // ┌───────┬───────┬───────┬───────┬───────┐       ┌───────┬───────┬───────┬───────┬───────┐
-        KC_TILD,KC_EXLM,KC_AT,  KC_HASH,  KC_DLR,         KC_AMPR,KC_LPRN,KC_RPRN,KC_PIPE,KC_COLN,
+        KC_TILD,KC_EXLM,KC_AT,  KC_HASH,  KC_DLR,       KC_AMPR,KC_LPRN,KC_RPRN,KC_PIPE,KC_COLN,
     // └───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───╥───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┘
-            KC_1,   KC_2,   KC_3,   KC_4,   KC_PERC, KC_CIRC,KC_7,   KC_8,   KC_9,   KC_0,
+            KC_1,   KC_2,   KC_3,   KC_4,   KC_PERC,KC_CIRC,KC_7,   KC_8,   KC_9,   KC_0,
     // ┌───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───╨───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┐
 LCTL_T(KC_LBRC),KC_LCBR,KC_RCBR,AGR_RBR,KC_5,           KC_6,   KC_PLUS,KC_MINS,KC_ASTR,RCTL_T(KC_BSLS),
     // ╞═══════╪═══════╪═══════╪═══════╪═══════╡       ╞═══════╪═══════╪═══════╪═══════╪═══════╡
@@ -173,7 +173,7 @@ LCTL_T(KC_LBRC),KC_LCBR,KC_RCBR,AGR_RBR,KC_5,           KC_6,   KC_PLUS,KC_MINS,
     // ┌───────┬───────┬───────┬───────┬───────┐       ┌───────┬───────┬───────┬───────┬───────┐
         KC_F1,  KC_F2,  KC_F3,  KC_F4,  KC_F5,          KC_F8,  KC_F9,  KC_F10, KC_F11, KC_F12,
     // └───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───╥───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───┘
-            KC_ESC, KC_INS, KC_BSPC,KC_DEL, KC_F6,   KC_F7,  KC_LEFT,KC_UP,  KC_RGHT,KC_END,
+            KC_ESC, KC_INS, KC_BSPC,KC_DEL, KC_F6,  KC_F7,  KC_LEFT,KC_UP,  KC_RGHT,KC_END,
     // ┌───┴───┬───┴───┬───┴───┬───┴───┬───┴───┬───╨───┬───┴───┬───┴───┬───┴───┬───┴───┬───┴───┐
 LCTL_T(KC_CAPS),TG_STKY,KC_VOLU,KC_MUTE,KC_PSCR,        KC_HOME,KC_PGUP,KC_DOWN,KC_PGDN,RCTL_T(KC_SCRL),
     // ╞═══════╪═══════╪═══════╪═══════╪═══════╡       ╞═══════╪═══════╪═══════╪═══════╪═══════╡
