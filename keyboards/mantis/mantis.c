@@ -53,6 +53,12 @@ bool rgb_matrix_indicators_advanced_kb(uint8_t led_min, uint8_t led_max) {
             case KC_NUM:
                 hsv.h = 149;
                 break;
+#ifdef MOUSEKEY_ENABLE
+            case KC_MS_U ... KC_BTN2:
+            case KC_WH_U ... KC_WH_D:
+                hsv.h = 40;
+                break;
+#endif
             case RGB_TOG ... RGB_SPD:
                 hsv.h = matrix_hsv.h + ((((kc + 3) >> 1) % 6) * 85 >> 1);
                 hsv.s = matrix_hsv.s;
